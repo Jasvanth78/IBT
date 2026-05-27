@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { apiClient } from '@/src/api/client'
 import { FiArrowLeft, FiExternalLink, FiGithub, FiLayers, FiCalendar } from 'react-icons/fi'
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   try {
     const projects = await apiClient.getProjects(1, 100);

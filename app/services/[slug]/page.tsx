@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { FiArrowLeft } from 'react-icons/fi'
 import { apiClient } from '@/src/api/client'
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   try {
     const services = await apiClient.getServices(1, 100);
