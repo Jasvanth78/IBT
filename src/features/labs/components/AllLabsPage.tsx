@@ -148,14 +148,14 @@ export function AllLabsPage() {
         apiClient.getSettings()
       ]);
       
-      const setts = (settingsResult as any) ?? {};
+      const setts = (settingsResult as Record<string, any>) ?? {};
       setProjects(projectsResult.items);
       setMeta(projectsResult.meta ?? {});
       setSettings(setts);
       setPage(p);
 
       // Fetch all spotlight projects
-      const spotlights = (setts.labs_spotlights as any[]) || [];
+      const spotlights = (setts.labs_spotlights as Record<string, any>[]) || [];
       const projectMap: Record<string, PublicLabProject> = {};
       
       await Promise.all(spotlights.map(async (s) => {

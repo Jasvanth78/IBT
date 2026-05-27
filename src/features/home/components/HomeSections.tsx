@@ -4,8 +4,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { apiClient, type PaginationMeta, type PublicStat } from '@/src/api/client';
 import { FiChevronLeft, FiChevronRight, FiUsers, FiCheckCircle, FiActivity, FiClock } from 'react-icons/fi';
 import { Loader } from '@/src/shared/ui';
+import { IconType } from 'react-icons';
 
-const statIcons: Record<string, any> = {
+const statIcons: Record<string, IconType> = {
   projects: FiCheckCircle,
   clients: FiUsers,
   rate: FiActivity,

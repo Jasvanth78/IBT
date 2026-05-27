@@ -5,7 +5,7 @@ import { apiClient } from '@/src/api/client'
 
 export async function generateStaticParams() {
   try {
-    const blogs = await apiClient.getBlogs(1, 100);
+    const blogs = await apiClient.getPublicBlogs(1, 100);
     return blogs.items.map((blog) => ({
       slug: blog.slug,
     }));

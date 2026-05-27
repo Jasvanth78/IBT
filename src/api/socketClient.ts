@@ -4,7 +4,7 @@
  */
 
 import io, { Socket } from 'socket.io-client';
-import { SOCKET_CHANNELS, SOCKET_EVENTS } from '@/src/types/socket';
+import { SOCKET_CHANNELS, SOCKET_EVENTS, SiteSettingsRealtimePayload } from '@/src/types/socket';
 
 let socketInstance: Socket | null = null;
 
@@ -65,7 +65,7 @@ export const getCurrentSocket = (): Socket | null => {
 };
 
 export const subscribeSiteSettings = (
-  callback: (payload: any) => void,
+  callback: (payload: SiteSettingsRealtimePayload) => void,
 ): (() => void) => {
   const socket = getSocketClient();
 

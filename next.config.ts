@@ -25,7 +25,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // @ts-ignore - Some versions of Next.js expect this at top level
   allowedDevOrigins: ['10.248.33.25', 'localhost:3000'],
 };
 

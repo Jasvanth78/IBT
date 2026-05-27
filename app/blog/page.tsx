@@ -41,7 +41,7 @@ export default async function BlogPage() {
         <h1 className="text-4xl font-black text-slate-900">Our Blog</h1>
         <div className="mt-8 inline-block rounded-2xl border border-red-100 bg-red-50 p-6 text-(--ui-primary)">
           <p className="font-bold text-lg">Unable to load stories</p>
-          <p className="mt-2 text-sm opacity-80">We're experiencing some technical issues. Please check back later.</p>
+          <p className="mt-2 text-sm opacity-80">We&apos;re experiencing some technical issues. Please check back later.</p>
         </div>
       </div>
     )

@@ -24,10 +24,42 @@ export function LandingPage() {
   const [videoEnded, setVideoEnded] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const youtubePlayerRef = useRef<any>(null);
+  const youtubePlayerRef = useRef<unknown>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const youtubeId = homeVideoUrl ? getYouTubeId(homeVideoUrl) : null;
+
+  function handleVideoEnd() {
+    setIsTransforming(true);
+    setVideoEnded(true);
+    // Give time for the transformation effect
+    setTimeout(() => {
+      setShowVideo(false);
+      setIsTransforming(false);
+    }, 1200);
+  }
+
+  function initYouTubePlayer() {
+    if (youtubePlayerRef.current) return;
+    
+    // @ts-expect-error - window.YT is injected
+    youtubePlayerRef.current = new window.YT.Player('youtube-player', {
+      events: {
+        onStateChange: (event: { data: number }) => {
+          // @ts-expect-error - window.YT is injected
+          if (event.data === window.YT.PlayerState.ENDED) {
+            handleVideoEnd();
+          }
+        },
+        onReady: (event: { target: { playVideo: () => void; mute: () => void } }) => {
+          event.target.playVideo();
+          // Always start muted for autoplay compliance
+          event.target.mute();
+          setIsMuted(true);
+        }
+      }
+    });
+  }
 
   useEffect(() => {
     console.log('Video Settings debug:', { homeVideoEnabled, homeVideoUrl, youtubeId });
@@ -40,7 +72,7 @@ export function LandingPage() {
   // Load YouTube API if needed
   useEffect(() => {
     if (showVideo && youtubeId) {
-      // @ts-ignore
+      // @ts-expect-error - window.YT is injected
       if (!window.YT) {
         const tag = document.createElement('script');
         tag.src = 'https://www.youtube.com/iframe_api';
@@ -48,53 +80,32 @@ export function LandingPage() {
         firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
       }
 
-      // @ts-ignore
+      // @ts-expect-error - window.YT is injected
       window.onYouTubeIframeAPIReady = () => {
         initYouTubePlayer();
       };
 
-      // @ts-ignore
+      // @ts-expect-error - window.YT is injected
       if (window.YT && window.YT.Player) {
         initYouTubePlayer();
       }
     }
   }, [showVideo, youtubeId]);
 
-  const initYouTubePlayer = () => {
-    if (youtubePlayerRef.current) return;
-    
-    // @ts-ignore
-    youtubePlayerRef.current = new window.YT.Player('youtube-player', {
-      events: {
-        onStateChange: (event: any) => {
-          // @ts-ignore
-          if (event.data === window.YT.PlayerState.ENDED) {
-            handleVideoEnd();
-          }
-        },
-        onReady: (event: any) => {
-          event.target.playVideo();
-          // Always start muted for autoplay compliance
-          event.target.mute();
-          setIsMuted(true);
-        }
-      }
-    });
-  };
-
   const toggleMute = () => {
     const newMuted = !isMuted;
     setIsMuted(newMuted);
     
     // For YouTube
-    if (youtubePlayerRef.current && typeof youtubePlayerRef.current.mute === 'function') {
+    const yt = youtubePlayerRef.current as any;
+    if (yt && typeof yt.mute === 'function') {
       if (newMuted) {
-        youtubePlayerRef.current.mute();
+        yt.mute();
       } else {
-        youtubePlayerRef.current.unMute();
+        yt.unMute();
         // Also ensure volume is up
-        if (typeof youtubePlayerRef.current.setVolume === 'function') {
-          youtubePlayerRef.current.setVolume(100);
+        if (typeof yt.setVolume === 'function') {
+          yt.setVolume(100);
         }
       }
     }
@@ -103,16 +114,6 @@ export function LandingPage() {
     if (videoRef.current) {
       videoRef.current.muted = newMuted;
     }
-  };
-
-  const handleVideoEnd = () => {
-    setIsTransforming(true);
-    setVideoEnded(true);
-    // Give time for the transformation effect
-    setTimeout(() => {
-      setShowVideo(false);
-      setIsTransforming(false);
-    }, 1200);
   };
 
   return (
