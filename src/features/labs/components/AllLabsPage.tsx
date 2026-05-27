@@ -54,49 +54,7 @@ function getProjectSummary(project: PublicLabProject) {
 }
 
 function ProjectCard({ project }: { project: PublicLabProject }) {
-  const status = getProjectStatus(project);○ Compiling / ...
-[API Request] GET /api/public/v1/settings/current
-[browser] Failed to fetch RSC payload for http://localhost:3000/. Falling back to browser navigation. TypeError: Failed to fetch
-    at createFetch (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:8084:21)
-    at fetchServerResponse (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:7928:27)
-    at fetchMissingDynamicData (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:9341:75)
-    at spawnDynamicRequests (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:9149:35)
-    at navigateToKnownRoute (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:10033:54)
-    at refreshDynamicData (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:10653:49)
-    at hmrRefreshReducer (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:10802:51)
-    at clientReducer (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:11398:65)
-    at Object.action (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:11631:55)
-    at runAction (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:11536:38)
-    at dispatchAction (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:11599:9)
-    at Object.dispatch (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:11629:40)
-    at <unknown> (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:963:29)
-    at startTransition (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:5469:31)
-    at nextDispatch (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:962:13)
-    at dispatchAppRouterAction (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:922:5)
-    at <unknown> (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:11800:61)
-    at startTransition (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_compiled_0rpq4pf._.js:1279:31)
-    at Object.hmrRefresh (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:11799:40)
-    at <unknown> (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13967:64)
-    at startTransition (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_compiled_0rpq4pf._.js:1279:31)
-    at processMessage (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13966:44)
-    at WebSocket.handleMessage (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13335:52) (file://C:/Users/Elavarasan/OneDrive/Desktop/IBT Website/ibtwebsite/client-side/.next/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:8005:21)
-[API Response] 200 /api/public/v1/settings/current
- GET / 200 in 8.7s (next.js: 4.9s, application-code: 3.8s)
-⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
-[API Request] GET /api/public/v1/settings/current
-[API Response] 200 /api/public/v1/settings/current
- GET / 200 in 674ms (next.js: 48ms, application-code: 626ms)
-⚠ Blocked cross-origin request to Next.js dev resource /_next/webpack-hmr from "10.248.33.25".
-Cross-origin access to Next.js dev resources is blocked by default for safety.
-
-To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
-
-// next.config.js
-module.exports = {
-  allowedDevOrigins: ['10.248.33.25'],
-}
-
-Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+  const status = getProjectStatus(project);
   const statusMeta = statusCopy[status];
   const previewTags = getProjectTags(project);
   const href = `/ibt-labs/${project.slug}`;
