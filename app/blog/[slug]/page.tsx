@@ -3,6 +3,18 @@ import Link from 'next/link'
 import { FiArrowLeft } from 'react-icons/fi'
 import { apiClient } from '@/src/api/client'
 
+export async function generateStaticParams() {
+  try {
+    const blogs = await apiClient.getBlogs(1, 100);
+    return blogs.items.map((blog) => ({
+      slug: blog.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params for blogs:', error);
+    return [];
+  }
+}
+
 type BlogDetailPageProps = {
   params: Promise<{ slug: string }>
 }

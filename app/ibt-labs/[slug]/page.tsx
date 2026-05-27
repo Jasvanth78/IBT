@@ -3,6 +3,18 @@ import Link from 'next/link'
 import { apiClient } from '@/src/api/client'
 import { FiArrowLeft, FiExternalLink, FiGithub, FiLayers, FiCalendar } from 'react-icons/fi'
 
+export async function generateStaticParams() {
+  try {
+    const projects = await apiClient.getProjects(1, 100);
+    return projects.items.map((project) => ({
+      slug: project.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params for labs:', error);
+    return [];
+  }
+}
+
 type LabDetailPageProps = {
   params: Promise<{ slug: string }>
 }
@@ -127,7 +139,7 @@ export default async function LabDetailPage({ params }: LabDetailPageProps) {
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Tech Stack</p>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {project.techStack.length > 0 ? project.techStack.map(tech => (
+                    {project.techStack && project.techStack.length > 0 ? project.techStack.map(tech => (
                       <span key={tech} className="rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-600 uppercase">
                         {tech}
                       </span>
@@ -141,7 +153,11 @@ export default async function LabDetailPage({ params }: LabDetailPageProps) {
                   </div>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Published</p>
-                    <p className="font-bold text-slate-700">{new Date(project.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                    <p className="font-bold text-slate-700">
+                      {project.createdAt 
+                        ? new Date(project.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                        : 'Recently'}
+                    </p>
                   </div>
                 </div>
               </div>

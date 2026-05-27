@@ -148,7 +148,7 @@ export function AllLabsPage() {
         apiClient.getSettings()
       ]);
       
-      const setts = settingsResult ?? {};
+      const setts = (settingsResult as any) ?? {};
       setProjects(projectsResult.items);
       setMeta(projectsResult.meta ?? {});
       setSettings(setts);

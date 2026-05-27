@@ -256,7 +256,7 @@ export default function ContactPage() {
                   <h3 className="text-lg font-black text-slate-900 mb-3">{item.q}</h3>
                   <div 
                     className="text-sm text-slate-500 font-medium leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: item.a }}
+                    dangerouslySetInnerHTML={{ __html: item.a || '' }}
                   />
                 </motion.div>
               ))}

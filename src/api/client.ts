@@ -52,6 +52,8 @@ export type PublicLabProject = {
   status?: 'ONGOING' | 'COMPLETED' | 'ARCHIVED';
   featured?: boolean;
   order?: number | null;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type PublicContact = {
