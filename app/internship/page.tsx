@@ -146,6 +146,12 @@ function normalizeApiBaseUrl(raw: string | undefined) {
   }
 }
 
+const resolveImageUrl = (imageUrl?: string | null) => {
+  if (!imageUrl?.trim()) return null
+  if (/^https?:\/\//i.test(imageUrl)) return imageUrl
+  return `${normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_URL)}${imageUrl}`
+}
+
 function parseImageList(value: string | null | undefined) {
   if (!value) return [] as string[]
   return value.split('\n').map((line) => line.trim()).filter((line) => line.length > 0)
@@ -244,7 +250,7 @@ async function getInternshipData() {
 
 export default async function InternshipPage() {
   const data = await getInternshipData()
-  const galleryImages = data.galleryImages.length > 0 ? data.galleryImages : defaultGalleryImages
+  const galleryImages = (data.galleryImages.length > 0 ? data.galleryImages : defaultGalleryImages).map(url => resolveImageUrl(url) || '')
 
   return (
     <div className="bg-white min-h-screen text-slate-900 overflow-x-hidden">
@@ -322,7 +328,7 @@ export default async function InternshipPage() {
                   }}
                 >
                   <img
-                    src={data.heroImageUrl}
+                    src={resolveImageUrl(data.heroImageUrl) || ''}
                     alt="Engineering"
                     className="h-full w-full object-cover"
                   />

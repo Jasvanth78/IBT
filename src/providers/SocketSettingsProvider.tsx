@@ -65,6 +65,8 @@ export const SocketSettingsProvider: React.FC<SocketSettingsProviderProps> = ({
     maintenanceMessage,
     maintenanceEndTime,
     whatsappNumber,
+    homeVideoUrl,
+    homeVideoEnabled,
     connected,
     connecting,
     isReady,

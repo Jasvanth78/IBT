@@ -146,6 +146,8 @@ export const useSocketSiteSettings = (
     maintenanceMessage: settings.maintenanceMessage,
     maintenanceEndTime: settings.maintenanceEndTime,
     whatsappNumber: settings.whatsappNumber,
+    homeVideoUrl: settings.homeVideoUrl,
+    homeVideoEnabled: settings.homeVideoEnabled,
 
     // Socket connection state
     connected: socketState.connected,

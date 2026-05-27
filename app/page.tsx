@@ -1,8 +1,9 @@
-import { LandingPage, PartnersClientsSection, ServicesSection, TestimonialsSection } from '@/src/features/home/components';
+import { LandingPage, PartnersClientsSection, ServicesSection, TestimonialsSection, HomeVideoSection } from '@/src/features/home/components';
 
 export default function Home() {
   return (
     <>
+      <HomeVideoSection />
       <LandingPage />
       <ServicesSection />
       <PartnersClientsSection />

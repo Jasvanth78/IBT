@@ -6,6 +6,7 @@ import { apiClient, type PaginationMeta, type PublicService } from '@/src/api/cl
 import { motion, Variants } from 'framer-motion';
 import { FiBriefcase, FiCornerDownRight, FiTag } from 'react-icons/fi';
 import { Loader, SiteButton } from '@/src/shared/ui';
+import { resolveImageUrl } from '@/src/utils/image';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -114,7 +115,7 @@ export function ServicesSection() {
                 <div className="relative mb-6 h-64 w-full overflow-hidden rounded-[1.5rem] bg-slate-100">
                   {service.imageUrl ? (
                     <img 
-                      src={service.imageUrl} 
+                      src={resolveImageUrl(service.imageUrl)} 
                       alt={service.title} 
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
                     />

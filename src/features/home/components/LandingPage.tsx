@@ -1,10 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiArrowRight, FiInfo, FiVolume2, FiVolumeX, FiCpu, FiCode, FiActivity, FiTarget } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import { FiArrowRight, FiInfo, FiCpu, FiCode, FiActivity, FiTarget } from 'react-icons/fi';
 import { SiteButton } from '@/src/shared/ui';
-import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
 import { HomeSections } from './HomeSections';
 
 const fadeUp = {
@@ -12,180 +10,9 @@ const fadeUp = {
   show: { opacity: 1, y: 0 },
 };
 
-function getYouTubeId(url: string) {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-}
-
 export function LandingPage() {
-  const { homeVideoUrl, homeVideoEnabled } = useSocketSettings();
-  const [showVideo, setShowVideo] = useState(false);
-  const [videoEnded, setVideoEnded] = useState(false);
-  const [isTransforming, setIsTransforming] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const youtubePlayerRef = useRef<unknown>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const youtubeId = homeVideoUrl ? getYouTubeId(homeVideoUrl) : null;
-
-  function handleVideoEnd() {
-    setIsTransforming(true);
-    setVideoEnded(true);
-    // Give time for the transformation effect
-    setTimeout(() => {
-      setShowVideo(false);
-      setIsTransforming(false);
-    }, 1200);
-  }
-
-  function initYouTubePlayer() {
-    if (youtubePlayerRef.current) return;
-    
-    // @ts-expect-error - window.YT is injected
-    youtubePlayerRef.current = new window.YT.Player('youtube-player', {
-      events: {
-        onStateChange: (event: { data: number }) => {
-          // @ts-expect-error - window.YT is injected
-          if (event.data === window.YT.PlayerState.ENDED) {
-            handleVideoEnd();
-          }
-        },
-        onReady: (event: { target: { playVideo: () => void; mute: () => void } }) => {
-          event.target.playVideo();
-          // Always start muted for autoplay compliance
-          event.target.mute();
-          setIsMuted(true);
-        }
-      }
-    });
-  }
-
-  useEffect(() => {
-    console.log('Video Settings debug:', { homeVideoEnabled, homeVideoUrl, youtubeId });
-    // Only show video on first load if enabled
-    if (homeVideoEnabled && homeVideoUrl) {
-      setShowVideo(true);
-    }
-  }, [homeVideoEnabled, homeVideoUrl, youtubeId]);
-
-  // Load YouTube API if needed
-  useEffect(() => {
-    if (showVideo && youtubeId) {
-      // @ts-expect-error - window.YT is injected
-      if (!window.YT) {
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-      }
-
-      // @ts-expect-error - window.YT is injected
-      window.onYouTubeIframeAPIReady = () => {
-        initYouTubePlayer();
-      };
-
-      // @ts-expect-error - window.YT is injected
-      if (window.YT && window.YT.Player) {
-        initYouTubePlayer();
-      }
-    }
-  }, [showVideo, youtubeId]);
-
-  const toggleMute = () => {
-    const newMuted = !isMuted;
-    setIsMuted(newMuted);
-    
-    // For YouTube
-    const yt = youtubePlayerRef.current as any;
-    if (yt && typeof yt.mute === 'function') {
-      if (newMuted) {
-        yt.mute();
-      } else {
-        yt.unMute();
-        // Also ensure volume is up
-        if (typeof yt.setVolume === 'function') {
-          yt.setVolume(100);
-        }
-      }
-    }
-
-    // For standard video tag
-    if (videoRef.current) {
-      videoRef.current.muted = newMuted;
-    }
-  };
-
   return (
-    <div className="relative min-h-screen lg:min-h-[calc(100vh-4.5rem)] flex flex-col overflow-hidden bg-white text-(--ui-text)">
-      <AnimatePresence>
-        {showVideo && !videoEnded && (
-          <motion.div
-            initial={{ opacity: 1, filter: 'blur(0px)' }}
-            exit={{ 
-              opacity: 0, 
-              scale: 1.5,
-              filter: 'blur(20px)',
-            }}
-            transition={{ duration: 1.2, ease: [0.7, 0, 0.3, 1] }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black overflow-hidden"
-          >
-            {/* Flash Overlay during transformation */}
-            {isTransforming && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 0.8 }}
-                className="absolute inset-0 z-[110] bg-white pointer-events-none"
-              />
-            )}
-
-            {youtubeId ? (
-              <div className="relative h-full w-full pointer-events-none">
-                 <iframe
-                  id="youtube-player"
-                  src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=1&mute=1&controls=0&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&playlist=${youtubeId}`}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  allow="autoplay; encrypted-media"
-                  frameBorder="0"
-                  style={{ width: '100vw', height: '100vh', scale: '1.2' }}
-                />
-              </div>
-            ) : (
-              <video
-                ref={videoRef}
-                src={homeVideoUrl || ''}
-                autoPlay
-                muted
-                playsInline
-                onEnded={handleVideoEnd}
-                className="h-full w-full object-cover"
-              />
-            )}
-            
-            {/* Video Controls Area */}
-            <div className="absolute bottom-10 right-10 flex gap-4">
-              {/* Mute/Unmute Button */}
-              <button
-                onClick={toggleMute}
-                className="flex items-center justify-center rounded-full border border-white/30 bg-black/50 p-4 text-white backdrop-blur-md transition-colors hover:bg-white/20"
-                title={isMuted ? "Unmute" : "Mute"}
-              >
-                {isMuted ? <FiVolumeX className="text-xl" /> : <FiVolume2 className="text-xl" />}
-              </button>
-
-              {/* Skip Button */}
-              <button
-                onClick={handleVideoEnd}
-                className="rounded-full border border-white/30 bg-black/50 px-6 py-2 text-sm font-medium text-white backdrop-blur-md transition-colors hover:bg-white/20"
-              >
-                Skip Video
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
+    <div className="relative flex flex-col overflow-hidden bg-white text-(--ui-text) pb-20">
       {/* Background Effect */}
       <div className="absolute inset-0 pointer-events-none opacity-40">
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-(--ui-primary-soft)/10 rounded-full blur-[120px]" />
@@ -195,14 +22,14 @@ export function LandingPage() {
       <main className="relative z-10 mx-auto max-w-7xl px-4 pt-10 pb-20 sm:px-6 lg:px-8">
         <motion.div
            initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
-           animate={(!showVideo || videoEnded) ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : { opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
            transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
            className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start"
         >
           {/* Left Content */}
           <motion.div
             initial="hidden"
-            animate={!showVideo || videoEnded ? "show" : "hidden"}
+            animate="show"
             variants={{ show: { transition: { staggerChildren: 0.1, delayChildren: 0.6 } } }}
             className="flex flex-col items-start text-left lg:col-span-6 lg:pt-14"
           >
@@ -267,7 +94,7 @@ export function LandingPage() {
           {/* Right Visual Collage */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
-            animate={!showVideo || videoEnded ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
             className="hidden lg:block lg:col-span-6 relative h-[500px]"
           >
