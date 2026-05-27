@@ -8,12 +8,13 @@ export const dynamicParams = false;
 export async function generateStaticParams() {
   try {
     const projects = await apiClient.getProjects(1, 100);
-    return projects.items.map((project) => ({
+    const paths = projects.items.map((project) => ({
       slug: project.slug,
     }));
+    return paths.length > 0 ? paths : [{ slug: 'featured' }];
   } catch (error) {
     console.error('Error generating static params for labs:', error);
-    return [];
+    return [{ slug: 'featured' }];
   }
 }
 

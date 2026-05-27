@@ -8,12 +8,15 @@ export const dynamicParams = false;
 export async function generateStaticParams() {
   try {
     const blogs = await apiClient.getPublicBlogs(1, 100);
-    return blogs.items.map((blog) => ({
+    // Ensure we return an array, even if empty, but Next.js needs at least one for export if dynamicParams = false
+    const paths = blogs.items.map((blog) => ({
       slug: blog.slug,
     }));
+    return paths.length > 0 ? paths : [{ slug: 'latest' }];
   } catch (error) {
     console.error('Error generating static params for blogs:', error);
-    return [];
+    // Return a dummy path so the build doesn't fail due to "missing params"
+    return [{ slug: 'latest' }];
   }
 }
 

@@ -8,12 +8,13 @@ export const dynamicParams = false;
 export async function generateStaticParams() {
   try {
     const services = await apiClient.getServices(1, 100);
-    return services.items.map((service) => ({
+    const paths = services.items.map((service) => ({
       slug: service.slug,
     }));
+    return paths.length > 0 ? paths : [{ slug: 'overview' }];
   } catch (error) {
     console.error('Error generating static params for services:', error);
-    return [];
+    return [{ slug: 'overview' }];
   }
 }
 
