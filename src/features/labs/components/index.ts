@@ -1,0 +1,1 @@
+export { AllLabsPage } from './AllLabsPage';

@@ -1,0 +1,5 @@
+export { LandingPage } from './LandingPage'
+export { HomeSections } from './HomeSections'
+export { ServicesSection } from './ServicesSection'
+export { PartnersClientsSection } from './PartnersClientsSection'
+export { TestimonialsSection } from './TestimonialsSection'

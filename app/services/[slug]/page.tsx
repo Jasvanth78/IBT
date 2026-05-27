@@ -1,0 +1,81 @@
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { FiArrowLeft } from 'react-icons/fi'
+import { apiClient } from '@/src/api/client'
+
+type ServiceDetailPageProps = {
+  params: Promise<{ slug: string }>
+}
+
+const resolveApiOrigin = (value: string | undefined) => {
+  const fallback = 'http://localhost:5000'
+
+  if (!value?.trim()) {
+    return fallback
+  }
+
+  const withProtocol = /^https?:\/\//i.test(value.trim()) ? value.trim() : `http://${value.trim()}`
+
+  try {
+    return new URL(withProtocol).origin
+  } catch {
+    return fallback
+  }
+}
+
+const resolveImageUrl = (imageUrl?: string | null) => {
+  if (!imageUrl?.trim()) {
+    return null
+  }
+
+  if (/^https?:\/\//i.test(imageUrl)) {
+    return imageUrl
+  }
+
+  return `${resolveApiOrigin(process.env.NEXT_PUBLIC_API_URL)}${imageUrl}`
+}
+
+export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
+  const { slug } = await params
+  const service = await apiClient.getServiceBySlug(slug).catch(() => null)
+
+  if (!service) {
+    notFound()
+  }
+
+  const imageSrc = resolveImageUrl(service.imageUrl)
+
+  return (
+    <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mb-6">
+        <Link
+          href="/services"
+          className="group inline-flex items-center gap-2 text-sm font-bold text-slate-600 transition-colors hover:text-(--ui-primary)"
+        >
+          <FiArrowLeft className="transition-transform group-hover:-translate-x-1" /> Back to Services
+        </Link>
+      </div>
+
+      <article className="overflow-hidden rounded-3xl border border-(--ui-border) bg-white shadow-[0_14px_36px_rgba(35,24,21,0.06)]">
+        <div className="relative aspect-[16/7] w-full bg-(--ui-surface-muted)">
+          {imageSrc ? (
+            <img src={imageSrc} alt={service.title} className="h-full w-full object-cover" />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-(--ui-muted)">
+              No service cover image
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-5 p-6 sm:p-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-(--ui-primary)">Service</p>
+          <h1 className="text-4xl font-black text-slate-900 sm:text-5xl lg:text-6xl">{service.title}</h1>
+          <div 
+            className="text-base leading-8 text-slate-500 prose prose-slate max-w-none"
+            dangerouslySetInnerHTML={{ __html: service.description }}
+          />
+        </div>
+      </article>
+    </div>
+  )
+}
