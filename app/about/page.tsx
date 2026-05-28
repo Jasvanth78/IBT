@@ -291,12 +291,15 @@ export default function AboutPage() {
 
           {/* HEADER */}
           <div className="mx-auto mb-14 flex max-w-3xl flex-col items-center justify-center text-center sm:mb-16 lg:mb-20">
-            <span className="inline-flex rounded-full bg-slate-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-(--ui-primary)">
+            <span className="inline-flex items-center gap-2 rounded-full bg-slate-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-(--ui-primary)">
+              <FiUsers className="text-sm" />
               Our Experts
             </span>
 
-            <h2 className="mx-auto mt-6 text-center text-[32px] font-black tracking-[-1px] text-slate-950 sm:text-[52px] sm:tracking-[-2px] lg:text-[68px]">
-              The Collective
+            <h2 className="mx-auto mt-6 text-center text-[32px] font-black tracking-[-1px] text-slate-950 sm:text-[48px] sm:tracking-[-2px] lg:text-[56px] leading-tight">
+              Save your time and money by{' '}
+              <br className="hidden sm:block" />
+              choosing our professional team.
             </h2>
 
             <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
@@ -315,22 +318,16 @@ export default function AboutPage() {
           )}
 
           {loading ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
-                  className="animate-pulse overflow-hidden rounded-[28px] border border-slate-100 bg-white"
+                  className="animate-pulse flex flex-col items-center text-center p-8"
                 >
-
-                  <div className="aspect-[4/5] bg-slate-100" />
-
-                  <div className="p-6">
-
-                    <div className="h-5 w-32 rounded-full bg-slate-100" />
-
-                    <div className="mt-4 h-4 w-24 rounded-full bg-slate-100" />
-                  </div>
+                  <div className="h-32 w-32 rounded-full bg-slate-100" />
+                  <div className="mt-6 h-5 w-28 rounded-full bg-slate-100" />
+                  <div className="mt-3 h-3 w-24 rounded-full bg-slate-100" />
+                  <div className="mt-5 h-3 w-40 rounded-full bg-slate-100" />
                 </div>
               ))}
             </div>
@@ -421,7 +418,7 @@ export default function AboutPage() {
                       return (
                         <div key={branchName}>
 
-                          {/* BRANCH */}
+                          {/* BRANCH LABEL */}
                           <div className="mb-10 flex items-center gap-4">
                             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 text-(--ui-primary)">
                               <FiGlobe className="text-xl" />
@@ -435,8 +432,8 @@ export default function AboutPage() {
                             </div>
                           </div>
 
-                          {/* GRID */}
-                          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                          {/* TEAM CARDS GRID */}
+                          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
                             {sortedMembers.map(
                               (member, idx) => (
@@ -461,13 +458,14 @@ export default function AboutPage() {
                                 >
 
                                   {/* CARD */}
-                                  <div className="overflow-hidden rounded-[30px] border border-slate-100 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(0,0,0,0.10)]">
+                                  <div className="relative flex flex-col items-center rounded-[28px] border border-slate-100 bg-white px-6 pb-8 pt-10 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.10)] hover:border-slate-200">
 
-                                    {/* IMAGE */}
-                                    <div className="relative overflow-hidden">
+                                    {/* Decorative corner accent */}
+                                    <div className="absolute -top-px -left-px h-16 w-16 rounded-tl-[28px] border-l-[3px] border-t-[3px] border-(--ui-primary) opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-                                      <div className="aspect-[4/5] overflow-hidden bg-slate-100">
-
+                                    {/* CIRCULAR AVATAR */}
+                                    <div className="relative mb-6">
+                                      <div className="h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-white shadow-lg ring-2 ring-slate-100 transition-all duration-500 group-hover:ring-(--ui-primary)/30 group-hover:shadow-xl">
                                         {member.avatarUrl ? (
                                           <img
                                             src={
@@ -479,75 +477,62 @@ export default function AboutPage() {
                                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                                           />
                                         ) : (
-                                          <div className="flex h-full w-full items-center justify-center bg-slate-200 text-slate-400">
-
-                                            <FiUsers className="text-5xl" />
+                                          <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-300">
+                                            <FiUsers className="text-4xl" />
                                           </div>
                                         )}
-                                      </div>
-
-                                      {/* OVERLAY */}
-                                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
-
-                                      {/* SOCIALS */}
-                                      <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 translate-y-10 items-center gap-3 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                                        {member.linkedinUrl && (
-                                          <a
-                                            href={member.linkedinUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-slate-900 shadow-lg transition hover:bg-(--ui-primary) hover:text-white"
-                                          >
-                                            <FiLinkedin />
-                                          </a>
-                                        )}
-
-                                        <a
-                                          href={`mailto:${member.email}`}
-                                          className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-slate-900 shadow-lg transition hover:bg-(--ui-primary) hover:text-white"
-                                        >
-                                          <FiMail />
-                                        </a>
-                                      </div>
-
-                                      {/* BADGE */}
-                                      <div className="absolute left-4 top-4">
-                                        <span className="rounded-full bg-white/90 px-4 py-2 text-[10px] font-black uppercase tracking-[0.25em] text-(--ui-primary) backdrop-blur">
-                                          Team Member
-                                        </span>
                                       </div>
                                     </div>
 
-                                    {/* CONTENT */}
-                                    <div className="p-6 sm:p-7">
-                                      <h3 className="line-clamp-1 text-[24px] font-black tracking-[-1px] text-slate-950 sm:text-[28px]">
-                                        {member.name}
-                                      </h3>
+                                    {/* NAME */}
+                                    <h3 className="text-lg font-black tracking-tight text-slate-950 sm:text-xl">
+                                      {member.name}
+                                    </h3>
 
-                                      <p className="mt-3 line-clamp-2 text-[11px] font-black uppercase tracking-[0.28em] text-(--ui-primary)">
-                                        {member.role}
+                                    {/* ROLE */}
+                                    <p className="mt-1.5 text-[10px] font-black uppercase tracking-[0.25em] text-(--ui-primary)">
+                                      {member.role}
+                                    </p>
+
+                                    {/* BIO / BRANCH */}
+                                    {member.branches &&
+                                      member.branches.length > 0 && (
+                                      <p className="mt-4 text-[13px] leading-relaxed text-slate-500 line-clamp-2">
+                                        Dedicated team member at the {member.branches[0].branch.name} office, contributing expertise and innovation.
                                       </p>
+                                    )}
 
-                                      {member.branches &&
-                                        member.branches
-                                          .length >
-                                          0 && (
-                                          <div className="mt-5 flex items-center gap-2 text-sm text-slate-500">
+                                    {/* SOCIAL ICONS */}
+                                    <div className="mt-6 flex items-center justify-center gap-3">
+                                      {member.email && (
+                                        <a
+                                          href={`mailto:${member.email}`}
+                                          className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-all duration-300 hover:bg-(--ui-primary) hover:text-white hover:shadow-md"
+                                          aria-label="Email"
+                                        >
+                                          <FiMail size={16} />
+                                        </a>
+                                      )}
 
-                                            <FiGlobe className="text-[14px]" />
+                                      {member.linkedinUrl && (
+                                        <a
+                                          href={member.linkedinUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-all duration-300 hover:bg-(--ui-primary) hover:text-white hover:shadow-md"
+                                          aria-label="LinkedIn"
+                                        >
+                                          <FiLinkedin size={16} />
+                                        </a>
+                                      )}
 
-                                            <span>
-                                              {
-                                                member
-                                                  .branches[0]
-                                                  .branch
-                                                  .name
-                                              }
-                                            </span>
-                                          </div>
-                                        )}
-
-                                   
+                                      <a
+                                        href="#"
+                                        className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-all duration-300 hover:bg-(--ui-primary) hover:text-white hover:shadow-md"
+                                        aria-label="More info"
+                                      >
+                                        <FiChevronRight size={16} />
+                                      </a>
                                     </div>
                                   </div>
                                 </motion.div>

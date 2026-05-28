@@ -1,25 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  /* RED THEME COLORS (CRIMSON) */
-  --ui-primary: #dc143c;
-  --ui-primary-strong: #990024;
-  --ui-primary-soft: #fff1f2;
-  --ui-primary-softer: #ffe4e6;
+  /* RED, BLUE & WHITE THEME */
+  --ui-primary: #e63946;          /* Red */
+  --ui-secondary: #0077b6;        /* Blue */
+  --ui-primary-strong: #c1121f;
+  --ui-primary-soft: #f1faee;     /* Off-white/Greenish White */
+  --ui-primary-softer: #ffffff;   /* Pure White */
   --ui-danger: #e11d48;
   --ui-danger-strong: #be123c;
-  --ui-neutral: #374151;
-  --ui-neutral-strong: #1f2937;
+  --ui-neutral: #1d3557;          /* Dark Blue */
+  --ui-neutral-strong: #000814;
   --ui-surface: #ffffff;
   --ui-surface-muted: #f8fafc;
   --ui-border: #e5e7eb;
   --ui-border-strong: #d1d5db;
-  --ui-text: #111827;
-  --ui-muted: #6b7280;
+  --ui-text: #1d3557;             /* Navy Blue Text */
+  --ui-muted: #457b9d;            /* Muted Blue */
   --ui-radius-md: 0.75rem;
   --ui-radius-lg: 1rem;
-  --ui-shadow-md: 0 10px 25px rgba(17, 24, 39, 0.08);
-  --ui-shadow-lg: 0 25px 50px rgba(17, 24, 39, 0.16);
+  --ui-shadow-md: 0 10px 25px rgba(29, 53, 87, 0.08);
+  --ui-shadow-lg: 0 25px 50px rgba(29, 53, 87, 0.16);
 }
 
 html,

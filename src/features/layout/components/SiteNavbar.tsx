@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiInfo } from 'react-icons/fi';
 import { SiteButton } from '@/src/shared/ui';
 
 const navItems = [
@@ -54,8 +54,8 @@ export function SiteNavbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-30 border-b border-(--ui-border) bg-white/85 shadow-[0_10px_28px_rgba(35,24,21,0.06)] backdrop-blur-xl">
-        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="group flex shrink-0 items-center">
             <Image
               src="/logo.png"
@@ -63,11 +63,11 @@ export function SiteNavbar() {
               width={180}
               height={50}
               priority
-              className="block h-7 w-auto object-contain transition-opacity duration-200 group-hover:opacity-90 sm:h-8"
+              className="block h-8 w-auto object-contain transition-opacity duration-200 group-hover:opacity-90"
             />
           </Link>
 
-          <nav className="hidden items-center gap-1 rounded-full border border-(--ui-border) bg-white/50 backdrop-blur-md p-1.5 shadow-sm md:flex">
+          <nav className="hidden items-center gap-2 md:flex">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
 
@@ -76,28 +76,33 @@ export function SiteNavbar() {
                   key={item.href}
                   href={item.href}
                   className={[
-                    'rounded-full px-5 py-2 text-[13px] font-bold transition-all duration-300',
+                    'px-4 py-2 text-[15px] font-bold transition-all duration-300 flex items-center gap-1',
                     isActive
-                      ? 'bg-(--ui-primary) text-white shadow-lg shadow-(--ui-primary)/25'
-                      : 'text-slate-600 hover:text-(--ui-primary)',
+                      ? 'text-[#e63946]'
+                      : 'text-[#1d3557] hover:text-[#e63946]',
                   ].join(' ')}
                 >
                   {item.label}
+                  {item.label !== 'Home' && item.label !== 'Contact Us' && (
+                    <svg viewBox="0 0 24 24" className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" strokeWidth="3">
+                      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="hidden md:block">
-            <SiteButton 
-              href="/contact" 
-              variant="primary" 
-              size="md" 
-              className="rounded-full px-6"
-              rightIcon={<FiArrowRight className="ml-1" />}
-            >
-              Contact Us
-            </SiteButton>
+          <div className="hidden items-center gap-4 md:flex">
+            <div className="flex items-center gap-1 text-[14px] font-bold text-[#1d3557] cursor-pointer hover:text-[#e63946]">
+              EN
+              <svg viewBox="0 0 24 24" className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" strokeWidth="3">
+                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <button className="p-2 text-[#1d3557] hover:text-[#e63946]">
+              <FiInfo className="text-xl" />
+            </button>
           </div>
 
           <button
@@ -106,7 +111,7 @@ export function SiteNavbar() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav-drawer"
             onClick={() => setMobileOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-(--ui-border) bg-white text-(--ui-text) transition-colors hover:bg-(--ui-surface-muted) md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-[#1d3557] md:hidden"
           >
             <span className="sr-only">Menu</span>
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">

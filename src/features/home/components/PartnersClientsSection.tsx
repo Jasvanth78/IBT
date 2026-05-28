@@ -134,7 +134,7 @@ export function PartnersClientsSection() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-white py-20 sm:py-28">
+    <section className="relative overflow-hidden bg-white py-12 sm:py-16 border-t border-(--ui-border)">
       {/* Subtle Background Pattern */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.02]">
         <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">

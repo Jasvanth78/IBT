@@ -55,6 +55,12 @@ export interface SiteSettingsRealtimePayload {
   servicesCtaBtn2Text?: string | null;
   servicesCtaBtn2Url?: string | null;
 
+  // Services – What We Do Section
+  servicesWhatTitle?: string | null;
+  servicesWhatDescription?: string | null;
+  servicesWhatFeatures?: Array<{ title: string; desc: string; icon: string }> | null;
+  servicesWhatImages?: string[] | null;
+
   // Home – Video Background
   homeVideoUrl?: string | null;
   homeVideoEnabled?: boolean;

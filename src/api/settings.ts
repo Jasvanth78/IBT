@@ -52,6 +52,12 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       servicesCtaBtn2Text: data?.servicesCtaBtn2Text ?? null,
       servicesCtaBtn2Url: data?.servicesCtaBtn2Url ?? null,
 
+      // Services – What We Do Section
+      servicesWhatTitle: data?.servicesWhatTitle ?? null,
+      servicesWhatDescription: data?.servicesWhatDescription ?? null,
+      servicesWhatFeatures: data?.servicesWhatFeatures ?? null,
+      servicesWhatImages: data?.servicesWhatImages ?? null,
+
       homeVideoUrl: data?.homeVideoUrl ?? null,
       homeVideoEnabled: data?.homeVideoEnabled ?? false,
 
@@ -151,6 +157,12 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       servicesCtaBtn1Url: null,
       servicesCtaBtn2Text: null,
       servicesCtaBtn2Url: null,
+
+      // Services – What We Do Section
+      servicesWhatTitle: null,
+      servicesWhatDescription: null,
+      servicesWhatFeatures: null,
+      servicesWhatImages: null,
 
       // Contact Defaults
       contactHeroTitle: null,

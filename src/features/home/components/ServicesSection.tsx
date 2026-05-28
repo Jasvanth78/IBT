@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { apiClient, type PaginationMeta, type PublicService } from '@/src/api/client';
 import { motion, Variants } from 'framer-motion';
-import { FiBriefcase, FiCornerDownRight, FiTag } from 'react-icons/fi';
+import { FiBriefcase, FiCornerDownRight } from 'react-icons/fi';
 import { Loader, SiteButton } from '@/src/shared/ui';
 import { resolveImageUrl } from '@/src/utils/image';
 
@@ -37,7 +37,8 @@ export function ServicesSection() {
     setLoading(true);
     setError(null);
     try {
-      const result = await apiClient.getServices(1, 6);
+      // Increased to 8 to allow more dynamic cards from admin panel
+      const result = await apiClient.getServices(1, 8);
       setServices(result.items);
       setMeta(result.meta ?? {});
     } catch (err) {
@@ -52,121 +53,144 @@ export function ServicesSection() {
     void loadServices();
   }, [loadServices]);
 
-  const hasMore = (meta.totalItems ?? 0) > 6 || (meta.totalPages ?? 0) > 1;
+  const hasMore = (meta.totalItems ?? 0) > 8 || (meta.totalPages ?? 0) > 1;
+
+  const renderIcon = (idx: number, imageUrl?: string) => {
+    if (imageUrl) {
+      return (
+        <img 
+          src={resolveImageUrl(imageUrl)} 
+          alt="Service Icon" 
+          className="w-12 h-12 object-contain"
+        />
+      );
+    }
+
+    // Fallback SVGs based on index
+    const iconIndex = idx % 4;
+    switch (iconIndex) {
+      case 0:
+        return (
+          <svg viewBox="0 0 500 500" className="w-12 h-12">
+            <circle cx="200" cy="200" r="100" stroke="#1d3557" strokeWidth="25" fill="none" />
+            <line x1="270" y1="270" x2="400" y2="400" stroke="#1d3557" strokeWidth="40" strokeLinecap="round" />
+          </svg>
+        );
+      case 1:
+        return (
+          <svg viewBox="0 0 500 500" className="w-12 h-12">
+            <rect x="50" y="100" width="400" height="300" rx="20" stroke="#e63946" strokeWidth="25" fill="none" />
+            <line x1="50" y1="180" x2="450" y2="180" stroke="#e63946" strokeWidth="25" />
+          </svg>
+        );
+      case 2:
+        return (
+          <svg viewBox="0 0 500 500" className="w-12 h-12">
+            <rect x="100" y="100" width="250" height="200" rx="20" stroke="#34d399" strokeWidth="25" fill="none" />
+            <rect x="180" y="180" width="250" height="200" rx="20" stroke="#34d399" strokeWidth="25" fill="white" />
+          </svg>
+        );
+      case 3:
+        return (
+          <svg viewBox="0 0 500 500" className="w-12 h-12">
+            <path d="M100 300 L350 150 L350 450 Z" stroke="#3f78e0" strokeWidth="25" fill="none" />
+            <circle cx="380" cy="220" r="20" fill="#3f78e0" />
+          </svg>
+        );
+      default:
+        return <FiBriefcase className="text-5xl text-[#3f78e0]" />;
+    }
+  };
 
   return (
-    <section className="bg-white py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">
-              <FiTag className="text-(--ui-primary)" />
-              Our Specializations
-            </div>
-            <h2 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-              Solutions that <span className="text-(--ui-primary)">Scale.</span>
-            </h2>
-            <p className="mt-6 text-lg text-slate-500 leading-relaxed">
-              We provide comprehensive digital solutions tailored to your unique business needs, ensuring quality, security, and exceptional performance.
-            </p>
-          </div>
-          
-          {hasMore && (
-             <SiteButton
-                href="/services"
-                variant="secondary"
-                size="lg"
-                className="hidden md:flex rounded-2xl border-slate-200"
-                rightIcon={<FiCornerDownRight />}
-              >
-                View all Services
-              </SiteButton>
-          )}
-        </div>
+    <section className="bg-[#FEFAF4] py-12 lg:py-16 relative overflow-hidden">
+      {/* Decorative Dots Backdrop */}
+      <div className="absolute top-1/4 -left-10 opacity-20 pointer-events-none hidden lg:block">
+         <div className="grid grid-cols-5 gap-3">
+            {[...Array(25)].map((_, i) => (
+               <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#e63946]" />
+            ))}
+         </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+       <div className="mb-10 text-center">
+  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#e63946] mb-3">
+    WHAT WE DO?
+  </h3>
+
+  <h2 className="text-[28px] font-bold tracking-tight text-[#1d3557] sm:text-[36px] leading-[1.2] max-w-2xl mx-auto">
+    The service we offer is specifically designed to meet your needs.
+  </h2>
+</div>
 
         {loading && services.length === 0 && (
-          <div className="flex min-h-[400px] items-center justify-center rounded-[2.5rem] bg-slate-50 border border-dashed border-slate-200">
+          <div className="flex min-h-[400px] items-center justify-center">
             <Loader size="lg" label="Preparing services..." />
           </div>
         )}
 
         {!loading && error && services.length === 0 && (
-          <div className="rounded-[2.5rem] bg-red-50 p-12 text-center text-red-600 border border-red-100">
+          <div className="p-12 text-center text-red-600">
             {error}
           </div>
         )}
 
         {services.length > 0 && (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-100px" }}
-            className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {services.map((service, idx) => (
-              <motion.article
-                key={service.id}
-                variants={itemVariants}
-                className={`group relative flex flex-col bg-white rounded-[2rem] border border-slate-100 p-4 transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 hover:-translate-y-2 ${
-                   idx === 1 ? 'lg:col-span-1 lg:row-span-1' : ''
-                }`}
-              >
-                <div className="relative mb-6 h-64 w-full overflow-hidden rounded-[1.5rem] bg-slate-100">
-                  {service.imageUrl ? (
-                    <img 
-                      src={resolveImageUrl(service.imageUrl)} 
-                      alt={service.title} 
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                      <FiBriefcase className="text-5xl text-slate-300" />
-                    </div>
-                  )}
-                  <div className="absolute top-4 left-4">
-                     <span className="flex items-center gap-1.5 rounded-full bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-tight text-slate-700 shadow-sm">
-                        <span className="h-1.5 w-1.5 rounded-full bg-(--ui-primary)" />
-                        Service • Core
-                     </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-1 flex-col px-2 pb-2">
-                  <h3 className="line-clamp-2 text-2xl font-black text-slate-900 leading-tight transition-colors group-hover:text-(--ui-primary)">
-                    {service.title}
-                  </h3>
-                  <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-slate-500">
-                    {service.description || "Delivering high-quality digital transformation and innovative breakthroughs tailored to your business goals."}
-                  </p>
-                  
-                  <div className="mt-auto pt-8">
-                    <Link 
-                      href={`/services/${service.slug}`}
-                      className="inline-flex items-center gap-2.5 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-xs font-bold text-slate-900 transition-all hover:bg-slate-900 hover:text-white group-hover:border-slate-900"
-                    >
-                      <FiCornerDownRight className="text-base" />
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </motion.div>
-        )}
-
-        {hasMore && (
-          <div className="mt-16 flex justify-center md:hidden">
-            <SiteButton
-              href="/services"
-              variant="secondary"
-              size="lg"
-              className="w-full rounded-2xl"
-              rightIcon={<FiCornerDownRight />}
+          <>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-100px" }}
+              className="flex flex-wrap justify-center gap-4"
             >
-              View All Services
-            </SiteButton>
-          </div>
+              {services.map((service, idx) => (
+                <motion.article
+                  key={service.id}
+                  variants={itemVariants}
+                  className="group relative flex flex-col items-center bg-white rounded-xl p-7 transition-all duration-300 hover:shadow-[0_0_40px_rgba(30,34,40,0.05)] text-center h-full w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1rem)] min-w-[250px]"
+                >
+                  <div className="mb-6 w-14 h-14 flex items-center justify-center">
+                    {renderIcon(idx, service.imageUrl)}
+                  </div>
+
+                  <div className="flex flex-1 flex-col">
+                    <h3 className="text-xl font-bold text-[#343f52] mb-4">
+                      {service.title}
+                    </h3>
+                    <p className="text-[17px] leading-relaxed text-[#60697b] mb-6">
+                      {service.description || "Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus cras justo."}
+                    </p>
+                    
+                    <div className="mt-auto">
+                      <Link 
+                        href={`/services/${service.slug}`}
+                        className="text-[15px] font-bold text-[#e63946] hover:text-[#c1121f] transition-all flex items-center justify-center gap-1 group/link"
+                      >
+                        Learn More
+                        <span className="transition-transform duration-300 group-hover/link:translate-x-1">→</span>
+                      </Link>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </motion.div>
+
+            {hasMore && (
+              <div className="mt-16 flex justify-center">
+                <SiteButton
+                  href="/services"
+                  variant="secondary"
+                  size="lg"
+                  className="rounded-2xl border-slate-200"
+                  rightIcon={<FiCornerDownRight />}
+                >
+                  View All Services
+                </SiteButton>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

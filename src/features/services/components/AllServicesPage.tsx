@@ -27,6 +27,7 @@ import {
 
 import { apiClient, type PublicService } from '@/src/api/client';
 import { Loader } from '@/src/shared/ui';
+import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
 
 /* =========================================================
    ANIMATION
@@ -73,6 +74,20 @@ const SERVICE_ICONS = [
   FiSmartphone,
   FiCode,
 ];
+
+const ICON_MAP: Record<string, React.ComponentType<any>> = {
+  FiMonitor,
+  FiCloud,
+  FiDatabase,
+  FiCpu,
+  FiSmartphone,
+  FiCode,
+  FiLayers,
+  FiSettings,
+  FiGlobe,
+  FiShield,
+  FiLayout,
+};
 
 /* =========================================================
    CARD DESIGN
@@ -155,9 +170,16 @@ function ServiceCard({
 ========================================================= */
 
 export function AllServicesPage() {
+  const { settings } = useSocketSettings();
   const [services, setServices] = useState<PublicService[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // What We Do dynamic data
+  const whatTitle = settings.servicesWhatTitle || 'What We Do';
+  const whatDescription = settings.servicesWhatDescription || '';
+  const whatFeatures = settings.servicesWhatFeatures || [];
+  const whatImages = settings.servicesWhatImages || [];
 
   const loadingRef = useRef(false);
 
@@ -341,6 +363,99 @@ export function AllServicesPage() {
           </div>
         </div>
       </section>
+
+      {/* =====================================================
+          2b. WHAT WE DO SECTION (Dynamic)
+      ===================================================== */}
+
+      {(whatFeatures.length > 0 || whatImages.length > 0) && (
+        <section className="py-32 bg-white overflow-hidden">
+          <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-20 items-center">
+              {/* Left: Content + Feature Cards */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-(--ui-primary) mb-8">
+                  <FiTarget size={14} />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Core Focus</span>
+                </div>
+
+                <h2 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.05] mb-6">
+                  {whatTitle}
+                </h2>
+
+                {whatDescription && (
+                  <p className="text-lg text-slate-500 leading-relaxed font-medium mb-12 max-w-lg"
+                     dangerouslySetInnerHTML={{ __html: whatDescription.replace(/<[^>]*>/g, (m) => m) }}
+                  />
+                )}
+
+                {whatFeatures.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {whatFeatures.map((feat, i) => {
+                      const IconComp = ICON_MAP[feat.icon] || FiLayers;
+                      return (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: i * 0.1 }}
+                          className="group p-6 rounded-[2rem] border border-slate-100 bg-slate-50/50 hover:border-(--ui-primary-soft)/30 hover:shadow-xl hover:shadow-(--ui-primary)/5 transition-all duration-500"
+                        >
+                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-(--ui-primary) mb-5 transition-all duration-500 group-hover:bg-(--ui-primary) group-hover:text-white group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-(--ui-primary)/30 border border-slate-100">
+                            <IconComp className="text-xl" />
+                          </div>
+                          <h4 className="text-lg font-black text-slate-900 mb-2">{feat.title}</h4>
+                          <p className="text-sm text-slate-500 font-medium leading-relaxed">{feat.desc}</p>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                )}
+              </motion.div>
+
+              {/* Right: 2×2 Image Collage */}
+              {whatImages.filter(Boolean).length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className="relative"
+                >
+                  <div className="grid grid-cols-2 gap-4">
+                    {whatImages.filter(Boolean).map((url, i) => (
+                      <div
+                        key={i}
+                        className={`overflow-hidden shadow-lg ${
+                          i === 0 ? 'rounded-tl-[3rem] rounded-tr-2xl rounded-bl-2xl rounded-br-2xl' :
+                          i === 1 ? 'rounded-tr-[3rem] rounded-tl-2xl rounded-bl-2xl rounded-br-2xl mt-8' :
+                          i === 2 ? 'rounded-bl-[3rem] rounded-tl-2xl rounded-tr-2xl rounded-br-2xl -mt-8' :
+                                    'rounded-br-[3rem] rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
+                        }`}
+                      >
+                        <img
+                          src={url}
+                          alt={`Service showcase ${i + 1}`}
+                          className="w-full aspect-square object-cover hover:scale-105 transition-transform duration-700"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  {/* Decorative accent */}
+                  <div className="absolute -z-10 -bottom-6 -right-6 w-40 h-40 rounded-full bg-(--ui-primary)/5" />
+                  <div className="absolute -z-10 -top-6 -left-6 w-24 h-24 rounded-full bg-slate-100" />
+                </motion.div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* =====================================================
           3. SERVICE SHOWCASE (Solution Grid)
