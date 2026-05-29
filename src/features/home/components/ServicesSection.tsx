@@ -55,7 +55,7 @@ export function ServicesSection() {
 
   const hasMore = (meta.totalItems ?? 0) > 8 || (meta.totalPages ?? 0) > 1;
 
-  const renderIcon = (idx: number, imageUrl?: string) => {
+  const renderIcon = (idx: number, imageUrl?: string | null) => {
     if (imageUrl) {
       return (
         <img 

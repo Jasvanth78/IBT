@@ -13,6 +13,11 @@ import {
   FiChevronRight,
   FiMail,
   FiLinkedin,
+  FiCheckCircle,
+  FiSpeaker,
+  FiActivity,
+  FiPieChart,
+  FiEdit3,
 } from 'react-icons/fi'
 
 import {
@@ -20,14 +25,50 @@ import {
   type PublicMember,
   type PublicBranch,
   type PublicStat,
+  type PublicContact,
 } from '@/src/api/client'
+import { useSocketSettings } from '@/src/providers/SocketSettingsProvider'
+import { resolveImageUrl } from '@/src/utils/image'
 
 export default function AboutPage() {
+  const { settings } = useSocketSettings()
+  const s = settings as any;
   const [members, setMembers] = useState<PublicMember[]>([])
   const [branches, setBranches] = useState<PublicBranch[]>([])
   const [stats, setStats] = useState<PublicStat[]>([])
+  const [contacts, setContacts] = useState<PublicContact[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Who Are We dynamic data
+  const whoTitle = s.aboutWhoTitle || 'Who Are We?'
+  const whoDescription = s.aboutWhoDescription || 'We are a digital and branding company that believes in the power of creative strategy and along with great design.'
+  const whoSecondaryDescription = s.aboutWhoSecondaryDescription || 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.'
+  const whoFeatures = (s.aboutWhoFeatures && s.aboutWhoFeatures.length > 0) ? s.aboutWhoFeatures : [
+    'Aenean eu leo quam ornare curabitur blandit tempus.',
+    'Etiam porta sem malesuada magna mollis euismod.',
+    'Nullam quis risus eget urna mollis ornare donec elit.',
+    'Fermentum massa vivamus faucibus amet euismod.'
+  ]
+  const whoImages = (s.aboutWhoImages && s.aboutWhoImages.length > 0) ? s.aboutWhoImages : [
+    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800'
+  ]
+
+  // How It Works dynamic data
+  const processBadge = s.aboutProcessBadge || 'HOW IT WORKS?'
+  const processTitle = s.aboutProcessTitle || 'Everything you need on creating a business process.'
+  const processFeatures = (s.aboutProcessFeatures && s.aboutProcessFeatures.length > 0) ? s.aboutProcessFeatures : [
+    { title: 'Collect Ideas', desc: 'Nulla vitae elit libero pharetra augue dapibus.', icon: 'FiLightbulb' },
+    { title: 'Data Analysis', desc: 'Vivamus sagittis lacus augue laoreet vel.', icon: 'FiPieChart' },
+    { title: 'Magic Touch', desc: 'Cras mattis consectetur purus sit amet.', icon: 'FiPenTool' }
+  ]
+  const processImage = s.aboutProcessImage || 'https://sandbox.elemisthemes.com/assets/img/illustrations/i2.png'
+
+  // Contact dynamic data
+  const contactBadge = s.aboutContactBadge || 'GET IN TOUCH'
+  const contactTitle = s.aboutContactTitle || "Got any questions? Don't hesitate to get in touch."
+  const contactImage = s.aboutContactImage || 'https://sandbox.elemisthemes.com/assets/img/illustrations/i3.png'
 
   /* =========================================================
      FETCH DATA
@@ -37,16 +78,18 @@ export default function AboutPage() {
     const fetchData = async () => {
       try {
         setError(null)
-        const [teamData, branchData, statsData] =
+        const [teamData, branchData, statsData, contactData] =
           await Promise.all([
             apiClient.getTeam(1, 100),
             apiClient.getBranches(1, 10),
             apiClient.getStats(1, 4),
+            apiClient.getContacts(1, 10),
           ])
 
         setMembers(teamData.items)
         setBranches(branchData.items)
         setStats(statsData.items)
+        setContacts(contactData.items)
       } catch (err) {
         console.error('Error fetching about data:', err)
         setError('Unable to load data at this time.')
@@ -159,17 +202,187 @@ export default function AboutPage() {
       </section>
 
       {/* =====================================================
+          2. WHO ARE WE SECTION (Dynamic)
+      ===================================================== */}
+
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            
+            {/* Left: Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="mb-8">
+                <FiSpeaker className="text-4xl text-slate-800 mb-6" />
+                <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-8">
+                  {whoTitle}
+                </h2>
+                <p className="text-xl text-slate-600 font-medium leading-[1.6] mb-8">
+                  {whoDescription}
+                </p>
+                <p className="text-base text-slate-400 font-medium leading-[1.8] mb-10">
+                  {whoSecondaryDescription}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                {whoFeatures.map((item: string, i: number) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600">
+                      <FiCheckCircle size={14} />
+                    </div>
+                    <span className="text-[14px] font-medium text-slate-500 leading-relaxed">
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Right: Overlapping Images */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              {/* Decorative dots background */}
+              <div className="absolute -top-10 -right-10 w-40 h-40 opacity-10 pointer-events-none -z-10">
+                 <div className="grid grid-cols-5 gap-3">
+                    {[...Array(25)].map((_, i) => (
+                      <div key={i} className="w-1 h-1 rounded-full bg-red-600" />
+                    ))}
+                 </div>
+              </div>
+
+              <div className="relative z-10 grid grid-cols-12 gap-0">
+                 {/* Large back image */}
+                 <div className="col-span-10 col-start-2">
+                    <div className="rounded-[2rem] overflow-hidden shadow-2xl">
+                       <img 
+                          src={resolveImageUrl(whoImages[1])} 
+                          alt="Team brainstorming" 
+                          className="w-full aspect-[4/3] object-cover"
+                       />
+                    </div>
+                 </div>
+
+                 {/* Smaller overlapping front image */}
+                 <div className="absolute -left-10 bottom-[10%] w-[55%] z-20">
+                    <div className="rounded-[2.5rem] p-3 bg-white shadow-2xl">
+                       <div className="rounded-[2rem] overflow-hidden">
+                          <img 
+                             src={resolveImageUrl(whoImages[0])} 
+                             alt="Team collaborating" 
+                             className="w-full aspect-square object-cover"
+                          />
+                       </div>
+                    </div>
+                 </div>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          3. HOW IT WORKS SECTION (Dynamic)
+      ===================================================== */}
+
+      <section className="py-24 bg-slate-50/50 overflow-hidden">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left: Illustration Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative order-2 lg:order-1"
+            >
+              <div className="relative z-10">
+                <img 
+                  src={resolveImageUrl(processImage)} 
+                  alt="Process Illustration" 
+                  className="w-full h-auto max-w-[600px] mx-auto drop-shadow-2xl"
+                />
+              </div>
+              
+              {/* Decorative shapes */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] -z-10 bg-[radial-gradient(circle,rgba(59,130,246,0.05)_0%,transparent_70%)] rounded-full animate-pulse" />
+            </motion.div>
+
+            {/* Right: Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="order-1 lg:order-2"
+            >
+              <div className="mb-12">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-px bg-blue-600" />
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-blue-600">
+                    {processBadge}
+                  </span>
+                </div>
+                
+                <h2 className="text-4xl md:text-[42px] font-black text-slate-900 tracking-tight leading-[1.2] mb-12">
+                  {processTitle}
+                </h2>
+
+                <div className="space-y-10">
+                  {processFeatures.map((feat: any, i: number) => {
+                    const IconComp = i === 0 ? FiActivity : i === 1 ? FiPieChart : FiEdit3;
+                    return (
+                      <motion.div 
+                        key={i}
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        className="flex gap-6 group"
+                      >
+                        <div className="flex-shrink-0 w-16 h-16 rounded-full bg-white shadow-xl shadow-slate-100 flex items-center justify-center text-2xl text-slate-800 transition-all duration-300 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-blue-200">
+                           <IconComp />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-slate-900 mb-2">{feat.title}</h4>
+                          <p className="text-slate-500 font-medium leading-relaxed max-w-sm">
+                            {feat.desc}
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
           MISSION & VISION
       ===================================================== */}
 
-      <section className="overflow-hidden bg-slate-950 py-20 text-white sm:py-24">
+      <section className="overflow-hidden bg-[#0f172a] py-24 text-white">
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           <div className="grid items-center gap-20 lg:grid-cols-2">
 
             {/* LEFT */}
-            <div className="space-y-14">
+            <div className="space-y-16">
 
               {/* MISSION */}
               <motion.div
@@ -177,19 +390,19 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-(--ui-primary)">
-                  <FiTarget className="text-2xl text-white" />
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#ef4444] shadow-lg shadow-red-500/20">
+                  <FiTarget className="text-3xl text-white" />
                 </div>
 
-                <h2 className="text-3xl font-black sm:text-4xl">
+                <h2 className="text-4xl font-black text-white mb-6">
                   Our Mission
                 </h2>
 
-                <p className="mt-5 text-[15px] leading-[32px] text-slate-400 sm:text-lg">
+                <p className="text-lg leading-relaxed text-slate-400 max-w-lg">
                   To provide cutting-edge technology
                   solutions that empower organizations
                   to achieve their full potential in the
-                  digital age.
+                  digital age through innovation and precision.
                 </p>
               </motion.div>
 
@@ -200,80 +413,65 @@ export default function AboutPage() {
                 transition={{ delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-(--ui-primary)">
-                  <FiGlobe className="text-2xl text-white" />
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#ef4444] shadow-lg shadow-red-500/20">
+                  <FiGlobe className="text-3xl text-white" />
                 </div>
 
-                <h2 className="text-3xl font-black sm:text-4xl">
+                <h2 className="text-4xl font-black text-white mb-6">
                   Our Vision
                 </h2>
 
-                <p className="mt-5 text-[15px] leading-[32px] text-slate-400 sm:text-lg">
+                <p className="text-lg leading-relaxed text-slate-400 max-w-lg">
                   To be a global leader in digital
                   transformation recognized for our
-                  engineering excellence.
+                  engineering excellence and sustainable
+                  technological impact.
                 </p>
               </motion.div>
             </div>
 
             {/* RIGHT */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="space-y-4 lg:pt-10">
-                <div className="aspect-[1.5/1] rounded-[30px] border border-slate-800 bg-slate-900 p-6 sm:aspect-square">
-                  <div className="flex h-full flex-col items-center justify-center text-center">
-                    <div className="text-4xl font-black text-(--ui-primary) sm:text-5xl">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="space-y-6 lg:pt-12">
+                <div className="aspect-square rounded-[2.5rem] bg-slate-900 border border-slate-800 p-8 flex flex-col items-center justify-center text-center shadow-2xl">
+                    <div className="text-6xl font-black text-[#ef4444]">
                       50+
                     </div>
-
-                    <div className="mt-3 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
+                    <div className="mt-4 text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">
                       Active Projects
                     </div>
-                  </div>
                 </div>
 
-                <div className="relative aspect-video overflow-hidden rounded-[30px] bg-(--ui-primary) p-6">
-                  <FiAward className="absolute right-6 top-6 text-6xl text-white/10" />
-
+                <div className="relative aspect-video overflow-hidden rounded-[2.5rem] bg-[#ef4444] p-8 shadow-xl shadow-red-500/20">
+                  <FiAward className="absolute right-6 top-6 text-7xl text-white/10" />
                   <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
-                    <div className="text-3xl font-black text-white sm:text-4xl">
+                    <div className="text-4xl font-black text-white">
                       Quality
                     </div>
-
-                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.3em] text-white/70">
-                      Certified
+                    <div className="mt-3 text-[11px] font-black uppercase tracking-[0.3em] text-white/80">
+                      ISO Certified
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-4">
-
-                <div className="aspect-video rounded-[30px] bg-white/5 p-6 backdrop-blur-sm">
-
-                  <div className="flex h-full flex-col items-center justify-center text-center">
-
-                    <div className="text-3xl font-black text-white sm:text-4xl">
+              <div className="space-y-6">
+                <div className="aspect-video rounded-[2.5rem] bg-white text-slate-900 p-8 flex flex-col items-center justify-center text-center shadow-2xl">
+                    <div className="text-5xl font-black text-[#ef4444]">
                       24/7
                     </div>
-
-                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
-                      Support
+                    <div className="mt-3 text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">
+                      Global Support
                     </div>
-                  </div>
                 </div>
 
-                <div className="aspect-square rounded-[30px] border border-slate-800 bg-slate-900 p-6">
-
-                  <div className="flex h-full flex-col items-center justify-center text-center">
-
-                    <div className="text-4xl font-black text-white sm:text-5xl">
+                <div className="aspect-square rounded-[2.5rem] bg-slate-900 border border-slate-800 p-8 flex flex-col items-center justify-center text-center shadow-2xl">
+                    <div className="text-6xl font-black text-white">
                       100%
                     </div>
-
-                    <div className="mt-3 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
-                      Security
+                    <div className="mt-4 text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">
+                      Data Security
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -554,6 +752,97 @@ export default function AboutPage() {
               )}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* =====================================================
+          5. GET IN TOUCH SECTION (Dynamic)
+      ===================================================== */}
+
+      <section className="py-24 bg-white overflow-hidden border-t border-slate-50">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            
+            {/* Left: Illustration Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              <div className="relative z-10">
+                <img 
+                  src={resolveImageUrl(contactImage)} 
+                  alt="Contact Illustration" 
+                  className="w-full h-auto max-w-[650px] mx-auto drop-shadow-2xl"
+                />
+              </div>
+            </motion.div>
+
+            {/* Right: Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="mb-12">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-px bg-red-600" />
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-red-600">
+                    {contactBadge}
+                  </span>
+                </div>
+                
+                <h2 className="text-4xl md:text-[44px] font-black text-slate-900 tracking-tight leading-[1.2] mb-12">
+                   {contactTitle}
+                </h2>
+
+                <div className="space-y-10">
+                  {/* Address */}
+                  <div className="flex gap-6">
+                    <div className="flex-shrink-0 w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-xl text-[#ef4444]">
+                       <FiGlobe />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-slate-900 mb-2">Address</h4>
+                      <p className="text-slate-500 font-medium leading-relaxed max-w-sm">
+                        {contacts.find(c => c.type === 'ADDRESS')?.value || 'Sector 17, Chandigarh, India'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Phone */}
+                  <div className="flex gap-6">
+                    <div className="flex-shrink-0 w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-xl text-[#ef4444]">
+                       <FiTarget />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-slate-900 mb-2">Phone</h4>
+                      <p className="text-slate-500 font-medium leading-relaxed max-w-sm">
+                        {contacts.filter(c => c.type === 'PHONE').map(c => c.value).join(', ') || '+91 98765 43210'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div className="flex gap-6">
+                    <div className="flex-shrink-0 w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-xl text-[#ef4444]">
+                       <FiMail />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-slate-900 mb-2">E-mail</h4>
+                      <p className="text-slate-500 font-medium leading-relaxed max-w-sm lowercase">
+                        {contacts.find(c => c.type === 'EMAIL')?.value || 'info@i-bacus.com'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
     </div>
