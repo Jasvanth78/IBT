@@ -58,6 +58,12 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       servicesWhatFeatures: data?.servicesWhatFeatures ?? null,
       servicesWhatImages: data?.servicesWhatImages ?? null,
 
+      // Home – Solutions Section
+      homeSolutionsTitle: data?.homeSolutionsTitle ?? null,
+      homeSolutionsBadge: data?.homeSolutionsBadge ?? null,
+      homeSolutionsDescription: data?.homeSolutionsDescription ?? null,
+      homeSolutionsItems: data?.homeSolutionsItems ?? null,
+
       homeVideoUrl: data?.homeVideoUrl ?? null,
       homeVideoEnabled: data?.homeVideoEnabled ?? false,
 

@@ -1,10 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { apiClient } from '@/src/api/client';
+import { useMemo } from 'react';
 import { SiteButton } from '@/src/shared/ui';
 import Link from 'next/link';
+import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
 
 interface StrategyStep {
   step: string;
@@ -13,52 +13,37 @@ interface StrategyStep {
 }
 
 export function StrategySection() {
-  const [data, setData] = useState<{
-    servicesProcessTitle: string | null;
-    servicesProcessBadge: string | null;
-    servicesProcessDescription: string | null;
-    servicesProcessSteps: StrategyStep[];
-  }>({
-    servicesProcessTitle: null,
-    servicesProcessBadge: null,
-    servicesProcessDescription: null,
-    servicesProcessSteps: [],
-  });
-  const [loading, setLoading] = useState(true);
+  const { settings, loading } = useSocketSettings();
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const settings = await apiClient.getSettings();
-        setData({
-          servicesProcessTitle: settings.servicesProcessTitle,
-          servicesProcessBadge: settings.servicesProcessBadge,
-          servicesProcessDescription: settings.servicesProcessDescription,
-          servicesProcessSteps: settings.servicesProcessSteps || [],
-        });
-      } catch (error) {
-        console.error('Failed to fetch strategy settings:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSettings();
-  }, []);
+  const steps = useMemo((): StrategyStep[] => {
+    const defaultSteps = [
+      { step: '01', title: 'Collect Ideas', desc: 'Nulla vitae elit libero pharetra augue dapibus.' },
+      { step: '02', title: 'Data Analysis', desc: 'Vivamus sagittis lacus vel augue laoreet.' },
+      { step: '03', title: 'Finalize Product', desc: 'Cras mattis consectetur purus sit amet.' }
+    ];
 
-  if (loading && data.servicesProcessSteps.length === 0) {
-    return null; // Or a skeleton
+    if (!settings?.servicesProcessSteps) return defaultSteps;
+
+    try {
+      const parsed = typeof settings.servicesProcessSteps === 'string'
+        ? JSON.parse(settings.servicesProcessSteps)
+        : settings.servicesProcessSteps;
+      
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultSteps;
+    } catch (e) {
+      console.warn('Failed to parse strategy steps:', e);
+      return defaultSteps;
+    }
+  }, [settings?.servicesProcessSteps]);
+
+  if (loading && steps.length === 0) {
+    return null;
   }
 
-  const title = data.servicesProcessTitle || "Here are 3 working steps to organize our business projects.";
-  const badge = data.servicesProcessBadge || "OUR STRATEGY";
-  const description = data.servicesProcessDescription || "Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis.";
+  const title = settings?.servicesProcessTitle || "Here are 3 working steps to organize our business projects.";
+  const badge = settings?.servicesProcessBadge || "OUR STRATEGY";
+  const description = settings?.servicesProcessDescription || "Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis.";
   
-  const steps = data.servicesProcessSteps.length > 0 ? data.servicesProcessSteps : [
-    { step: '01', title: 'Collect Ideas', desc: 'Nulla vitae elit libero pharetra augue dapibus.' },
-    { step: '02', title: 'Data Analysis', desc: 'Vivamus sagittis lacus vel augue laoreet.' },
-    { step: '03', title: 'Finalize Product', desc: 'Cras mattis consectetur purus sit amet.' }
-  ];
-
   return (
     <section className="bg-white py-12 lg:py-16 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

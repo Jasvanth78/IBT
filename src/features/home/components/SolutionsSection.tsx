@@ -1,64 +1,47 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { apiClient } from '@/src/api/client';
+import { useMemo } from 'react';
 import { FiCheckCircle } from 'react-icons/fi';
+import { Loader } from '@/src/shared/ui/Loader';
+import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
 
 export function SolutionsSection() {
-  const [data, setData] = useState<{
-    homeSolutionsTitle: string | null;
-    homeSolutionsBadge: string | null;
-    homeSolutionsDescription: string | null;
-    homeSolutionsItems: string[];
-  }>({
-    homeSolutionsTitle: null,
-    homeSolutionsBadge: null,
-    homeSolutionsDescription: null,
-    homeSolutionsItems: [],
-  });
-  const [loading, setLoading] = useState(true);
+  const { settings, loading } = useSocketSettings();
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const settings = await apiClient.getSettings();
-        
-        let items: string[] = [];
-        if (settings.homeSolutionsItems) {
-           items = Array.isArray(settings.homeSolutionsItems) 
-              ? settings.homeSolutionsItems 
-              : JSON.parse(settings.homeSolutionsItems);
-        }
+  const items = useMemo((): string[] => {
+    const defaultItems = [
+      'Aenean quam ornare. Curabitur blandit.',
+      'Etiam porta euismod malesuada mollis.',
+      'Nullam quis risus eget urna mollis ornare.',
+      'Vivamus sagittis lacus vel augue rutrum.'
+    ];
 
-        setData({
-          homeSolutionsTitle: settings.homeSolutionsTitle,
-          homeSolutionsBadge: settings.homeSolutionsBadge,
-          homeSolutionsDescription: settings.homeSolutionsDescription,
-          homeSolutionsItems: items,
-        });
-      } catch (error) {
-        console.error('Failed to fetch solutions settings:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSettings();
-  }, []);
+    if (!settings?.homeSolutionsItems) return defaultItems;
 
-  if (loading && data.homeSolutionsItems.length === 0) {
-    return null;
+    try {
+      const parsed = Array.isArray(settings.homeSolutionsItems) 
+        ? settings.homeSolutionsItems 
+        : JSON.parse(settings.homeSolutionsItems);
+      
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultItems;
+    } catch (e) {
+      console.warn('Failed to parse homeSolutionsItems:', e);
+      return defaultItems;
+    }
+  }, [settings?.homeSolutionsItems]);
+
+  if (loading && items.length === 0) {
+    return (
+      <div className="flex py-20 items-center justify-center bg-white">
+        <Loader size="md" label="Loading Solutions..." />
+      </div>
+    );
   }
 
-  const badge = data.homeSolutionsBadge || "OUR SOLUTIONS";
-  const title = data.homeSolutionsTitle || "We make your spending stress-free for you to have the perfect control.";
-  const description = data.homeSolutionsDescription || "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Praesent commodo cursus.";
-  const items = data.homeSolutionsItems.length > 0 ? data.homeSolutionsItems : [
-    'Aenean quam ornare. Curabitur blandit.',
-    'Etiam porta euismod malesuada mollis.',
-    'Nullam quis risus eget urna mollis ornare.',
-    'Vivamus sagittis lacus vel augue rutrum.'
-  ];
+  const badge = settings?.homeSolutionsBadge || "OUR SOLUTIONS";
+  const title = settings?.homeSolutionsTitle || "We make your spending stress-free for you to have the perfect control.";
+  const description = settings?.homeSolutionsDescription || "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Praesent commodo cursus.";
 
   return (
     <section className="bg-white py-12 lg:py-16">
@@ -103,8 +86,7 @@ export function SolutionsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative flex justify-center order-first lg:order-last"
-          >
+            className="relative flex justify-center order-first lg:order-last">
              <div className="relative w-full max-w-[550px]">
                 {/* SVG Illustration - Spending/Control Theme */}
                 <svg viewBox="0 0 500 450" className="w-full h-auto drop-shadow-2xl">
@@ -113,7 +95,7 @@ export function SolutionsSection() {
                    <circle cx="450" cy="200" r="10" fill="#e63946" opacity="0.2" />
                    
                    {/* Main Dashboard UI */}
-                   <rect x="100" y="80" width="300" height="240" rx="15" fill="white" shadow="sm" />
+                   <rect x="100" y="80" width="300" height="240" rx="15" fill="white" />
                    <rect x="120" y="100" width="40" height="40" rx="10" fill="#1d3557" />
                    <rect x="170" y="110" width="100" height="8" rx="4" fill="#f1f4f9" />
                    <rect x="170" y="125" width="60" height="8" rx="4" fill="#f1f4f9" />

@@ -1,9 +1,9 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { apiClient } from '@/src/api/client';
+import { useState, useMemo } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
+import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
 
 interface WhyItem {
   title: string;
@@ -11,63 +11,37 @@ interface WhyItem {
 }
 
 export function WhyChooseUsSection() {
-  const [data, setData] = useState<{
-    servicesWhyTitle: string | null;
-    servicesWhyBadge: string | null;
-    servicesWhyDescription: string | null;
-    servicesWhyItems: WhyItem[];
-  }>({
-    servicesWhyTitle: null,
-    servicesWhyBadge: null,
-    servicesWhyDescription: null,
-    servicesWhyItems: [],
-  });
-  const [loading, setLoading] = useState(true);
+  const { settings, loading } = useSocketSettings();
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const settings = await apiClient.getSettings();
-        
-        // Parse servicesWhyItems if it's a string, though the API should ideally return the parsed JSON
-        let items: WhyItem[] = [];
-        if (settings.servicesWhyItems) {
-           try {
-             items = typeof settings.servicesWhyItems === 'string' 
-                ? JSON.parse(settings.servicesWhyItems) 
-                : settings.servicesWhyItems;
-           } catch (e) {
-             console.error("Failed to parse servicesWhyItems", e);
-           }
-        }
+  // Parse why items from settings
+  const items = useMemo((): WhyItem[] => {
+    const defaultItems = [
+      { title: 'Professional Design', description: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.' },
+      { title: 'Top-Notch Support', description: 'Nililne id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis ornare sem lacinia quam venenatis.' },
+      { title: 'Header and Slider Options', description: 'Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.' }
+    ];
 
-        setData({
-          servicesWhyTitle: settings.servicesWhyTitle,
-          servicesWhyBadge: settings.servicesWhyBadge,
-          servicesWhyDescription: settings.servicesWhyDescription,
-          servicesWhyItems: items,
-        });
-      } catch (error) {
-        console.error('Failed to fetch why settings:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSettings();
-  }, []);
+    if (!settings?.servicesWhyItems) return defaultItems;
 
-  if (loading && data.servicesWhyItems.length === 0) {
+    try {
+      const parsed = typeof settings.servicesWhyItems === 'string' 
+        ? JSON.parse(settings.servicesWhyItems) 
+        : settings.servicesWhyItems;
+      
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultItems;
+    } catch (e) {
+      console.warn("Failed to parse servicesWhyItems", e);
+      return defaultItems;
+    }
+  }, [settings?.servicesWhyItems]);
+
+  const badge = settings?.servicesWhyBadge || "WHY CHOOSE US?";
+  const title = settings?.servicesWhyTitle || "We bring solutions to make life easier for our clients.";
+
+  if (loading && items.length === 0) {
     return null;
   }
-
-  const badge = data.servicesWhyBadge || "WHY CHOOSE US?";
-  const title = data.servicesWhyTitle || "We bring solutions to make life easier for our clients.";
-  const items = data.servicesWhyItems.length > 0 ? data.servicesWhyItems : [
-    { title: 'Professional Design', description: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.' },
-    { title: 'Top-Notch Support', description: 'Nililne id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis ornare sem lacinia quam venenatis.' },
-    { title: 'Header and Slider Options', description: 'Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.' }
-  ];
 
   return (
     <section className="bg-white py-12 lg:py-16">
@@ -91,7 +65,7 @@ export function WhyChooseUsSection() {
                   
                   {/* Drawing Board / Screen */}
                   <rect x="80" y="80" width="340" height="260" rx="20" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="2" />
-                  <rect x="100" y="100" width="300" height="220" rx="10" fill="white" shadow="sm" />
+                  <rect x="100" y="100" width="300" height="220" rx="10" fill="white" className="drop-shadow-sm" />
                   
                   {/* People Characters (Simplified) */}
                   {/* Person 1 - Left */}
@@ -144,10 +118,10 @@ export function WhyChooseUsSection() {
               <h2 className="text-[28px] font-bold tracking-tight text-[#1d3557] sm:text-[36px] lg:text-[40px] leading-[1.2] mb-4">
                 {title}
               </h2>
-              {data.servicesWhyDescription && (
+              {settings?.servicesWhyDescription && (
                 <div 
                    className="text-[16px] text-[#60697b] mb-6 leading-relaxed"
-                   dangerouslySetInnerHTML={{ __html: data.servicesWhyDescription }}
+                   dangerouslySetInnerHTML={{ __html: settings.servicesWhyDescription }}
                 />
               )}
             </div>

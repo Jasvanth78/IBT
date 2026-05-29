@@ -29,6 +29,7 @@ import {
 } from '@/src/api/client'
 import { useSocketSettings } from '@/src/providers/SocketSettingsProvider'
 import { resolveImageUrl } from '@/src/utils/image'
+import { Loader } from '@/src/shared/ui/Loader'
 
 export default function AboutPage() {
   const { settings } = useSocketSettings()
@@ -91,8 +92,8 @@ export default function AboutPage() {
         setStats(statsData.items)
         setContacts(contactData.items)
       } catch (err) {
-        console.error('Error fetching about data:', err)
-        setError('Unable to load data at this time.')
+        console.warn('Error fetching about data:', err)
+        setError(err instanceof Error ? err.message : 'Unable to load data at this time.')
       } finally {
         setLoading(false)
       }
@@ -100,6 +101,45 @@ export default function AboutPage() {
 
     fetchData()
   }, [])
+
+  if (loading && members.length === 0) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-white gap-6">
+        <Loader size="lg" label="Synchronizing Experience..." />
+        {error && (
+            <div className="flex flex-col items-center gap-4">
+               <p className="text-sm text-slate-500 font-medium">{error}</p>
+            </div>
+        )}
+      </div>
+    );
+  }
+
+  // Error but have no data
+  if (error && members.length === 0) {
+    return (
+        <div className="flex min-h-screen flex-col items-center justify-center bg-white gap-8 p-6 text-center">
+            <div className="w-20 h-20 rounded-full bg-red-50 flex items-center justify-center text-red-500">
+                <FiActivity size={40} className="animate-pulse" />
+            </div>
+            <div className="space-y-2">
+                <h2 className="text-3xl font-black text-slate-900">Synchronizing...</h2>
+                <p className="text-slate-500 max-w-sm mx-auto">
+                    {error.includes('taking too long') ? error : "We're having trouble connecting to the soul of our platform. We're trying again automatically."}
+                </p>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+                <Loader size="md" label="Auto-retrying..." />
+                <button 
+                   onClick={() => window.location.reload()}
+                   className="text-xs font-black uppercase tracking-widest text-slate-400 hover:text-(--ui-primary) transition-colors"
+                >
+                    Or refresh manually
+                </button>
+            </div>
+        </div>
+    )
+  }
 
   return (
     <div className="min-h-screen overflow-hidden bg-white">

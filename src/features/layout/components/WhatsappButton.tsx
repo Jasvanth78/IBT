@@ -2,7 +2,7 @@
 
 import { useSocketSettings } from '@/src/providers/SocketSettingsProvider'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaWhatsapp, FaArrowUp } from 'react-icons/fa'
+import { FaWhatsapp } from 'react-icons/fa'
 
 export function WhatsappButton() {
   const { settings } = useSocketSettings()
@@ -13,33 +13,9 @@ export function WhatsappButton() {
   // Remove any non-numeric characters from the phone number for the link
   const cleanNumber = phoneNumber.replace(/\D/g, '')
 
-  const handleBackToTop = () => {
-    try {
-      const selector = 'main, [data-first-section], section'
-      const first = document.querySelector<HTMLElement>(selector)
-
-      if (first) {
-        first.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        return
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } catch (e) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }
-
   return (
     <AnimatePresence>
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2">
-        <button
-          onClick={handleBackToTop}
-          aria-label="Back to top"
-          className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-(--ui-danger) bg-white text-(--ui-danger) shadow-md hover:bg-(--ui-danger) hover:text-white transition-colors"
-        >
-          <FaArrowUp />
-        </button>
-
         <motion.a
           href={`https://wa.me/${cleanNumber}`}
           target="_blank"

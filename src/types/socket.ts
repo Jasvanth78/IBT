@@ -65,6 +65,12 @@ export interface SiteSettingsRealtimePayload {
   homeVideoUrl?: string | null;
   homeVideoEnabled?: boolean;
 
+  // Home – Solutions Section
+  homeSolutionsTitle?: string | null;
+  homeSolutionsBadge?: string | null;
+  homeSolutionsDescription?: string | null;
+  homeSolutionsItems?: string[] | string | null;
+
   // Contact – Hero & Presence
   contactHeroTitle?: string | null;
   contactHeroDescription?: string | null;

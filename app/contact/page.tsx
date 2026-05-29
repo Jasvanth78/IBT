@@ -12,6 +12,7 @@ import {
 } from 'react-icons/fi';
 import { apiClient, PublicBranch } from '@/src/api/client';
 import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
+import { Loader } from '@/src/shared/ui/Loader';
 
 export default function ContactPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -33,6 +34,14 @@ export default function ContactPage() {
 
     fetchData();
   }, []);
+
+  if (loading || settingsLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <Loader size="lg" label="Establishing Secure Line..." />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pt-32 pb-20">

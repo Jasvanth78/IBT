@@ -272,6 +272,7 @@ export function AllServicesPage() {
 
       setServices(result.items);
     } catch (err) {
+      console.warn('Failed to load services:', err);
       setError(
         err instanceof Error
           ? err.message
@@ -550,10 +551,28 @@ export function AllServicesPage() {
             </p>
           </div>
 
-          {/* ERROR DISPLAY (ONLY IF NO SERVICES AT ALL) */}
+          {/* ERROR DISPLAY (TIMEOUT HANDLING) */}
           {error && services.length === 0 && (
-            <div className="mb-12 rounded-[2rem] bg-red-50 p-6 text-center font-bold text-red-500 border border-red-100">
-              {error}
+            <div className="mb-12 rounded-[2rem] bg-slate-50 p-12 text-center border border-slate-100">
+              <div className="flex flex-col items-center gap-6">
+                <div className="relative">
+                  <div className="absolute inset-0 animate-ping rounded-full bg-red-500 opacity-20"></div>
+                  <Loader size="lg" label="Connection Issue" className="!border-t-red-500" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-black text-slate-900">Connection Timeout</h3>
+                  <p className="text-sm text-slate-500 font-medium max-w-md mx-auto">
+                    {error.includes('taking too long') ? error : "The connection is slow or the server is busy. We're using cached data while we try to reconnect."}
+                  </p>
+                </div>
+                <button 
+                  onClick={() => void loadAllServices()}
+                  className="flex items-center gap-2 px-8 py-3 bg-[#1d2939] text-white rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all"
+                >
+                  <FiRefreshCw className={loading ? "animate-spin" : ""} />
+                  Reconnect Now
+                </button>
+              </div>
             </div>
           )}
 

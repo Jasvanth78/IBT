@@ -119,9 +119,12 @@ export function ServicesSection() {
     WHAT WE DO?
   </h3>
 
-  <h2 className="text-[28px] font-bold tracking-tight text-[#1d3557] sm:text-[36px] leading-[1.2] max-w-2xl mx-auto">
-    The service we offer is specifically designed to meet your needs.
-  </h2>
+ <h2
+  style={{ textAlign: "center", margin: "0 auto" }}
+  className="max-w-2xl text-[28px] font-bold text-[#1d3557]"
+>
+  The service we offer is specifically designed to meet your needs.
+</h2>
 </div>
 
         {loading && services.length === 0 && (
@@ -143,37 +146,51 @@ export function ServicesSection() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, margin: "-100px" }}
-              className="flex flex-wrap justify-center gap-4"
+              className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
             >
               {services.map((service, idx) => (
-                <motion.article
-                  key={service.id}
-                  variants={itemVariants}
-                  className="group relative flex flex-col items-center bg-white rounded-xl p-7 transition-all duration-300 hover:shadow-[0_0_40px_rgba(30,34,40,0.05)] text-center h-full w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1rem)] min-w-[250px]"
-                >
-                  <div className="mb-6 w-14 h-14 flex items-center justify-center">
-                    {renderIcon(idx, service.imageUrl)}
-                  </div>
-
-                  <div className="flex flex-1 flex-col">
-                    <h3 className="text-xl font-bold text-[#343f52] mb-4">
-                      {service.title}
-                    </h3>
-                    <p className="text-[17px] leading-relaxed text-[#60697b] mb-6">
-                      {service.description || "Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus cras justo."}
-                    </p>
-                    
-                    <div className="mt-auto">
-                      <Link 
-                        href={`/services/${service.slug}`}
-                        className="text-[15px] font-bold text-[#e63946] hover:text-[#c1121f] transition-all flex items-center justify-center gap-1 group/link"
-                      >
-                        Learn More
-                        <span className="transition-transform duration-300 group-hover/link:translate-x-1">→</span>
-                      </Link>
+                <Link key={service.id} href={`/services/${service.slug}`} className="group h-full">
+                  <motion.article
+                    variants={itemVariants}
+                    className="flex h-full flex-col overflow-hidden rounded-[0.8rem] bg-white shadow-[0_5px_30px_rgba(30,41,59,0.03)] transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(30,41,59,0.08)] text-left"
+                  >
+                    {/* Image Area */}
+                    <div className="relative aspect-[16/11] overflow-hidden bg-slate-50">
+                      {service.imageUrl ? (
+                        <img 
+                          src={resolveImageUrl(service.imageUrl)} 
+                          alt={service.title} 
+                          className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-slate-200">
+                          <FiBriefcase className="text-4xl" />
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </motion.article>
+
+                    {/* Content Area */}
+                    <div className="flex flex-1 flex-col px-6 py-7">
+                      {/* Sandbox style Category Label */}
+                      <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#aab0bc] mb-3 group-hover:text-[#3f78e0] transition-colors">
+                        <span className="w-4 h-[2px] bg-[#aab0bc] opacity-40 group-hover:bg-[#3f78e0]"></span>
+                        OUR SERVICE
+                      </p>
+                      
+                      <h3 className="text-[19px] font-bold tracking-tight text-[#343f52] leading-[1.3] transition-colors group-hover:text-[#3f78e0] mb-3">
+                        {service.title}
+                      </h3>
+
+                      <p className="text-[15px] leading-[1.6] text-[#60697b] line-clamp-3 mb-6">
+                        {service.description || "Specifically designed to meet your business needs and drive growth."}
+                      </p>
+
+                      <div className="mt-auto flex items-center gap-2 text-[13px] font-bold text-[#e63946] group-hover:translate-x-1 transition-transform">
+                        Explore Details →
+                      </div>
+                    </div>
+                  </motion.article>
+                </Link>
               ))}
             </motion.div>
 

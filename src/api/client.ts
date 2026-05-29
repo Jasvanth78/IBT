@@ -178,7 +178,7 @@ class ApiClient {
   private createAxiosInstance(): AxiosInstance {
     const instance = axios.create({
       baseURL: this.baseUrl,
-      timeout: 10000,
+      timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -205,7 +205,12 @@ class ApiClient {
         return response;
       },
       (error) => {
-        console.warn('[API Response Error]', error.response?.status, error.message);
+        if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+          console.warn('[API Timeout]', error.config.url);
+          error.message = 'The server is taking too long to respond. Please try again.';
+        } else {
+          console.warn('[API Response Error]', error.response?.status, error.message);
+        }
         return Promise.reject(error);
       }
     );
