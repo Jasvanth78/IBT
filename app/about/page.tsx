@@ -71,6 +71,18 @@ export default function AboutPage() {
   const contactTitle = s.aboutContactTitle || "Got any questions? Don't hesitate to get in touch."
   const contactImage = s.aboutContactImage || 'https://sandbox.elemisthemes.com/assets/img/illustrations/i3.png'
 
+  // Mission & Vision dynamic data
+  const missionTitle = s.aboutMissionTitle || 'Our Mission'
+  const missionDesc = s.aboutMissionDesc || 'To provide cutting-edge technology solutions that empower organizations to achieve their full potential in the digital age through innovation and precision.'
+  const visionTitle = s.aboutVisionTitle || 'Our Vision'
+  const visionDesc = s.aboutVisionDesc || 'To be a global leader in digital transformation recognized for our engineering excellence and sustainable technological impact.'
+  const missionCards = (s.aboutMissionCards && s.aboutMissionCards.length === 4) ? s.aboutMissionCards : [
+    { value: '50+', label: 'Active Projects' },
+    { value: 'Quality', label: 'ISO Certified' },
+    { value: '24/7', label: 'Global Support' },
+    { value: '100%', label: 'Data Security' },
+  ]
+
   /* =========================================================
      FETCH DATA
   ========================================================= */
@@ -261,12 +273,14 @@ export default function AboutPage() {
                 <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-8">
                   {whoTitle}
                 </h2>
-                <p className="text-xl text-slate-600 font-medium leading-[1.6] mb-8">
-                  {whoDescription}
-                </p>
-                <p className="text-base text-slate-400 font-medium leading-[1.8] mb-10">
-                  {whoSecondaryDescription}
-                </p>
+                <div 
+                  className="text-xl text-slate-600 font-medium leading-[1.6] mb-8 prose prose-slate max-w-none"
+                  dangerouslySetInnerHTML={{ __html: whoDescription }}
+                />
+                <div 
+                  className="text-base text-slate-400 font-medium leading-[1.8] mb-10 prose prose-sm prose-slate max-w-none"
+                  dangerouslySetInnerHTML={{ __html: whoSecondaryDescription }}
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
@@ -435,14 +449,11 @@ export default function AboutPage() {
                 </div>
 
                 <h2 className="text-4xl font-black text-white mb-6">
-                  Our Mission
+                  {missionTitle}
                 </h2>
 
                 <p className="text-lg leading-relaxed text-slate-400 max-w-lg">
-                  To provide cutting-edge technology
-                  solutions that empower organizations
-                  to achieve their full potential in the
-                  digital age through innovation and precision.
+                  {missionDesc}
                 </p>
               </motion.div>
 
@@ -458,14 +469,11 @@ export default function AboutPage() {
                 </div>
 
                 <h2 className="text-4xl font-black text-white mb-6">
-                  Our Vision
+                  {visionTitle}
                 </h2>
 
                 <p className="text-lg leading-relaxed text-slate-400 max-w-lg">
-                  To be a global leader in digital
-                  transformation recognized for our
-                  engineering excellence and sustainable
-                  technological impact.
+                  {visionDesc}
                 </p>
               </motion.div>
             </div>
@@ -475,10 +483,10 @@ export default function AboutPage() {
               <div className="space-y-6 lg:pt-12">
                 <div className="aspect-square rounded-[2.5rem] bg-slate-900 border border-slate-800 p-8 flex flex-col items-center justify-center text-center shadow-2xl">
                     <div className="text-6xl font-black text-[#ef4444]">
-                      50+
+                      {missionCards[0]?.value}
                     </div>
                     <div className="mt-4 text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">
-                      Active Projects
+                      {missionCards[0]?.label}
                     </div>
                 </div>
 
@@ -486,10 +494,10 @@ export default function AboutPage() {
                   <FiAward className="absolute right-6 top-6 text-7xl text-white/10" />
                   <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
                     <div className="text-4xl font-black text-white">
-                      Quality
+                      {missionCards[1]?.value}
                     </div>
                     <div className="mt-3 text-[11px] font-black uppercase tracking-[0.3em] text-white/80">
-                      ISO Certified
+                      {missionCards[1]?.label}
                     </div>
                   </div>
                 </div>
@@ -498,19 +506,19 @@ export default function AboutPage() {
               <div className="space-y-6">
                 <div className="aspect-video rounded-[2.5rem] bg-white text-slate-900 p-8 flex flex-col items-center justify-center text-center shadow-2xl">
                     <div className="text-5xl font-black text-[#ef4444]">
-                      24/7
+                      {missionCards[2]?.value}
                     </div>
                     <div className="mt-3 text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">
-                      Global Support
+                      {missionCards[2]?.label}
                     </div>
                 </div>
 
                 <div className="aspect-square rounded-[2.5rem] bg-slate-900 border border-slate-800 p-8 flex flex-col items-center justify-center text-center shadow-2xl">
                     <div className="text-6xl font-black text-white">
-                      100%
+                      {missionCards[3]?.value}
                     </div>
                     <div className="mt-4 text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">
-                      Data Security
+                      {missionCards[3]?.label}
                     </div>
                 </div>
               </div>

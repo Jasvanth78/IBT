@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { apiClient, type PaginationMeta, type PublicLabProject } from '@/src/api/client';
 import { Loader, Pagination } from '@/src/shared/ui';
 import { motion, type Variants } from 'framer-motion';
-import { FiArrowRight, FiCode, FiLayers, FiStar, FiCheck, FiTarget, FiUsers, FiAward, FiZap, FiLayout } from 'react-icons/fi';
+import { FiArrowRight, FiCode, FiLayers, FiStar, FiCheck, FiTarget, FiUsers, FiAward, FiZap, FiLayout, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 type LabProjectStatus = 'ONGOING' | 'COMPLETED' | 'ARCHIVED';
 
@@ -131,8 +131,43 @@ export function AllLabsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [settings, setSettings] = useState<Record<string, any>>({});
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(3);
 
   const loadingRef = useRef(false);
+
+  useEffect(() => {
+    const updateVisible = () => {
+      const w = window.innerWidth;
+      if (w >= 1024) setVisibleCount(3);
+      else if (w >= 640) setVisibleCount(2);
+      else setVisibleCount(1);
+    };
+
+    updateVisible();
+    window.addEventListener('resize', updateVisible);
+    return () => window.removeEventListener('resize', updateVisible);
+  }, []);
+
+  useEffect(() => {
+    const n = projects.length;
+    const maxIndex = Math.max(0, n - visibleCount);
+    setCarouselIndex((prev) => Math.min(prev, maxIndex));
+  }, [visibleCount, projects]);
+
+  const showPrev = () => {
+    const n = projects.length;
+    setCarouselIndex((prev) =>
+      prev <= 0 ? n - visibleCount : prev - 1
+    );
+  };
+
+  const showNext = () => {
+    const n = projects.length;
+    setCarouselIndex((prev) =>
+      prev >= n - visibleCount ? 0 : prev + 1
+    );
+  };
 
   const [spotlightProjects, setSpotlightProjects] = useState<Record<string, PublicLabProject>>({});
 
@@ -491,10 +526,54 @@ export function AllLabsPage() {
               <Loader size="lg" />
             </div>
           ) : (
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map(project => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
+            <div className="relative">
+              {projects.length > visibleCount && (
+                <>
+                  {/* LEFT ARROW */}
+                  <button
+                    onClick={showPrev}
+                    aria-label="Previous"
+                    className="hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white border border-slate-200 shadow-md hover:shadow-xl transition-all"
+                    style={{ left: -30 }}
+                  >
+                    <FiChevronLeft />
+                  </button>
+
+                  {/* RIGHT ARROW */}
+                  <button
+                    onClick={showNext}
+                    aria-label="Next"
+                    className="hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white border border-slate-200 shadow-md hover:shadow-xl transition-all"
+                    style={{ right: -30 }}
+                  >
+                    <FiChevronRight />
+                  </button>
+                </>
+              )}
+
+              <div className="overflow-hidden -mx-4 px-4">
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                  className="flex transition-transform duration-300"
+                  style={{
+                    width: `${(projects.length * 100) / visibleCount}%`,
+                    transform: `translateX(-${(carouselIndex * 100) / visibleCount}%)`,
+                  }}
+                >
+                  {projects.map((project) => (
+                    <div
+                      key={project.id}
+                      className="px-4"
+                      style={{ flex: `0 0 ${100 / visibleCount}%` }}
+                    >
+                      <ProjectCard project={project} />
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
             </div>
           )}
 

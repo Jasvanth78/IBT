@@ -64,6 +64,25 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       homeSolutionsDescription: data?.homeSolutionsDescription ?? null,
       homeSolutionsItems: data?.homeSolutionsItems ?? null,
 
+      // About Page
+      aboutWhoTitle: data?.aboutWhoTitle ?? null,
+      aboutWhoDescription: data?.aboutWhoDescription ?? null,
+      aboutWhoSecondaryDescription: data?.aboutWhoSecondaryDescription ?? null,
+      aboutWhoFeatures: data?.aboutWhoFeatures ?? null,
+      aboutWhoImages: data?.aboutWhoImages ?? null,
+      aboutProcessBadge: data?.aboutProcessBadge ?? null,
+      aboutProcessTitle: data?.aboutProcessTitle ?? null,
+      aboutProcessFeatures: data?.aboutProcessFeatures ?? null,
+      aboutProcessImage: data?.aboutProcessImage ?? null,
+      aboutMissionTitle: data?.aboutMissionTitle ?? null,
+      aboutMissionDesc: data?.aboutMissionDesc ?? null,
+      aboutVisionTitle: data?.aboutVisionTitle ?? null,
+      aboutVisionDesc: data?.aboutVisionDesc ?? null,
+      aboutMissionCards: data?.aboutMissionCards ?? null,
+      aboutContactBadge: data?.aboutContactBadge ?? null,
+      aboutContactTitle: data?.aboutContactTitle ?? null,
+      aboutContactImage: data?.aboutContactImage ?? null,
+
       homeVideoUrl: data?.homeVideoUrl ?? null,
       homeVideoEnabled: data?.homeVideoEnabled ?? false,
 
@@ -169,6 +188,25 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       servicesWhatDescription: null,
       servicesWhatFeatures: null,
       servicesWhatImages: null,
+
+      // About Defaults
+      aboutWhoTitle: null,
+      aboutWhoDescription: null,
+      aboutWhoSecondaryDescription: null,
+      aboutWhoFeatures: null,
+      aboutWhoImages: null,
+      aboutProcessBadge: null,
+      aboutProcessTitle: null,
+      aboutProcessFeatures: null,
+      aboutProcessImage: null,
+      aboutMissionTitle: null,
+      aboutMissionDesc: null,
+      aboutVisionTitle: null,
+      aboutVisionDesc: null,
+      aboutMissionCards: null,
+      aboutContactBadge: null,
+      aboutContactTitle: null,
+      aboutContactImage: null,
 
       // Contact Defaults
       contactHeroTitle: null,

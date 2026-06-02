@@ -62,7 +62,7 @@ export function SolutionsSection() {
               {title}
             </h2>
             <div 
-               className="text-[17px] text-[#60697b] mb-10 leading-relaxed"
+               className="text-[17px] text-[#60697b] mb-10 leading-relaxed [&_*]:!whitespace-normal break-words"
                dangerouslySetInnerHTML={{ __html: description }}
             />
 

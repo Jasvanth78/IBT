@@ -35,6 +35,8 @@ import {
   FiTerminal,
   FiLock,
   FiSmartphone as FiMobile,
+  FiChevronLeft,
+  FiChevronRight,
 } from 'react-icons/fi';
 
 /* =========================================================
@@ -125,55 +127,47 @@ function ServiceCard({
   const Icon = SERVICE_ICONS[index % SERVICE_ICONS.length];
 
   return (
-    <motion.div
-      variants={fadeUp}
-      className="group relative flex flex-col h-full overflow-hidden rounded-[2rem] bg-white border border-slate-50 shadow-[0_5px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(239,68,68,0.15)] transition-all duration-500 text-center"
-    >
-      {/* IMAGE - Top Half */}
-      <div className="relative aspect-[16/11] w-full overflow-hidden">
-        {service.imageUrl ? (
-          <img
-            src={resolveImageUrl(service.imageUrl)}
-            alt={service.title}
-            className="h-full w-full object-cover transition-transform duration-1000 ease-in-out group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center bg-slate-50/50">
-            <Icon className="text-5xl text-red-600/10" />
+    <Link href={`/services/${service.slug}`} className="group block h-full">
+      <motion.article
+        variants={fadeUp}
+        className="flex h-full flex-col overflow-hidden rounded-[0.8rem] bg-white shadow-[0_5px_30px_rgba(30,41,59,0.03)] transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(30,41,59,0.08)] text-left"
+      >
+        {/* Image Area */}
+        <div className="relative aspect-[16/11] overflow-hidden bg-slate-50">
+          {service.imageUrl ? (
+            <img
+              src={resolveImageUrl(service.imageUrl)}
+              alt={service.title}
+              className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-slate-200">
+              <Icon className="text-4xl" />
+            </div>
+          )}
+        </div>
+
+        {/* Content Area */}
+        <div className="flex flex-1 flex-col px-6 py-7">
+          <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#aab0bc] mb-3 group-hover:text-[#3f78e0] transition-colors">
+            <span className="w-4 h-[2px] bg-[#aab0bc] opacity-40 group-hover:bg-[#3f78e0]"></span>
+            {(service as any).category || 'OUR SERVICE'}
+          </p>
+
+          <h3 className="text-[19px] font-bold tracking-tight text-[#343f52] leading-[1.3] transition-colors group-hover:text-[#3f78e0] mb-3">
+            {service.title}
+          </h3>
+
+          <p className="text-[15px] leading-[1.6] text-[#60697b] line-clamp-3 mb-6">
+            {service.description?.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ') || "Specifically designed to meet your business needs and drive growth."}
+          </p>
+
+          <div className="mt-auto flex items-center gap-2 text-[13px] font-bold text-[#e63946] group-hover:translate-x-1 transition-transform">
+            Explore Details →
           </div>
-        )}
-        
-        {/* Category Badge overlay on image */}
-        <div className="absolute top-4 left-4">
-           <span className="rounded-full bg-white/100 px-4 py-1.5 text-[9px] font-black uppercase tracking-widest text-[#ef4444] shadow-sm">
-             {(service as any).category || 'Service Area'}
-           </span>
         </div>
-      </div>
-
-      {/* CONTENT - Bottom Half style Centered */}
-      <div className="flex flex-1 flex-col p-10 items-center">
-        {/* TITLE */}
-        <h3 className="text-2xl font-black text-[#1d2939] mb-4 leading-tight">
-          {service.title}
-        </h3>
-
-        {/* DESC */}
-        <p className="line-clamp-3 text-sm leading-relaxed text-slate-500 font-medium mb-12">
-          {service.description?.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')}
-        </p>
-
-        {/* BUTTON - "Read More" styled as "Choose Plan" from Sandbox (Red Theme) */}
-        <div className="mt-auto w-full">
-          <Link 
-            href={`/services/${service.slug}`}
-            className="flex items-center justify-center w-full py-5 bg-[#ef4444] text-white rounded-full text-[11px] font-black uppercase tracking-[0.2em] shadow-xl shadow-red-500/25 hover:bg-red-600 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-          >
-            Read More
-          </Link>
-        </div>
-      </div>
-    </motion.div>
+      </motion.article>
+    </Link>
   );
 }
 
@@ -292,6 +286,58 @@ export function AllServicesPage() {
     return services.length > 0 ? services : DEFAULT_SERVICES;
   }, [services]);
 
+  // Carousel state for portfolio (Solution Portfolio)
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  useEffect(() => {
+    const updateVisible = () => {
+      const w = window.innerWidth;
+      if (w >= 1024) setVisibleCount(4);
+      else if (w >= 640) setVisibleCount(2);
+      else setVisibleCount(1);
+    };
+
+    updateVisible();
+    window.addEventListener('resize', updateVisible);
+    return () => window.removeEventListener('resize', updateVisible);
+  }, []);
+
+  // Ensure carouselIndex remains valid when visibleCount or displayServices change
+  useEffect(() => {
+    const n = displayServices.length;
+    const maxIndex = Math.max(0, n - visibleCount);
+    setCarouselIndex((prev) => Math.min(prev, maxIndex));
+  }, [visibleCount, displayServices]);
+
+  const visibleServices = useMemo(() => {
+    const list = displayServices;
+    const n = list.length;
+    if (n <= visibleCount) return list;
+
+    const out = [] as typeof list;
+    for (let i = 0; i < visibleCount; i++) {
+      out.push(list[(carouselIndex + i) % n]);
+    }
+    return out;
+  }, [displayServices, carouselIndex, visibleCount]);
+
+  const showPrev = () => {
+    const n = displayServices.length;
+
+    setCarouselIndex((prev) =>
+      prev <= 0 ? n - visibleCount : prev - 1
+    );
+  };
+
+  const showNext = () => {
+    const n = displayServices.length;
+
+    setCarouselIndex((prev) =>
+      prev >= n - visibleCount ? 0 : prev + 1
+    );
+  };
+
   const hasServices = true; // Always true because of fallbacks
 
   /* =========================================================
@@ -321,7 +367,7 @@ export function AllServicesPage() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-16 items-center">
             {/* Left Column: Content */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               className="lg:col-span-6"
@@ -330,11 +376,11 @@ export function AllServicesPage() {
                 <FiBriefcase size={16} />
                 <span className="text-[11px] font-black uppercase tracking-[0.1em]">{heroBadge}</span>
               </div>
-              
+
               <h1 className="text-6xl md:text-[84px] font-black tracking-tight text-[#1d2939] leading-[1.05] mb-10"
-                  dangerouslySetInnerHTML={{ __html: heroTitle.includes('<br') ? heroTitle : heroTitle.replace('Built for', 'Built for <br />') }}
+                dangerouslySetInnerHTML={{ __html: heroTitle.includes('<br') ? heroTitle : heroTitle.replace('Built for', 'Built for <br />') }}
               />
-              
+
               <p className="text-lg text-slate-500 leading-relaxed font-medium mb-12 max-w-xl">
                 {heroDescription}
               </p>
@@ -371,20 +417,20 @@ export function AllServicesPage() {
             </motion.div>
 
             {/* Right Column: Image */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
               className="relative lg:col-span-6"
             >
               <div className="relative z-10 rounded-[4rem] rounded-br-[0rem] overflow-hidden shadow-2xl h-[600px]">
-                <img 
-                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200" 
-                  alt="Service Architecture" 
-                  className="w-full h-full object-cover" 
+                <img
+                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200"
+                  alt="Service Architecture"
+                  className="w-full h-full object-cover"
                 />
               </div>
-              
+
               {/* Floating Stat Card */}
               <div className="absolute -bottom-10 -left-10 z-20 bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 min-w-[280px]">
                 <div className="text-5xl font-black text-[#1d2939] mb-2">150+</div>
@@ -408,88 +454,87 @@ export function AllServicesPage() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             {/* Left: Content + Feature Cards */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7 }}
-              >
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-(--ui-primary) mb-8">
-                  <FiTarget size={14} />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Core Focus</span>
-                </div>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-(--ui-primary) mb-8">
+                <FiTarget size={14} />
+                <span className="text-[10px] font-black uppercase tracking-widest">Core Focus</span>
+              </div>
 
-                <h2 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.05] mb-6">
-                  {whatTitle}
-                </h2>
+              <h2 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.05] mb-6">
+                {whatTitle}
+              </h2>
 
-                {whatDescription && (
-                  <p className="text-lg text-slate-500 leading-relaxed font-medium mb-12 max-w-lg"
-                     dangerouslySetInnerHTML={{ __html: whatDescription }}
-                  />
-                )}
-
-                {whatFeatures.length > 0 && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {whatFeatures.map((feat, i) => {
-                      const IconComp = ICON_MAP[feat.icon] || FiLayers;
-                      return (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.5, delay: i * 0.1 }}
-                          className="group p-6 rounded-[2rem] border border-slate-100 bg-white hover:border-(--ui-primary-soft)/30 hover:shadow-xl hover:shadow-(--ui-primary)/5 transition-all duration-500"
-                        >
-                          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-50 text-(--ui-primary) mb-5 transition-all duration-500 group-hover:bg-(--ui-primary) group-hover:text-white group-hover:shadow-lg group-hover:shadow-(--ui-primary)/30">
-                            <IconComp className="text-2xl" />
-                          </div>
-                          <h4 className="text-xl font-black text-slate-900 mb-2">{feat.title}</h4>
-                          <p className="text-sm text-slate-500 font-medium leading-relaxed">{feat.desc}</p>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                )}
-              </motion.div>
-
-              {/* Right: 2×2 Image Collage */}
-              {whatImages.filter(Boolean).length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                  className="relative"
-                >
-                  <div className="grid grid-cols-2 gap-4">
-                    {whatImages.filter(Boolean).map((url, i) => (
-                      <div
-                        key={i}
-                        className={`overflow-hidden shadow-lg ${
-                          i === 0 ? 'rounded-tl-[3rem] rounded-tr-2xl rounded-bl-2xl rounded-br-2xl' :
-                          i === 1 ? 'rounded-tr-[3rem] rounded-tl-2xl rounded-bl-2xl rounded-br-2xl mt-8' :
-                          i === 2 ? 'rounded-bl-[3rem] rounded-tl-2xl rounded-tr-2xl rounded-br-2xl -mt-8' :
-                                    'rounded-br-[3rem] rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
-                        }`}
-                      >
-                        <img
-                          src={resolveImageUrl(url)}
-                          alt={`Service showcase ${i + 1}`}
-                          className="w-full aspect-square object-cover hover:scale-105 transition-transform duration-700"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  {/* Decorative accent */}
-                  <div className="absolute -z-10 -bottom-6 -right-6 w-40 h-40 rounded-full bg-(--ui-primary)/5" />
-                  <div className="absolute -z-10 -top-6 -left-6 w-24 h-24 rounded-full bg-slate-100" />
-                </motion.div>
+              {whatDescription && (
+                <p className="text-lg text-slate-500 leading-relaxed font-medium mb-12 max-w-lg"
+                  dangerouslySetInnerHTML={{ __html: whatDescription }}
+                />
               )}
-            </div>
+
+              {whatFeatures.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {whatFeatures.map((feat, i) => {
+                    const IconComp = ICON_MAP[feat.icon] || FiLayers;
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                        className="group p-6 rounded-[2rem] border border-slate-100 bg-white hover:border-(--ui-primary-soft)/30 hover:shadow-xl hover:shadow-(--ui-primary)/5 transition-all duration-500"
+                      >
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-50 text-(--ui-primary) mb-5 transition-all duration-500 group-hover:bg-(--ui-primary) group-hover:text-white group-hover:shadow-lg group-hover:shadow-(--ui-primary)/30">
+                          <IconComp className="text-2xl" />
+                        </div>
+                        <h4 className="text-xl font-black text-slate-900 mb-2">{feat.title}</h4>
+                        <p className="text-sm text-slate-500 font-medium leading-relaxed">{feat.desc}</p>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              )}
+            </motion.div>
+
+            {/* Right: 2×2 Image Collage */}
+            {whatImages.filter(Boolean).length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="relative"
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  {whatImages.filter(Boolean).map((url, i) => (
+                    <div
+                      key={i}
+                      className={`overflow-hidden shadow-lg ${i === 0 ? 'rounded-tl-[3rem] rounded-tr-2xl rounded-bl-2xl rounded-br-2xl' :
+                        i === 1 ? 'rounded-tr-[3rem] rounded-tl-2xl rounded-bl-2xl rounded-br-2xl mt-8' :
+                          i === 2 ? 'rounded-bl-[3rem] rounded-tl-2xl rounded-tr-2xl rounded-br-2xl -mt-8' :
+                            'rounded-br-[3rem] rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
+                        }`}
+                    >
+                      <img
+                        src={resolveImageUrl(url)}
+                        alt={`Service showcase ${i + 1}`}
+                        className="w-full aspect-square object-cover hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+                  ))}
+                </div>
+                {/* Decorative accent */}
+                <div className="absolute -z-10 -bottom-6 -right-6 w-40 h-40 rounded-full bg-(--ui-primary)/5" />
+                <div className="absolute -z-10 -top-6 -left-6 w-24 h-24 rounded-full bg-slate-100" />
+              </motion.div>
+            )}
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* =====================================================
           2c. PROCESS SECTION (Horizontal - How We Do It?)
@@ -499,9 +544,10 @@ export function AllServicesPage() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">{processTitle}</h2>
-            <p className="text-lg text-slate-500 font-medium max-w-2xl mx-auto">
-              {processDescription}
-            </p>
+            <div
+              className="text-lg text-slate-500 font-medium max-w-2xl mx-auto text-center [&_*]:!whitespace-normal break-words"
+              dangerouslySetInnerHTML={{ __html: processDescription }}
+            />
           </div>
 
           <div className="relative">
@@ -516,14 +562,13 @@ export function AllServicesPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left"
+                  className="relative z-10 flex flex-col items-center text-center"
                 >
-                  <div className={`w-20 h-20 rounded-full flex items-center justify-center text-xl font-black mb-8 transition-all duration-500 shadow-xl ${
-                    i === 0 ? 'bg-blue-50 text-blue-600' :
+                  <div className={`w-20 h-20 rounded-full flex items-center justify-center text-xl font-black mb-8 transition-all duration-500 shadow-xl ${i === 0 ? 'bg-blue-50 text-blue-600' :
                     i === 1 ? 'bg-blue-600 text-white' :
-                    i === 2 ? 'bg-blue-50 text-blue-600' :
-                              'bg-blue-50 text-blue-600'
-                  }`}>
+                      i === 2 ? 'bg-blue-50 text-blue-600' :
+                        'bg-blue-50 text-blue-600'
+                    }`}>
                     0{i + 1}
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 mb-4">{step.title}</h3>
@@ -540,32 +585,45 @@ export function AllServicesPage() {
       {/* =====================================================
           3. SERVICE SHOWCASE (Solution Grid)
       ===================================================== */}
-
       <section className="relative bg-white py-32">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-black text-[#1d2939] mb-6">Solution Portfolio</h2>
-            <p className="text-lg text-slate-500 font-medium max-w-2xl mx-auto">
+
+          <div className="mb-20 flex flex-col items-center text-center">
+            <h2 className="text-4xl md:text-5xl font-black text-[#1d2939] mb-6">
+              Solution Portfolio
+            </h2>
+
+            <p className="max-w-3xl mx-auto text-center text-lg leading-relaxed text-slate-500 font-medium">
               Innovative digital solutions engineered to empower your business evolution and drive sustainable market leadership.
             </p>
           </div>
 
-          {/* ERROR DISPLAY (TIMEOUT HANDLING) */}
+          {/* ERROR DISPLAY */}
           {error && services.length === 0 && (
             <div className="mb-12 rounded-[2rem] bg-slate-50 p-12 text-center border border-slate-100">
               <div className="flex flex-col items-center gap-6">
                 <div className="relative">
                   <div className="absolute inset-0 animate-ping rounded-full bg-red-500 opacity-20"></div>
-                  <Loader size="lg" label="Connection Issue" className="!border-t-red-500" />
+                  <Loader
+                    size="lg"
+                    label="Connection Issue"
+                    className="!border-t-red-500"
+                  />
                 </div>
+
                 <div className="space-y-2">
-                  <h3 className="text-xl font-black text-slate-900">Connection Timeout</h3>
+                  <h3 className="text-xl font-black text-slate-900">
+                    Connection Timeout
+                  </h3>
+
                   <p className="text-sm text-slate-500 font-medium max-w-md mx-auto">
-                    {error.includes('taking too long') ? error : "The connection is slow or the server is busy. We're using cached data while we try to reconnect."}
+                    {error.includes('taking too long')
+                      ? error
+                      : "The connection is slow or the server is busy. We're using cached data while we try to reconnect."}
                   </p>
                 </div>
-                <button 
+
+                <button
                   onClick={() => void loadAllServices()}
                   className="flex items-center gap-2 px-8 py-3 bg-[#1d2939] text-white rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all"
                 >
@@ -577,21 +635,56 @@ export function AllServicesPage() {
           )}
 
           {/* SERVICES GRID */}
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {displayServices.map((service, index) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                index={index}
-              />
-            ))}
-          </motion.div>
+          <div className="relative">
+            {/* Arrows: always show when there are multiple services */}
+            {displayServices.length > 1 && (
+              <>
+                {/* LEFT ARROW */}
+                <button
+                  onClick={showPrev}
+                  aria-label="Previous"
+                  className="flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white border border-slate-200 shadow-md hover:shadow-xl transition-all"
+                  style={{ left: -20 }}
+                >
+                  <FiChevronLeft />
+                </button>
+
+                {/* RIGHT ARROW */}
+                <button
+                  onClick={showNext}
+                  aria-label="Next"
+                  className="flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white border border-slate-200 shadow-md hover:shadow-xl transition-all"
+                  style={{ right: -20 }}
+                >
+                  <FiChevronRight />
+                </button>
+              </>
+            )}
+
+            <div className="overflow-hidden -mx-4 px-4">
+              <motion.div
+                variants={stagger}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                className="flex transition-transform duration-500 ease-out py-4"
+                style={{
+                  width: `${(displayServices.length * 100) / visibleCount}%`,
+                  transform: `translateX(-${(carouselIndex * 100) / displayServices.length}%)`,
+                }}
+              >
+                {displayServices.map((service, idx) => (
+                  <div
+                    key={service.id}
+                    className="px-4"
+                    style={{ flex: `0 0 ${100 / displayServices.length}%` }}
+                  >
+                    <ServiceCard service={service} index={idx} />
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -616,9 +709,9 @@ export function AllServicesPage() {
               <div className="grid grid-cols-2 gap-6">
                 <div className="pt-12">
                   <div className="rounded-3xl overflow-hidden shadow-2xl">
-                    <img 
-                      src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=800" 
-                      alt="Team Collaboration" 
+                    <img
+                      src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=800"
+                      alt="Team Collaboration"
                       className="w-full h-[400px] object-cover"
                     />
                   </div>
@@ -629,9 +722,9 @@ export function AllServicesPage() {
                     <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">Satisfied Customers</div>
                   </div>
                   <div className="rounded-3xl overflow-hidden shadow-2xl">
-                    <img 
-                      src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800" 
-                      alt="Meeting Room" 
+                    <img
+                      src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800"
+                      alt="Meeting Room"
                       className="w-full h-[250px] object-cover"
                     />
                   </div>
@@ -655,7 +748,7 @@ export function AllServicesPage() {
               <p className="text-base text-slate-400 font-medium leading-relaxed mb-12 max-w-xl">
                 Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas faucibus mollis interdum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
               </p>
-              
+
               <Link
                 href={ctaBtn1Url}
                 className="inline-flex h-14 px-10 bg-blue-600 text-white rounded-full items-center justify-center text-sm font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20"

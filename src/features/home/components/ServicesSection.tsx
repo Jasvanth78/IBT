@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { apiClient, type PaginationMeta, type PublicService } from '@/src/api/client';
 import { motion, Variants } from 'framer-motion';
-import { FiBriefcase, FiCornerDownRight } from 'react-icons/fi';
+import { FiBriefcase, FiCornerDownRight, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { Loader, SiteButton } from '@/src/shared/ui';
 import { resolveImageUrl } from '@/src/utils/image';
 
@@ -28,8 +28,43 @@ export function ServicesSection() {
   const [meta, setMeta] = useState<PaginationMeta>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(4);
 
   const loadingRef = useRef(false);
+
+  useEffect(() => {
+    const updateVisible = () => {
+      const w = window.innerWidth;
+      if (w >= 1024) setVisibleCount(4);
+      else if (w >= 640) setVisibleCount(2);
+      else setVisibleCount(1);
+    };
+
+    updateVisible();
+    window.addEventListener('resize', updateVisible);
+    return () => window.removeEventListener('resize', updateVisible);
+  }, []);
+
+  useEffect(() => {
+    const n = services.length;
+    const maxIndex = Math.max(0, n - visibleCount);
+    setCarouselIndex((prev) => Math.min(prev, maxIndex));
+  }, [visibleCount, services]);
+
+  const showPrev = () => {
+    const n = services.length;
+    setCarouselIndex((prev) =>
+      prev <= 0 ? n - visibleCount : prev - 1
+    );
+  };
+
+  const showNext = () => {
+    const n = services.length;
+    setCarouselIndex((prev) =>
+      prev >= n - visibleCount ? 0 : prev + 1
+    );
+  };
 
   const loadServices = useCallback(async () => {
     if (loadingRef.current) return;
@@ -141,58 +176,96 @@ export function ServicesSection() {
 
         {services.length > 0 && (
           <>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-100px" }}
-              className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
-            >
-              {services.map((service, idx) => (
-                <Link key={service.id} href={`/services/${service.slug}`} className="group h-full">
-                  <motion.article
-                    variants={itemVariants}
-                    className="flex h-full flex-col overflow-hidden rounded-[0.8rem] bg-white shadow-[0_5px_30px_rgba(30,41,59,0.03)] transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(30,41,59,0.08)] text-left"
+            <div className="relative">
+              {services.length > visibleCount && (
+                <>
+                  {/* LEFT ARROW */}
+                  <button
+                    onClick={showPrev}
+                    aria-label="Previous"
+                    className="hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-12 w-12 rounded-full bg-white border border-slate-200 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-[#1d3557]"
+                    style={{ left: -20 }}
                   >
-                    {/* Image Area */}
-                    <div className="relative aspect-[16/11] overflow-hidden bg-slate-50">
-                      {service.imageUrl ? (
-                        <img 
-                          src={resolveImageUrl(service.imageUrl)} 
-                          alt={service.title} 
-                          className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-slate-200">
-                          <FiBriefcase className="text-4xl" />
-                        </div>
-                      )}
+                    <FiChevronLeft size={24} />
+                  </button>
+
+                  {/* RIGHT ARROW */}
+                  <button
+                    onClick={showNext}
+                    aria-label="Next"
+                    className="hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-12 w-12 rounded-full bg-white border border-slate-200 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-[#1d3557]"
+                    style={{ right: -20 }}
+                  >
+                    <FiChevronRight size={24} />
+                  </button>
+                </>
+              )}
+
+              <div className="overflow-hidden -mx-4 px-4">
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, margin: "-100px" }}
+                  className="flex transition-transform duration-500 ease-out py-4"
+                  style={{
+                    width: `${(services.length * 100) / visibleCount}%`,
+                    transform: `translateX(-${(carouselIndex * 100) / services.length}%)`,
+                  }}
+                >
+                  {services.map((service, idx) => (
+                    <div
+                      key={service.id}
+                      className="px-4"
+                      style={{ flex: `0 0 ${100 / services.length}%` }}
+                    >
+                      <Link href={`/services/${service.slug}`} className="group block h-full">
+                        <motion.article
+                          variants={itemVariants}
+                          className="flex h-full flex-col overflow-hidden rounded-[0.8rem] bg-white shadow-[0_5px_30px_rgba(30,41,59,0.03)] transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(30,41,59,0.08)] text-left"
+                        >
+                          {/* Image Area */}
+                          <div className="relative aspect-[16/11] overflow-hidden bg-slate-50">
+                            {service.imageUrl ? (
+                              <img 
+                                src={resolveImageUrl(service.imageUrl)} 
+                                alt={service.title} 
+                                className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center text-slate-200">
+                                <FiBriefcase className="text-4xl" />
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Content Area */}
+                          <div className="flex flex-1 flex-col px-6 py-7">
+                            {/* Sandbox style Category Label */}
+                            <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#aab0bc] mb-3 group-hover:text-[#3f78e0] transition-colors">
+                              <span className="w-4 h-[2px] bg-[#aab0bc] opacity-40 group-hover:bg-[#3f78e0]"></span>
+                              OUR SERVICE
+                            </p>
+                            
+                            <h3 className="text-[19px] font-bold tracking-tight text-[#343f52] leading-[1.3] transition-colors group-hover:text-[#3f78e0] mb-3">
+                              {service.title}
+                            </h3>
+
+                            <p className="text-[15px] leading-[1.6] text-[#60697b] line-clamp-3 mb-6">
+                              {service.description || "Specifically designed to meet your business needs and drive growth."}
+                            </p>
+
+                            <div className="mt-auto flex items-center gap-2 text-[13px] font-bold text-[#e63946] group-hover:translate-x-1 transition-transform">
+                              Explore Details →
+                            </div>
+                          </div>
+                        </motion.article>
+                      </Link>
                     </div>
-
-                    {/* Content Area */}
-                    <div className="flex flex-1 flex-col px-6 py-7">
-                      {/* Sandbox style Category Label */}
-                      <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#aab0bc] mb-3 group-hover:text-[#3f78e0] transition-colors">
-                        <span className="w-4 h-[2px] bg-[#aab0bc] opacity-40 group-hover:bg-[#3f78e0]"></span>
-                        OUR SERVICE
-                      </p>
-                      
-                      <h3 className="text-[19px] font-bold tracking-tight text-[#343f52] leading-[1.3] transition-colors group-hover:text-[#3f78e0] mb-3">
-                        {service.title}
-                      </h3>
-
-                      <p className="text-[15px] leading-[1.6] text-[#60697b] line-clamp-3 mb-6">
-                        {service.description || "Specifically designed to meet your business needs and drive growth."}
-                      </p>
-
-                      <div className="mt-auto flex items-center gap-2 text-[13px] font-bold text-[#e63946] group-hover:translate-x-1 transition-transform">
-                        Explore Details →
-                      </div>
-                    </div>
-                  </motion.article>
-                </Link>
-              ))}
-            </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
 
             {hasMore && (
               <div className="mt-16 flex justify-center">

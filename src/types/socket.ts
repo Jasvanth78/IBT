@@ -41,7 +41,7 @@ export interface SiteSettingsRealtimePayload {
   servicesWhyTitle?: string | null;
   servicesWhyBadge?: string | null;
   servicesWhyDescription?: string | null;
-  servicesWhyItems?: string | null;
+  servicesWhyItems?: string | WhyItem[] | null;
   servicesWhyPromiseBadge?: string | null;
   servicesWhyPromiseQuote?: string | null;
   servicesWhyPromiseAuthor?: string | null;
@@ -127,6 +127,25 @@ export interface SiteSettingsRealtimePayload {
   // Contact – Dynamic Branches List
   contactBranches?: any[] | null;
 
+  // About Page
+  aboutWhoTitle?: string | null;
+  aboutWhoDescription?: string | null;
+  aboutWhoSecondaryDescription?: string | null;
+  aboutWhoFeatures?: any[] | null;
+  aboutWhoImages?: any[] | null;
+  aboutProcessBadge?: string | null;
+  aboutProcessTitle?: string | null;
+  aboutProcessFeatures?: any[] | null;
+  aboutProcessImage?: string | null;
+  aboutMissionTitle?: string | null;
+  aboutMissionDesc?: string | null;
+  aboutVisionTitle?: string | null;
+  aboutVisionDesc?: string | null;
+  aboutMissionCards?: any[] | null;
+  aboutContactBadge?: string | null;
+  aboutContactTitle?: string | null;
+  aboutContactImage?: string | null;
+
   updatedAt: string;
 }
 
@@ -148,3 +167,9 @@ export interface SiteSettingsState extends SiteSettingsRealtimePayload {
   loading: boolean;
   error: string | null;
 }
+
+export interface WhyItem {
+  title: string;
+  description: string;
+}
+

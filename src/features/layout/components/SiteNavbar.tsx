@@ -83,43 +83,30 @@ export function SiteNavbar() {
                   ].join(' ')}
                 >
                   {item.label}
-                  {item.label !== 'Home' && item.label !== 'Contact Us' && (
-                    <svg viewBox="0 0 24 24" className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" strokeWidth="3">
-                      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
                 </Link>
               );
             })}
           </nav>
 
           <div className="hidden items-center gap-4 md:flex">
-            <div className="flex items-center gap-1 text-[14px] font-bold text-[#1d3557] cursor-pointer hover:text-[#e63946]">
-              EN
-              <svg viewBox="0 0 24 24" className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" strokeWidth="3">
-                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <button className="p-2 text-[#1d3557] hover:text-[#e63946]">
-              <FiInfo className="text-xl" />
-            </button>
           </div>
 
           <button
             type="button"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileOpen}
+            className="inline-flex items-center justify-center p-2 text-slate-700 transition hover:text-(--ui-primary) md:hidden"
+            onClick={() => setMobileOpen(true)}
             aria-controls="mobile-nav-drawer"
-            onClick={() => setMobileOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-[#1d3557] md:hidden"
+            aria-expanded={mobileOpen}
           >
-            <span className="sr-only">Menu</span>
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-              {mobileOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
-              )}
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>

@@ -25,13 +25,23 @@ export function WhyChooseUsSection() {
     if (!settings?.servicesWhyItems) return defaultItems;
 
     try {
-      const parsed = typeof settings.servicesWhyItems === 'string' 
-        ? JSON.parse(settings.servicesWhyItems) 
-        : settings.servicesWhyItems;
+      // Handle the case where the string might not be valid JSON (e.g., plain text or malformed)
+      if (typeof settings.servicesWhyItems === 'string') {
+        const trimmed = settings.servicesWhyItems.trim();
+        // Crude check if it looks like a JSON array or object
+        if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+          const parsed = JSON.parse(trimmed);
+          return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultItems;
+        }
+        // If it's a string but doesn't look like JSON, it's probably raw text, treat as fallback
+        return defaultItems;
+      }
       
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultItems;
+      return Array.isArray(settings.servicesWhyItems) && settings.servicesWhyItems.length > 0 
+        ? settings.servicesWhyItems 
+        : defaultItems;
     } catch (e) {
-      console.warn("Failed to parse servicesWhyItems", e);
+      console.warn("Failed to parse servicesWhyItems, using defaults.", e);
       return defaultItems;
     }
   }, [settings?.servicesWhyItems]);
@@ -120,7 +130,7 @@ export function WhyChooseUsSection() {
               </h2>
               {settings?.servicesWhyDescription && (
                 <div 
-                   className="text-[16px] text-[#60697b] mb-6 leading-relaxed"
+                   className="text-[16px] text-[#60697b] mb-6 leading-relaxed [&_*]:!whitespace-normal break-words"
                    dangerouslySetInnerHTML={{ __html: settings.servicesWhyDescription }}
                 />
               )}

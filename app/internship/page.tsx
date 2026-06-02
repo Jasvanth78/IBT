@@ -8,6 +8,7 @@ import {
   FiUsers, 
   FiZap 
 } from 'react-icons/fi'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'Internship | I-BACUS-TECH',
@@ -299,13 +300,13 @@ export default async function InternshipPage() {
               </div>
 
               <div className="mt-12 flex flex-wrap gap-5">
-                <a
-                  href={`mailto:${data.applyEmail}`}
+                <Link
+                  href="/internship/apply"
                   className="group flex h-14 items-center gap-3 rounded-2xl bg-(--ui-primary) px-10 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-(--ui-primary-soft)/30 transition hover:brightness-110"
                 >
                   <FiSend className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                   Apply Now
-                </a>
+                </Link>
                 <a
                   href="#journey"
                   className="flex h-14 items-center gap-3 rounded-2xl border border-slate-200 bg-white px-10 text-sm font-black uppercase tracking-widest text-slate-900 shadow-sm transition hover:bg-slate-50 hover:shadow-md"
@@ -679,30 +680,24 @@ export default async function InternshipPage() {
       </section>
 
       {/* ── CALL TO ACTION SECTION ── */}
-      <section className="bg-slate-950 py-20 text-white relative overflow-hidden">
-        {/* Subtle dot pattern background */}
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none opacity-60" />
-        
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4">
-            {data.closingTitle}
-          </h2>
-          {renderSectionRichText(data.closingContent, 'mt-4 text-base sm:text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed')}
+      <section className="py-24 bg-[#f4f7fb] text-center">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 flex flex-col items-center">
           
-          <div className="flex flex-wrap justify-center items-center gap-6">
-            <a
-              href={`mailto:${data.applyEmail}`}
-              className="inline-flex items-center justify-center rounded bg-white px-8 py-3.5 text-sm font-bold text-slate-950 transition-all hover:bg-slate-100 shadow-lg"
-            >
-              Send Resume
-            </a>
-            <a
-              href={`mailto:${data.applyEmail}`}
-              className="inline-flex items-center justify-center px-6 py-3.5 text-sm font-bold text-white hover:text-slate-200 transition-all border-b border-transparent hover:border-white"
-            >
-              Talk with Team
-            </a>
-          </div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#aab0bc] mb-4">
+            CAN'T FIND THE RIGHT POSITION?
+          </p>
+
+          <h2 className="text-[28px] sm:text-[34px] md:text-[38px] font-bold text-[#343f52] leading-[1.3] mb-10 max-w-2xl">
+            {data.closingTitle || "We are a community with 5000+ team members. Join and build the future with us."}
+          </h2>
+          
+          <Link
+            href="/internship/apply"
+            className="inline-flex h-[50px] items-center justify-center rounded-full bg-[#3f78e0] px-9 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(63,120,224,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(63,120,224,0.4)]"
+          >
+            Send Resume
+          </Link>
+          
         </div>
       </section>
 

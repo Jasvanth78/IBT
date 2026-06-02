@@ -63,9 +63,10 @@ export function StrategySection() {
             <h2 className="text-[28px] font-bold tracking-tight text-[#1d3557] sm:text-[36px] leading-[1.2] mb-6">
               {title}
             </h2>
-            <div className="text-[16px] leading-relaxed text-[#60697b] mb-8 space-y-3">
-              <p>{description}</p>
-            </div>
+            <div 
+              className="text-[16px] leading-relaxed text-[#60697b] mb-8 space-y-3 prose prose-slate"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
             
             <div className="flex justify-center lg:justify-start">
               <SiteButton 
