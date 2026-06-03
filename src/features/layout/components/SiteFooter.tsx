@@ -112,103 +112,160 @@ export function SiteFooter() {
     <footer className="border-t border-(--ui-border) bg-(--ui-surface) text-(--ui-text)">
       <div className="mx-auto max-w-7xl px-6 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-5">
-          <div className="md:col-span-2">
-            <Link href="/" className="inline-block">
-              <Image src="/logo.png" alt="IBT" width={180} height={50} className="h-16 w-auto" priority />
-            </Link>
-            <p className="mt-4 max-w-sm text-sm text-(--ui-muted) leading-7">
-              We are educators who kindle your passion and inspiration. We aim to help you achieve your dream.
+         <div className="md:col-span-2">
+  <Link href="/" className="inline-block">
+    <Image
+      src="/logo.png"
+      alt="IBT"
+      width={180}
+      height={50}
+      className="h-16 w-auto"
+      priority
+    />
+  </Link>
+
+  <div className="mt-6">
+    <h3 className="text-xl font-semibold text-(--ui-text)">
+      Empowering Careers Through Technology
+    </h3>
+
+    <p className="mt-3 max-w-md text-sm leading-7 text-(--ui-muted)">
+      We provide industry-focused training, internships, and
+      career development programs that help students and
+      professionals build practical skills and achieve their goals.
+    </p>
+  </div>
+
+  <div className="mt-8 flex items-center gap-4">
+    {loading ? (
+      <p className="text-xs text-(--ui-muted)">Loading...</p>
+    ) : socials?.length > 0 ? (
+      socials.map((s) => {
+        const Icon = (() => {
+          const name = (s.platform || "").toLowerCase();
+
+          if (name.includes("facebook")) return FaFacebookF;
+          if (name.includes("linkedin")) return FaLinkedinIn;
+          if (name.includes("youtube")) return FaYoutube;
+          if (name.includes("instagram")) return FaInstagram;
+
+          return FaLinkedinIn;
+        })();
+
+        return (
+          <a
+            key={s.id}
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.platform}
+            className="group flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 text-(--ui-primary) transition-all duration-300 hover:border-(--ui-primary) hover:bg-(--ui-primary) hover:text-white"
+          >
+            {s.logoUrl ? (
+              <img
+                src={s.logoUrl}
+                alt={s.platform}
+                className="h-7 w-7 object-cover"
+              />
+            ) : (
+              <Icon className="text-base" />
+            )}
+          </a>
+        );
+      })
+    ) : (
+      <>
+        <FaFacebookF className="h-5 w-5 text-(--ui-muted)" />
+        <FaLinkedinIn className="h-5 w-5 text-(--ui-muted)" />
+        <FaYoutube className="h-5 w-5 text-(--ui-muted)" />
+      </>
+    )}
+  </div>
+</div>
+          {links.map((section) => (
+  <div key={section.title}>
+    <div className="flex items-center gap-2 mb-5">
+      <div className="w-1.5 h-6 bg-(--ui-primary) rounded-full"></div>
+      <h3 className="text-xl font-bold text-(--ui-text)">
+        {section.title === "Product" ? "Explore" : "Quick Links"}
+      </h3>
+    </div>
+
+    <ul className="space-y-3">
+      {section.items.map((item) => (
+        <li key={item.label}>
+          <Link
+            href={item.href}
+            className="group flex items-center justify-between p-3 rounded-xl border border-gray-100 bg-white hover:bg-(--ui-primary)/5 hover:border-(--ui-primary)/20 transition-all duration-300"
+          >
+            <span className="text-sm font-medium text-(--ui-muted) group-hover:text-(--ui-primary)">
+              {item.label}
+            </span>
+
+            <svg
+              className="w-4 h-4 text-(--ui-primary) opacity-0 translate-x-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+))}
+    <div>
+  <h3 className="text-2xl font-bold text-(--ui-text) mb-6 relative inline-block">
+    Contact Us
+    <span className="absolute -bottom-2 left-0 w-16 h-1 bg-(--ui-primary) rounded-full"></span>
+  </h3>
+
+  <div className="space-y-5 mt-3">
+    {contacts.map((contact) => {
+      const Icon = iconMap[contact.type];
+      const href = hrefMap[contact.type]?.(contact.value);
+
+      return (
+        <div
+          key={contact.id}
+          className="flex items-start gap-3"
+        >
+          {/* Icon */}
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-(--ui-primary)/10">
+            <Icon className="h-4 w-4 text-(--ui-primary)" />
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <p className="text-xs uppercase tracking-[4px] text-(--ui-muted) ">
+              {contact.type}
             </p>
 
-            <div className="mt-5 flex items-center gap-3">
-              {loading ? (
-                <p className="text-xs text-(--ui-muted)">Loading...</p>
-              ) : socials && socials.length > 0 ? (
-                socials.map((s) => {
-                  const Icon = (() => {
-                    const name = (s.platform || '').toString().toLowerCase();
-                    if (name.includes('facebook')) return FaFacebookF;
-                    if (name.includes('linkedin')) return FaLinkedinIn;
-                    if (name.includes('youtube')) return FaYoutube;
-                    if (name.includes('instagram')) return FaInstagram;
-                    if (name.includes('twitter')) return FaFacebookF; // fallback to simple icon
-                    return FaLinkedinIn;
-                  })();
-
-                  return (
-                    <a
-                      key={s.id}
-                      href={s.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={s.platform}
-                      className="flex h-8 w-8 items-center justify-center rounded text-(--ui-primary) bg-transparent hover:bg-(--ui-primary-soft)"
-                    >
-                      {s.logoUrl ? (
-                        <img src={s.logoUrl} alt={s.platform} className="h-full w-full object-cover" />
-                      ) : (
-                        <Icon />
-                      )}
-                    </a>
-                  );
-                })
-              ) : (
-                <>
-                  <FaFacebookF className="h-6 w-6 text-(--ui-muted)" />
-                  <FaLinkedinIn className="h-6 w-6 text-(--ui-muted)" />
-                  <FaYoutube className="h-6 w-6 text-(--ui-muted)" />
-                </>
-              )}
-            </div>
+            {href ? (
+              <a
+                href={href}
+                className="text-sm text-(--ui-text) hover:text-(--ui-primary) transition-colors whitespace-nowrap"
+              >
+                {contact.value}
+              </a>
+            ) : (
+              <span className="text-sm text-(--ui-text) whitespace-nowrap">
+                {contact.value}
+              </span>
+            )}
           </div>
-
-          {links.map((section) => (
-            <div key={section.title}>
-              <h3 className="text-lg font-semibold text-(--ui-text) mb-4">{section.title === 'Product' ? 'Explore' : 'Quick links'}</h3>
-              <ul className="space-y-3">
-                {section.items.map((item) => (
-                  <li key={item.label}>
-                    <Link href={item.href} className="text-sm text-(--ui-muted) hover:text-(--ui-primary) transition-colors">
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          <div>
-            <h3 className="text-lg font-semibold text-(--ui-text) mb-4">Contacts</h3>
-            <div className="space-y-4">
-              {loading ? (
-                <p className="text-xs text-(--ui-muted)">Loading...</p>
-              ) : contacts.length > 0 ? (
-                contacts.map((contact) => {
-                  const Icon = iconMap[contact.type as keyof typeof iconMap];
-                  const href = hrefMap[contact.type as keyof typeof hrefMap](contact.value);
-
-                  return (
-                    <div key={contact.id} className="flex items-start gap-4">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-sm">
-                        <Icon className="h-5 w-5 text-(--ui-primary)" />
-                      </div>
-                      <div className="text-sm pt-2.5">
-                        {href ? (
-                          <a href={href} className="text-(--ui-text) hover:text-(--ui-primary) transition-colors">
-                            {contact.value}
-                          </a>
-                        ) : (
-                          <span className="text-(--ui-text)">{contact.value}</span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p className="text-xs text-(--ui-muted)">Contact info unavailable</p>
-              )}
-            </div>
-          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
         </div>
 
         <div className="relative mt-12">
