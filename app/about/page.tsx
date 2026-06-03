@@ -275,11 +275,11 @@ export default function AboutPage() {
                   {whoTitle}
                 </h2>
                 <div 
-                  className="text-xl text-slate-600 font-medium leading-[1.6] mb-8 prose prose-slate max-w-none"
+                  className="text-xl text-slate-600 font-medium leading-[1.6] mb-8 prose prose-slate max-w-none whitespace-normal break-words [&_*]:whitespace-normal"
                   dangerouslySetInnerHTML={{ __html: whoDescription }}
                 />
                 <div 
-                  className="text-base text-slate-400 font-medium leading-[1.8] mb-10 prose prose-sm prose-slate max-w-none"
+                  className="text-base text-slate-400 font-medium leading-[1.8] mb-10 prose prose-sm prose-slate max-w-none whitespace-normal break-words [&_*]:whitespace-normal"
                   dangerouslySetInnerHTML={{ __html: whoSecondaryDescription }}
                 />
               </div>
