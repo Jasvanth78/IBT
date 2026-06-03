@@ -267,6 +267,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
+              className="min-w-0"
             >
               <div className="mb-8">
                 <FiSpeaker className="text-4xl text-slate-800 mb-6" />
