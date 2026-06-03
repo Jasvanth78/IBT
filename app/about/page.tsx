@@ -116,7 +116,7 @@ export default function AboutPage() {
 
   if (loading && members.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-white gap-6">
+      <div className="flex min-h-full flex-col items-center justify-center bg-white gap-6">
         <Loader size="lg" label="Synchronizing Experience..." />
         {error && (
             <div className="flex flex-col items-center gap-4">
@@ -130,7 +130,7 @@ export default function AboutPage() {
   // Error but have no data
   if (error && members.length === 0) {
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-white gap-8 p-6 text-center">
+        <div className="flex min-h-full flex-col items-center justify-center bg-white gap-8 p-6 text-center">
             <div className="w-20 h-20 rounded-full bg-red-50 flex items-center justify-center text-red-500">
                 <FiActivity size={40} className="animate-pulse" />
             </div>
@@ -154,13 +154,13 @@ export default function AboutPage() {
   }
 
   return (
-    <div className="min-h-screen overflow-hidden bg-white">
+    <div className="min-h-full overflow-hidden bg-white">
 
       {/* =====================================================
           HERO SECTION
       ===================================================== */}
 
-      <section className="relative overflow-hidden bg-white pb-20 pt-16 sm:pb-24 lg:pb-32 lg:pt-20">
+      <section className="relative overflow-hidden bg-white pb-8 pt-8 sm:pb-10 lg:pb-12 lg:pt-16">
 
         {/* BACKGROUND */}
         <div className="absolute right-0 top-0 -z-10 hidden h-full w-1/3 rounded-l-[100px] bg-slate-50 lg:block" />
@@ -182,7 +182,6 @@ export default function AboutPage() {
 
               <h1 className="mt-7 text-[40px] font-black leading-[1.1] tracking-[-2px] text-slate-950 sm:text-[72px] sm:tracking-[-3px] lg:text-[90px]">
                 We Build
-                <br className="hidden sm:block" />
                 <span className="text-(--ui-primary)">
                   Digital Excellence
                 </span>
@@ -257,9 +256,9 @@ export default function AboutPage() {
           2. WHO ARE WE SECTION (Dynamic)
       ===================================================== */}
 
-      <section className="py-24 bg-white overflow-hidden">
+      <section className="py-14 bg-white overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             
             {/* Left: Content */}
             <motion.div
@@ -350,7 +349,7 @@ export default function AboutPage() {
           3. HOW IT WORKS SECTION (Dynamic)
       ===================================================== */}
 
-      <section className="py-24 bg-slate-50/50 overflow-hidden">
+      <section className="py-16 bg-slate-50/50 overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             
@@ -430,11 +429,11 @@ export default function AboutPage() {
           MISSION & VISION
       ===================================================== */}
 
-      <section className="overflow-hidden bg-[#0f172a] py-24 text-white">
+      <section className="overflow-hidden bg-[#0f172a] py-16 text-white">
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-          <div className="grid items-center gap-20 lg:grid-cols-2">
+          <div className="grid items-center gap-16 lg:grid-cols-2">
 
             {/* LEFT */}
             <div className="space-y-16">
@@ -532,7 +531,7 @@ export default function AboutPage() {
           TEAM SECTION
       ===================================================== */}
 
-      <section className="overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+      <section className="overflow-hidden bg-white py-12 sm:py-16 lg:py-16">
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
@@ -808,9 +807,9 @@ export default function AboutPage() {
           5. GET IN TOUCH SECTION (Dynamic)
       ===================================================== */}
 
-      <section className="py-24 bg-white overflow-hidden border-t border-slate-50">
+      <section className="py-16 bg-white overflow-hidden border-t border-slate-50">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             
             {/* Left: Illustration Image */}
             <motion.div

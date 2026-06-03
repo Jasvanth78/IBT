@@ -37,7 +37,7 @@ export default async function BlogPage() {
 
   if (!result) {
     return (
-      <div className="mx-auto w-full max-w-4xl px-4 py-32 text-center">
+      <div className="mx-auto w-full max-w-4xl px-4 py-20 text-center">
         <h1 className="text-4xl font-black text-slate-900">Our Blog</h1>
         <div className="mt-8 inline-block rounded-2xl border border-red-100 bg-red-50 p-6 text-(--ui-primary)">
           <p className="font-bold text-lg">Unable to load stories</p>
@@ -58,8 +58,8 @@ export default async function BlogPage() {
   })[0]
 
   return (
-    <div className="min-h-screen bg-[#f6f1ed] pb-24 text-slate-900">
-      <section className="relative isolate overflow-hidden border-b border-white/70 bg-[radial-gradient(circle_at_top_left,_rgba(220,20,60,0.16),_transparent_30%),radial-gradient(circle_at_right,_rgba(250,204,21,0.16),_transparent_26%),linear-gradient(180deg,#fffaf8_0%,#f8f1ec_45%,#f6f1ed_100%)] py-16 sm:py-20 lg:py-24">
+    <div className="min-h-full bg-[#f6f1ed] pb-20 text-slate-900">
+      <section className="relative isolate overflow-hidden border-b border-white/70 bg-[radial-gradient(circle_at_top_left,_rgba(220,20,60,0.16),_transparent_30%),radial-gradient(circle_at_right,_rgba(250,204,21,0.16),_transparent_26%),linear-gradient(180deg,#fffaf8_0%,#f8f1ec_45%,#f6f1ed_100%)] py-14 sm:py-20 lg:py-20">
         <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(148,163,184,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.15)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:linear-gradient(to_bottom,black,transparent_86%)]" />
         <div className="pointer-events-none absolute left-1/2 top-0 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-(--ui-primary)/10 blur-3xl" />
 

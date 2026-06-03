@@ -51,7 +51,7 @@ export default function ComponentsShowcase() {
   }
 
   return (
-    <div className="min-h-screen bg-(--ui-surface)">
+    <div className="min-h-full bg-(--ui-surface)">
       {/* Toast Demo */}
       <Toast
         open={toastOpen}

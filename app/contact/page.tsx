@@ -37,14 +37,14 @@ export default function ContactPage() {
 
   if (loading || settingsLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
+      <div className="flex min-h-full items-center justify-center bg-white">
         <Loader size="lg" label="Establishing Secure Line..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pt-32 pb-20">
+    <div className="min-h-full bg-[#F8FAFC] pt-24 pb-16">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Main Contact Card */}

@@ -216,6 +216,18 @@ export function AllServicesPage() {
   const heroBtn1Text = settings.servicesHeroBtn1Text || 'START A PROJECT';
   const heroBtn1Url = settings.servicesHeroBtn1Url || '/contact';
 
+  const formatHeroHeading = (title: string) => {
+    const normalized = title.trim().replace(/\n+/g, ' <br /> ');
+    if (normalized.includes('<br')) return normalized;
+
+    const words = normalized.split(' ').filter(Boolean);
+    if (words.length <= 1) return normalized;
+    if (words.length === 2) return `${words[0]} <br /> ${words[1]}`;
+
+    const splitAt = Math.ceil(words.length / 2);
+    return `${words.slice(0, splitAt).join(' ')} <br /> ${words.slice(splitAt).join(' ')}`;
+  };
+
   // What We Do dynamic data
   const whatTitle = settings.servicesWhatTitle || 'What We Do';
   const whatDescription = settings.servicesWhatDescription || 'The full service we are offering is specifically designed to meet your business needs and projects.';
@@ -346,7 +358,7 @@ export function AllServicesPage() {
 
   if (loading && services.length === 0) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
+      <div className="flex min-h-full items-center justify-center bg-white">
         <Loader size="lg" label="Loading Services..." />
       </div>
     );
@@ -363,7 +375,7 @@ export function AllServicesPage() {
           1. PRECISION HERO SECTION
       ===================================================== */}
 
-      <section className="relative pt-40 pb-32 overflow-hidden">
+      <section className="relative pt-12 pb-12 overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-16 items-center">
             {/* Left Column: Content */}
@@ -378,7 +390,7 @@ export function AllServicesPage() {
               </div>
 
               <h1 className="text-6xl md:text-[84px] font-black tracking-tight text-[#1d2939] leading-[1.05] mb-10"
-                dangerouslySetInnerHTML={{ __html: heroTitle.includes('<br') ? heroTitle : heroTitle.replace('Built for', 'Built for <br />') }}
+                dangerouslySetInnerHTML={{ __html: formatHeroHeading(heroTitle) }}
               />
 
               <p className="text-lg text-slate-500 leading-relaxed font-medium mb-12 max-w-xl">
@@ -423,7 +435,7 @@ export function AllServicesPage() {
               transition={{ delay: 0.2 }}
               className="relative lg:col-span-6"
             >
-              <div className="relative z-10 rounded-[4rem] rounded-br-[0rem] overflow-hidden shadow-2xl h-[600px]">
+              <div className="relative z-10 rounded-[4rem] rounded-br-[0rem] overflow-hidden shadow-2xl h-[520px]">
                 <img
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200"
                   alt="Service Architecture"
@@ -450,9 +462,9 @@ export function AllServicesPage() {
           2b. WHAT WE DO SECTION (Dynamic)
       ===================================================== */}
 
-      <section className="py-32 bg-white overflow-hidden">
+      <section className="py-20 bg-white overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left: Content + Feature Cards */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -540,7 +552,7 @@ export function AllServicesPage() {
           2c. PROCESS SECTION (Horizontal - How We Do It?)
       ===================================================== */}
 
-      <section className="py-24 bg-slate-50/30 overflow-hidden">
+      <section className="py-20 bg-slate-50/30 overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">{processTitle}</h2>
@@ -585,7 +597,7 @@ export function AllServicesPage() {
       {/* =====================================================
           3. SERVICE SHOWCASE (Solution Grid)
       ===================================================== */}
-      <section className="relative bg-white py-32">
+      <section className="relative bg-white py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           <div className="mb-20 flex flex-col items-center text-center">
@@ -692,7 +704,7 @@ export function AllServicesPage() {
           4. LET'S TALK SECTION (Join Us Style)
       ===================================================== */}
 
-      <section className="py-32 bg-white overflow-hidden">
+      <section className="py-20 bg-white overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             {/* Left: Image Grid */}

@@ -172,7 +172,7 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
             )}
           </motion.div>
         ) : (
-          <div className="rounded-[2rem] border border-dashed border-slate-200 py-24 text-center">
+          <div className="rounded-[2rem] border border-dashed border-slate-200 py-20 text-center">
              <p className="text-xl font-bold text-slate-500">No articles match your search.</p>
              <button 
               onClick={() => { setSearch(''); setSelectedCategory('All Posts'); }}

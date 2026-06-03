@@ -156,7 +156,7 @@ export default function InternshipApplyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col relative overflow-hidden">
+    <div className="min-h-full bg-slate-50 flex flex-col relative overflow-hidden">
       {/* Background Ornaments */}
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[var(--ui-primary)]/10 to-transparent -z-10" />
       <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-[var(--ui-primary)]/5 blur-3xl -z-10" />

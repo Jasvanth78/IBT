@@ -264,9 +264,9 @@ export function AllLabsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-full bg-white">
       {/* 1. Precision-led Hero Section */}
-      <section className="relative pt-32 pb-24 overflow-hidden border-b border-slate-100">
+      <section className="relative pt-28 pb-20 overflow-hidden border-b border-slate-100">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div 
@@ -341,7 +341,7 @@ export function AllLabsPage() {
       </section>
 
       {/* 2. Lab Initiatives Grid */}
-      <section className="py-24 bg-slate-50/30">
+      <section className="py-20 bg-slate-50/30">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-16">
             <div>
@@ -430,9 +430,9 @@ export function AllLabsPage() {
       </section>
 
       {/* 3. Alternating Details: Technical Rigor */}
-      <section className="py-24 bg-white overflow-hidden">
+      <section className="py-20 bg-white overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
               <h2 className="text-5xl font-black text-slate-900 tracking-tight leading-tight mb-8">Technical Rigor</h2>
               <p className="text-base text-slate-500 leading-relaxed font-medium mb-12 max-w-lg">
@@ -470,9 +470,9 @@ export function AllLabsPage() {
       </section>
 
       {/* 4. Mentorship-First Section */}
-      <section className="py-24 bg-slate-50/30 overflow-hidden">
+      <section className="py-20 bg-slate-50/30 overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <div className="absolute -inset-4 rounded-[4rem] bg-slate-200/50 rotate-3 z-0" />
               <div className="relative z-10 rounded-[3.5rem] overflow-hidden shadow-2xl h-[500px]">
@@ -512,7 +512,7 @@ export function AllLabsPage() {
       </section>
 
       {/* Lab Projects Grid (at bottom) */}
-      <section className="py-24 lg:py-32 bg-white">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-16 flex items-center justify-between">
             <div>

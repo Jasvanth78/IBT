@@ -63,7 +63,7 @@ export function SiteNavbar() {
               width={180}
               height={50}
               priority
-              className="block h-8 w-auto object-contain transition-opacity duration-200 group-hover:opacity-90"
+              className="block h-16 w-auto object-contain transition-opacity duration-200 group-hover:opacity-90"
             />
           </Link>
 
@@ -76,7 +76,7 @@ export function SiteNavbar() {
                   key={item.href}
                   href={item.href}
                   className={[
-                    'px-4 py-2 text-[15px] font-bold transition-all duration-300 flex items-center gap-1',
+                    'px-4 py-2 text-[15px] font-bold transition-all duration-300',
                     isActive
                       ? 'text-[#e63946]'
                       : 'text-[#1d3557] hover:text-[#e63946]',
@@ -89,24 +89,24 @@ export function SiteNavbar() {
           </nav>
 
           <div className="hidden items-center gap-4 md:flex">
+
           </div>
 
           <button
             type="button"
-            className="inline-flex items-center justify-center p-2 text-slate-700 transition hover:text-(--ui-primary) md:hidden"
-            onClick={() => setMobileOpen(true)}
-            aria-controls="mobile-nav-drawer"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
+            aria-controls="mobile-nav-drawer"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-[#1d3557] md:hidden"
           >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            <span className="sr-only">Menu</span>
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+              {mobileOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+              )}
             </svg>
           </button>
         </div>

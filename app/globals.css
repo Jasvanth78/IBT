@@ -30,18 +30,38 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
 body {
   color: var(--ui-text);
   background: var(--ui-surface);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  font-family: inherit;
+}
+
+.font-serif,
+.font-mono,
+.font-sans {
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif !important;
+}
+
+code,
+kbd,
+pre,
+samp,
+tt {
+  font-family: inherit !important;
 }
 
 /* Custom Scrollbar Styles */

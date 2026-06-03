@@ -44,7 +44,7 @@ export default async function LabDetailPage({ params }: LabDetailPageProps) {
   const imageSrc = resolveImageUrl(project.imageUrl)
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20">
+    <div className="min-h-full bg-slate-50/50 pb-20">
       {/* Immersive Header */}
       <section className="relative h-[40vh] min-h-[400px] w-full overflow-hidden bg-slate-900 lg:h-[50vh]">
         {imageSrc ? (

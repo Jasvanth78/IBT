@@ -254,10 +254,10 @@ export default async function InternshipPage() {
   const galleryImages = (data.galleryImages.length > 0 ? data.galleryImages : defaultGalleryImages).map(url => resolveImageUrl(url) || '')
 
   return (
-    <div className="bg-white min-h-screen text-slate-900 overflow-x-hidden">
+    <div className="bg-white text-slate-900 overflow-x-hidden">
       
       {/* ── HERO SECTION ── */}
-      <section className="relative bg-[#fafafe] pt-16 pb-32 lg:pt-24 lg:pb-40 overflow-hidden">
+      <section className="relative bg-[#fafafe] pt-16 pb-24 lg:pt-20 lg:pb-28 overflow-hidden">
         {/* Background Geometric Elements */}
         <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full border border-blue-50/50 -z-10 animate-pulse" />
         <div className="absolute bottom-40 left-[5%] opacity-20 -z-10">
@@ -626,7 +626,7 @@ export default async function InternshipPage() {
             
             {/* Testimonial 1 */}
             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 sm:p-10 flex flex-col justify-between shadow-sm relative overflow-hidden">
-              <div className="absolute top-6 left-6 text-[120px] font-serif font-black text-(--ui-primary-soft)/10 leading-none select-none pointer-events-none">
+              <div className="absolute top-6 left-6 text-[120px] font-sans font-black text-(--ui-primary-soft)/10 leading-none select-none pointer-events-none">
                 99
               </div>
               <div className="relative z-10">
@@ -651,7 +651,7 @@ export default async function InternshipPage() {
 
             {/* Testimonial 2 */}
             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 sm:p-10 flex flex-col justify-between shadow-sm relative overflow-hidden">
-              <div className="absolute top-6 left-6 text-[120px] font-serif font-black text-(--ui-primary-soft)/10 leading-none select-none pointer-events-none">
+              <div className="absolute top-6 left-6 text-[120px] font-sans font-black text-(--ui-primary-soft)/10 leading-none select-none pointer-events-none">
                 99
               </div>
               <div className="relative z-10">
@@ -680,7 +680,7 @@ export default async function InternshipPage() {
       </section>
 
       {/* ── CALL TO ACTION SECTION ── */}
-      <section className="py-24 bg-[#f4f7fb] text-center">
+      <section className="py-20 bg-[#f4f7fb] text-center">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 flex flex-col items-center">
           
           <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#aab0bc] mb-4">

@@ -110,11 +110,11 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t border-(--ui-border) bg-(--ui-surface) text-(--ui-text)">
-      <div className="mx-auto max-w-7xl px-6 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-5">
           <div className="md:col-span-2">
             <Link href="/" className="inline-block">
-              <Image src="/logo.png" alt="IBT" width={160} height={44} className="h-10 w-auto" priority />
+              <Image src="/logo.png" alt="IBT" width={180} height={50} className="h-16 w-auto" priority />
             </Link>
             <p className="mt-4 max-w-sm text-sm text-(--ui-muted) leading-7">
               We are educators who kindle your passion and inspiration. We aim to help you achieve your dream.
@@ -218,7 +218,7 @@ export function SiteFooter() {
             </svg>
           </div>
 
-          <div className="mt-6 flex flex-col items-center justify-between gap-4 bg-(--ui-surface-muted) py-6">
+          <div className="mt-6 flex flex-col items-center justify-between gap-4 bg-(--ui-surface-muted) py-4">
             <p className="text-sm text-(--ui-muted)">Copyright © {new Date().getFullYear()}I-BACUS TECH SOLUTION. All rights reserved.</p>
           </div>
         </div>

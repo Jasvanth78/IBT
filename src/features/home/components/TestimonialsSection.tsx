@@ -110,7 +110,7 @@ export function TestimonialsSection() {
 
   if (testimonialsLoading && !hasTestimonials) {
     return (
-      <div className="flex items-center justify-center py-20 sm:py-24">
+      <div className="flex items-center justify-center py-16 sm:py-20">
         <Loader
           size="lg"
           label="Loading Testimonials..."
@@ -122,7 +122,7 @@ export function TestimonialsSection() {
  
 
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-24">
+    <section className="bg-white py-16 sm:py-20 lg:py-20">
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 

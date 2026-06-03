@@ -95,7 +95,7 @@ export function LandingPage() {
             <motion.div variants={fadeUp} transition={{ duration: 0.55 }} className="space-y-6">
               <div className="space-y-4">
                 <h1 className="text-4xl font-bold tracking-tight text-[#1d3557] sm:text-5xl lg:text-[56px] leading-[1.15]">
-                  Grow Your Business<br />
+                  Grow Your Business
                   with <span className="text-[#e63946]">Our Solutions.</span>
                 </h1>
                 <p className="max-w-2xl text-[17px] leading-relaxed text-[#457b9d] font-medium">
