@@ -161,13 +161,11 @@ export function ServicesSection() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <div className="mb-10 text-left">
-          <h3 className="text-2xl font-bold uppercase tracking-widest text-[#e63946] mb-3">
+          <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
             OUR SERVICES
           </h3>
 
-          <h2
-            className="max-w-2xl text-2xl md:text-3xl font-extrabold text-[#0f172a] tracking-tight"
-          >
+          <h2 className="max-w-2xl font-extrabold text-[#0f172a] tracking-tight">
             Solutions That Drive Growth
           </h2>
         </div>

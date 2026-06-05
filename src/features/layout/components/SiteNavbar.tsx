@@ -19,8 +19,13 @@ const navItems = [
 
 export function SiteNavbar() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const prevPathname = useRef(pathname);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (prevPathname.current !== pathname) {
@@ -69,7 +74,8 @@ export function SiteNavbar() {
 
           <nav className="hidden items-center gap-2 md:flex">
             {navItems.map((item) => {
-              const isActive = pathname === item.href;
+              // Avoid hydration mismatch by waiting for client mount to set active state
+              const isActive = mounted && pathname === item.href;
 
               return (
                 <Link
@@ -78,7 +84,7 @@ export function SiteNavbar() {
                   className={[
                     'px-4 py-2 text-[15px] font-bold transition-all duration-300 relative',
                     isActive
-                      ? 'text-[#e63946] after:absolute after:bottom-[-20px] after:left-4 after:right-4 after:h-[3px] after:bg-[#e63946] after:rounded-t-full'
+                      ? 'text-[#e63946] after:absolute after:bottom-1 after:left-4 after:right-4 after:h-[2px] after:bg-[#e63946]'
                       : 'text-[#1d3557] hover:text-[#e63946]',
                   ].join(' ')}
                 >
@@ -91,7 +97,8 @@ export function SiteNavbar() {
           <div className="hidden items-center gap-4 md:flex">
             <SiteButton
               href="/contact"
-              className="bg-[#e63946] hover:bg-[#c1121f] text-white rounded-full px-6 py-2.5 text-[15px] font-bold transition-all shadow-md flex items-center gap-1.5"
+              className="bg-[#e63946] hover:bg-[#c1121f] text-white rounded-md px-6 py-2.5 text-[14px] font-bold transition-all shadow-md"
+              rightIcon={<FiArrowRight size={16} />}
             >
               Get In Touch
             </SiteButton>
@@ -153,7 +160,7 @@ export function SiteNavbar() {
         <nav className="flex flex-1 flex-col overflow-y-auto p-4">
           <div className="flex flex-1 flex-col">
             {navItems.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = mounted && pathname === item.href;
 
               return (
                 <Link

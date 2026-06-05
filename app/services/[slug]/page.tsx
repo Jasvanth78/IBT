@@ -84,7 +84,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <div className="space-y-5 p-6 sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-(--ui-primary)">Service</p>
-          <h1 className="text-4xl font-black text-slate-900 sm:text-5xl lg:text-6xl">{service.title}</h1>
+          <h1 className="text-[36px] sm:text-[44px] lg:text-[54px] font-black leading-[1.15] text-slate-900">{service.title}</h1>
           <div 
             className="text-base leading-8 text-slate-500 prose prose-slate max-w-none"
             dangerouslySetInnerHTML={{ __html: service.description }}

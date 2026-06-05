@@ -49,10 +49,10 @@ export default async function ContactPage(_: Props) {
           {/* LEFT: TEXT CONTENT & CORPORATE INFO CARDS */}
           <div className="lg:col-span-5 flex flex-col space-y-8">
             <div>
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#e63946]">
+              <span className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#e63946]">
                 GET IN TOUCH
               </span>
-              <h1 className="mt-3 text-4xl font-black tracking-tight text-[#0f172a] sm:text-5xl leading-[1.1]">
+              <h1 className="mt-3 text-[36px] sm:text-[44px] lg:text-[54px] font-black tracking-tight text-[#0f172a] leading-[1.1]">
                 {heroTitle ? (
                   heroTitle.split('\n').map((line, index, array) => {
                     if (line.toLowerCase().includes('amazing')) {
@@ -147,7 +147,7 @@ export default async function ContactPage(_: Props) {
         ===================================================== */}
         <div className="mt-24 border-t border-slate-100 pt-16">
           <div className="mb-10 text-left">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#e63946]">OUR OFFICES</span>
+            <span className="text-[16px] font-bold uppercase tracking-wider !text-red-500">OUR OFFICES</span>
             <h2 className="text-3xl font-extrabold text-[#0f172a] mt-1 tracking-tight">Visit Our Offices</h2>
             <p className="text-sm text-slate-500 mt-2">
               We have physical hubs around the globe where our innovators collaborate. Feel free to stop by and say hello.
@@ -256,7 +256,7 @@ export default async function ContactPage(_: Props) {
         <div className="mt-20 bg-[#0a1128] rounded-2xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(230,57,70,0.12),transparent_60%)] pointer-events-none" />
           <div className="relative z-10">
-            <h3 className="text-xl font-extrabold text-white sm:text-2xl tracking-tight">Ready to start your next project?</h3>
+            <h3 className="text-xl font-extrabold !text-white sm:text-2xl tracking-tight">Ready to start your next project?</h3>
             <p className="text-xs text-slate-400 mt-1 font-medium">Let's discuss how we can turn your ideas into reality.</p>
           </div>
           <a

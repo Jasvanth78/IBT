@@ -9,8 +9,9 @@ const services = [
     id: 1,
     title: 'Web Development',
     description: 'Modern, responsive web applications built with latest technologies.',
-    icon: <FiMonitor className="w-6 h-6 text-blue-500" />,
-    color: 'bg-blue-50',
+    icon: <FiMonitor className="w-6 h-6 text-blue-600" />,
+    color: 'bg-blue-50/50',
+    textColor: 'text-blue-600',
     link: '/services/web-development'
   },
   {
@@ -18,7 +19,8 @@ const services = [
     title: 'Mobile App Development',
     description: 'Custom mobile apps for Android & iOS that deliver great user experiences.',
     icon: <FiSmartphone className="w-6 h-6 text-red-500" />,
-    color: 'bg-red-50',
+    color: 'bg-red-50/50',
+    textColor: 'text-red-500',
     link: '/services/mobile-development'
   },
   {
@@ -26,15 +28,17 @@ const services = [
     title: 'AI Solutions',
     description: 'AI-powered solutions to automate, analyze and accelerate your business.',
     icon: <FiCpu className="w-6 h-6 text-green-500" />,
-    color: 'bg-green-50',
+    color: 'bg-green-50/50',
+    textColor: 'text-green-500',
     link: '/services/ai-solutions'
   },
   {
     id: 4,
     title: 'ERP Systems',
     description: 'Powerful ERP systems to streamline your operations and improve efficiency.',
-    icon: <FiDatabase className="w-6 h-6 text-purple-500" />,
-    color: 'bg-purple-50',
+    icon: <FiDatabase className="w-6 h-6 text-purple-600" />,
+    color: 'bg-purple-50/50',
+    textColor: 'text-purple-600',
     link: '/services/erp-systems'
   },
   {
@@ -42,7 +46,8 @@ const services = [
     title: 'Internships',
     description: 'Industry-oriented internship programs with real-world experience.',
     icon: <FiAward className="w-6 h-6 text-orange-500" />,
-    color: 'bg-orange-50',
+    color: 'bg-orange-50/50',
+    textColor: 'text-orange-500',
     link: '/internships'
   },
   {
@@ -50,7 +55,8 @@ const services = [
     title: 'Training & Courses',
     description: 'Practical training programs to build in-demand tech skills.',
     icon: <FiBookOpen className="w-6 h-6 text-blue-500" />,
-    color: 'bg-blue-50',
+    color: 'bg-blue-50/50',
+    textColor: 'text-blue-500',
     link: '/courses'
   }
 ];
@@ -59,19 +65,19 @@ export function SolutionsSection() {
   return (
     <section className="bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
-        <div className="mb-16">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-red-500 mb-3">
+        <div className="mb-12">
+          <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
             OUR SERVICES
           </h3>
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+          <h2 className="font-black tracking-tight text-[#0f172a]">
             Solutions That Drive Growth
           </h2>
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
           {services.map((service, index) => (
             <motion.div
               key={service.id}
@@ -79,25 +85,25 @@ export function SolutionsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group rounded-2xl border border-slate-100 bg-white p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
+              className="group rounded-2xl border border-slate-100 bg-white p-6 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 flex flex-col"
             >
-              <div className={`w-14 h-14 rounded-xl ${service.color} flex items-center justify-center mb-6`}>
+              <div className={`w-12 h-12 rounded-full ${service.color} flex items-center justify-center mb-6`}>
                 {service.icon}
               </div>
-              
-              <h4 className="text-xl font-bold text-slate-900 mb-4">
+
+              <h4 className="text-[15px] font-extrabold text-[#0f172a] mb-3 leading-snug">
                 {service.title}
               </h4>
-              
-              <p className="text-slate-500 mb-8 flex-grow leading-relaxed">
+
+              <p className="text-[13px] text-slate-500 mb-6 flex-grow leading-relaxed">
                 {service.description}
               </p>
-              
-              <Link 
+
+              <Link
                 href={service.link}
-                className="inline-flex items-center text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                className={`inline-flex items-center text-[13px] font-bold ${service.textColor} opacity-90 hover:opacity-100 transition-opacity`}
               >
-                Learn More <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                Learn More <FiArrowRight className="ml-1.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
           ))}

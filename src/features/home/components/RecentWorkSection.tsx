@@ -72,10 +72,10 @@ export function RecentWorkSection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-widest text-[#e63946] mb-3">
+            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
               {badge}
             </h3>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0f172a] tracking-tight">
+            <h2 className="font-extrabold text-[#0f172a] tracking-tight">
               {title}
             </h2>
           </div>

@@ -6,7 +6,7 @@ import { SiteButton } from '@/src/shared/ui';
 
 export function CTASection() {
   return (
-    <section className="bg-white py-16 lg:py-24 relative overflow-hidden">
+    <section className="bg-white py-10 lg:py-12 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -21,11 +21,11 @@ export function CTASection() {
              <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr_1fr] items-center px-8 py-12 md:p-16 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr_1fr] items-center px-8 py-8 md:px-12 md:py-10 gap-6">
             
             {/* Left Graphic - Rocket */}
             <div className="hidden md:flex justify-center items-center relative h-full">
-               <div className="relative w-48 h-48">
+               <div className="relative w-36 h-36">
                   {/* Rocket SVG */}
                   <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-2xl translate-y-4">
                      {/* Cloud Base */}
@@ -49,19 +49,19 @@ export function CTASection() {
 
             {/* Center Content */}
             <div className="text-center md:text-left z-10">
-              <h2 className="text-3xl md:text-4xl lg:text-[44px] font-bold text-white leading-tight mb-4">
+              <h2 className="font-bold !text-white leading-tight mb-4">
                 Ready to Transform<br />Your Business?
               </h2>
             </div>
 
             {/* Right Content */}
             <div className="text-center md:text-right z-10 flex flex-col md:items-end">
-              <p className="text-slate-300 text-sm md:text-base mb-6 max-w-xs mx-auto md:mx-0">
+              <p className="text-slate-300 text-[13px] md:text-sm mb-5 max-w-xs mx-auto md:mx-0">
                 Let's build something amazing together. Get a free consultation with our experts.
               </p>
               <SiteButton 
                 href="/contact"
-                className="bg-red-500 text-white rounded-md px-6 py-3.5 font-semibold text-sm hover:bg-red-600 transition-colors shadow-lg shadow-red-500/30 whitespace-nowrap"
+                className="bg-[#e63946] text-white rounded-[6px] px-6 py-3 font-bold text-[13px] hover:bg-[#c1121f] transition-colors shadow-lg shadow-[#e63946]/30 whitespace-nowrap"
               >
                 Schedule Free Consultation <FiArrowRight className="inline-block ml-1" />
               </SiteButton>

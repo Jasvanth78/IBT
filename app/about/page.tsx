@@ -188,11 +188,11 @@ export default function AboutPage() {
 
             {/* LEFT */}
             <div className="text-left lg:col-span-6">
-              <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#e63946]">
+              <span className="text-[18px] font-bold uppercase tracking-[0.25em] text-[#e63946]">
                 ABOUT IBACUS TECH
               </span>
 
-              <h1 className="mt-4 text-[44px] sm:text-[54px] md:text-[60px] font-extrabold tracking-tight text-[#0f172a] leading-[1.1]">
+              <h1 className="mt-4 text-[36px] sm:text-[44px] lg:text-[54px] font-extrabold tracking-tight text-[#0f172a] leading-[1.15]">
                 We Build Digital <br />
                 <span className="text-[#e63946]">Excellence.</span>
               </h1>
@@ -212,7 +212,7 @@ export default function AboutPage() {
 
                 <Link
                   href="/services"
-                  className="flex h-12 items-center justify-center rounded-full bg-white border border-slate-200 px-5 text-sm font-semibold text-[#0f172a] transition hover:bg-slate-50 gap-3 shadow-sm"
+                  className="flex h-12 items-center justify-center rounded-full bg-white border border-slate-200 px-5 text-[18px] font-semibold text-[#0f172a] transition hover:bg-slate-50 gap-3 shadow-sm"
                 >
                   Our Services
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#0f172a] text-white">
@@ -296,7 +296,7 @@ export default function AboutPage() {
 
             {/* Left Column Content */}
             <div className="lg:col-span-6">
-              <span className="text-sm font-bold uppercase tracking-wider text-[#e63946]">
+              <span className="text-[18px] font-bold uppercase tracking-wider text-[#e63946]">
                 WHO WE ARE
               </span>
               <h2 className="mt-2 text-[36px] font-extrabold text-[#0f172a] tracking-tight sm:text-[44px] md:text-[50px] leading-[1.1] mb-6">
@@ -359,7 +359,7 @@ export default function AboutPage() {
             {/* Left Grid Layout: Features */}
             <div className="lg:col-span-7 space-y-8">
               <div>
-                <span className="text-sm font-bold uppercase tracking-wider text-[#e63946]">
+                <span className="text-[18px] font-bold uppercase tracking-wider text-[#e63946]">
                   {processBadge}
                 </span>
                 <h2 className="mt-2 text-[36px] font-extrabold text-[#0f172a] tracking-tight sm:text-[44px] md:text-[50px] leading-[1.1]">
@@ -413,10 +413,10 @@ export default function AboutPage() {
             <div className="hidden lg:block absolute left-[33.333%] top-4 bottom-4 w-px bg-white/10"></div>
 
             <div className="lg:col-span-4 lg:pr-12">
-              <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#e63946]">
+              <span className="text-[16px] font-bold uppercase tracking-[0.15em] text-[#e63946]">
                 OUR JOURNEY IN NUMBERS
               </span>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-[34px] mb-4 leading-[1.2]">
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight !text-white sm:text-[34px] mb-4 leading-[1.2]">
                 Milestones That <br className="hidden sm:block" />
                 Define Our Journey
               </h2>
@@ -428,9 +428,9 @@ export default function AboutPage() {
             <div className="lg:col-span-8 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:pl-6">
               {missionCards.map((card: any, idx: number) => {
                 const icons = [
-                  <IoRocketOutline size={26} />, 
-                  <IoPeopleOutline size={26} />, 
-                  <IoSchoolOutline size={26} />, 
+                  <IoRocketOutline size={26} />,
+                  <IoPeopleOutline size={26} />,
+                  <IoSchoolOutline size={26} />,
                   <IoTrophyOutline size={26} />
                 ]
                 return (
@@ -462,7 +462,7 @@ export default function AboutPage() {
                 <FiEye size={24} />
               </div>
               <div>
-                <span className="text-sm font-bold text-[#e63946] uppercase tracking-wider">OUR VISION</span>
+                <span className="text-[14px] font-bold text-[#e63946] uppercase tracking-wider">OUR VISION</span>
                 <h3 className="text-[32px] sm:text-[40px] md:text-[44px] leading-[1.1] font-extrabold text-[#0f172a] tracking-tight mt-2 mb-4">{visionTitle}</h3>
                 <p className="text-base sm:text-lg text-slate-500 leading-relaxed">{visionDesc}</p>
               </div>
@@ -474,7 +474,7 @@ export default function AboutPage() {
                 <FiTarget size={24} />
               </div>
               <div>
-                <span className="text-sm font-bold text-[#e63946] uppercase tracking-wider">OUR MISSION</span>
+                <span className="text-[14px] font-bold text-[#e63946] uppercase tracking-wider">OUR MISSION</span>
                 <h3 className="text-[32px] sm:text-[40px] md:text-[44px] leading-[1.1] font-extrabold text-[#0f172a] tracking-tight mt-2 mb-4">{missionTitle}</h3>
                 <p className="text-base sm:text-lg text-slate-500 leading-relaxed">{missionDesc}</p>
               </div>
@@ -492,7 +492,7 @@ export default function AboutPage() {
 
           {/* HEADER HEADER */}
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-sm font-bold uppercase tracking-wider text-[#e63946]">OUR TEAM</span>
+            <span className="text-[18px] font-bold uppercase tracking-wider text-[#e63946]">OUR TEAM</span>
             <h2 className="text-[36px] sm:text-[44px] md:text-[50px] leading-[1.1] font-extrabold tracking-tight text-[#0f172a] mt-2 mb-4">Meet Our Leadership Team</h2>
             <p className="text-base sm:text-lg text-slate-500 mt-2">Experts who drive innovation, deliver solutions and build successful partnerships.</p>
           </div>
@@ -525,7 +525,7 @@ export default function AboutPage() {
                           </button>
                         </>
                       )}
-                      
+
                       <div className="overflow-hidden px-2 py-4 -mx-2">
                         <motion.div
                           className="flex transition-transform duration-500 ease-in-out"
@@ -634,7 +634,7 @@ export default function AboutPage() {
                   )}
 
                   <div className="mt-12 flex justify-center">
-                    <button 
+                    <button
                       onClick={() => setShowAllMembers(!showAllMembers)}
                       className="inline-flex h-12 items-center justify-center rounded-lg border border-slate-200 bg-white px-8 text-sm font-semibold text-[#0f172a] shadow-sm hover:bg-slate-50 transition"
                     >
@@ -657,7 +657,7 @@ export default function AboutPage() {
       <section className="py-12 bg-white border-t border-b border-slate-100 overflow-hidden">
         <div className="mx-auto max-w-7xl text-center relative">
           <span className="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase">TRUSTED BY AMAZING COMPANIES</span>
-          
+
           <div className="mt-10 relative flex w-full items-center">
             {/* Gradient Masks */}
             <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
@@ -674,7 +674,7 @@ export default function AboutPage() {
                 { id: '6', name: 'X-Mind', type: 'text', color: 'text-blue-500' },
               ]
               const displayLogos = combinedLogos.length > 0 ? combinedLogos : fallbackLogos
-              
+
               const multipliedLogos = displayLogos.length < 8
                 ? [...displayLogos, ...displayLogos, ...displayLogos, ...displayLogos]
                 : [...displayLogos, ...displayLogos]
@@ -710,7 +710,7 @@ export default function AboutPage() {
             <FiSend size={180} className="text-white transform -rotate-12 translate-y-12 -translate-x-6" />
           </div>
           <div className="relative z-10">
-            <h3 className="text-xl font-extrabold text-white sm:text-2xl">Ready to work with us?</h3>
+            <h3 className="text-xl font-extrabold !text-white sm:text-2xl">Ready to work with us?</h3>
             <p className="text-xs text-slate-200 mt-1">Let's build something amazing together.</p>
           </div>
           <Link

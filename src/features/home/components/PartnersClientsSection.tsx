@@ -144,10 +144,10 @@ export function PartnersClientsSection() {
 
         {/* Header */}
         <div className="mb-14 text-left">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-[#0f172a] mb-3">
+          <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
             OUR PARTNERS & CLIENTS
           </h3>
-          <h2 className="text-4xl md:text-[44px] font-bold text-[#0f172a] tracking-tight">
+          <h2 className="font-bold text-[#0f172a] tracking-tight">
             Trusted By Amazing Companies
           </h2>
         </div>

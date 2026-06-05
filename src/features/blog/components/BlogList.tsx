@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiArrowRight, FiCalendar } from 'react-icons/fi';
+import { FiSearch, FiCalendar, FiMail } from 'react-icons/fi';
 import { type PublicBlog } from '@/src/api/client';
 import { Pagination } from '@/src/shared/ui/Pagination';
 
@@ -37,7 +37,7 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
 
   const getExcerpt = (text?: string | null) => {
     if (!text) return '';
-    return text.replace(/<[^>]*>/g, '').replace(/&nbsp;/gi, ' ').trim().slice(0, 160) + '...';
+    return text.replace(/<[^>]*>/g, '').replace(/&nbsp;/gi, ' ').trim().slice(0, 100) + '...';
   };
 
   const formatPublishedAt = (value?: string | null) => {
@@ -68,121 +68,217 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
     return filteredBlogs.slice(start, start + POSTS_PER_PAGE);
   }, [filteredBlogs, currentPage]);
 
+  // For Sidebar widgets
+  const popularPosts = initialBlogs.slice(0, 4);
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    initialBlogs.forEach(blog => {
+      if (blog.category) {
+        counts[blog.category] = (counts[blog.category] || 0) + 1;
+      }
+    });
+    return counts;
+  }, [initialBlogs]);
+
   return (
-    <div className="space-y-12 pb-12">
-      {/* Search and Filters */}
-      <div className="flex flex-col gap-4 rounded-[2rem] border border-white/80 bg-white/85 p-4 shadow-[0_16px_45px_rgba(15,23,42,0.06)] backdrop-blur sm:p-5 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap gap-2">
+    <div className="space-y-12">
+      
+      {/* =====================================================
+          TOP BAR (Filters & Search)
+      ===================================================== */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 border-b border-slate-100 pb-8">
+        
+        {/* Categories List */}
+        <div className="flex flex-wrap gap-2 sm:gap-4 items-center overflow-x-auto pb-2 sm:pb-0 scrollbar-hide w-full lg:w-auto">
           {categories.map(cat => (
             <button
               key={cat as string}
               onClick={() => setSelectedCategory(cat as string)}
-              className={[
-                'rounded-full px-5 py-2.5 text-[13px] font-bold transition-all duration-300',
+              className={`whitespace-nowrap px-4 sm:px-5 py-2.5 rounded-lg text-[13px] font-bold transition-all duration-300 ${
                 selectedCategory === cat 
-                  ? 'bg-slate-950 text-white shadow-[0_12px_24px_rgba(15,23,42,0.18)]' 
-                  : 'border border-slate-100 bg-slate-50 text-slate-500 hover:border-[#343f52] hover:bg-slate-100 hover:text-[#343f52]'
-              ].join(' ')}
+                  ? 'bg-[#e63946] text-white shadow-md shadow-red-500/20' 
+                  : 'bg-transparent text-slate-600 hover:text-[#0f172a] hover:bg-slate-100'
+              }`}
             >
               {cat}
             </button>
           ))}
         </div>
 
-        <div className="relative w-full lg:max-w-xs">
+        {/* Search Input */}
+        <div className="relative w-full lg:w-[300px] shrink-0">
           <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search articles..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-full border border-slate-100 bg-slate-50 py-2.5 pl-11 pr-5 text-sm outline-none transition-all focus:border-[#3f78e0]/30 focus:bg-white focus:ring-4 focus:ring-[#3f78e0]/5"
+            className="w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-5 text-[14px] font-medium text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#e63946] focus:ring-1 focus:ring-[#e63946]"
           />
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        {paginatedBlogs.length > 0 ? (
-          <motion.div
-            key={selectedCategory + search + currentPage}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-          >
-            {/* Grid for Sandbox style cards (Uniform Grid) */}
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {paginatedBlogs.map((post) => (
-                <Link key={post.id} href={`/blog/${post.slug}`} className="group">
-                  <article className="flex h-full flex-col overflow-hidden rounded-[0.8rem] bg-white shadow-[0_5px_30px_rgba(30,41,59,0.03)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(30,41,59,0.08)]">
-                    {/* Image Area */}
-                    <div className="relative aspect-[16/11] overflow-hidden">
-                      {post.imageUrl ? (
-                        <img 
-                          src={resolveImageUrl(post.imageUrl) || ''} 
-                          alt={post.title} 
-                          className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-slate-50 text-slate-300 italic text-xs font-bold uppercase tracking-widest">No cover</div>
-                      )}
-                    </div>
-
-                    {/* Content Area */}
-                    <div className="flex flex-1 flex-col px-7 py-8">
-                      {/* Sandbox style Category Label */}
-                      <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#aab0bc] mb-4 group-hover:text-[#3f78e0] transition-colors">
-                        <span className="w-4 h-[2px] bg-[#aab0bc] opacity-40 group-hover:bg-[#3f78e0]"></span>
-                        {post.category || 'IBT JOURNAL'}
-                      </p>
+      {/* =====================================================
+          MAIN LAYOUT (Grid + Sidebar)
+      ===================================================== */}
+      <div className="grid lg:grid-cols-[1fr_350px] gap-12 items-start">
+        
+        {/* LEFT COLUMN: Blog Grid */}
+        <div className="w-full">
+          <AnimatePresence mode="wait">
+            {paginatedBlogs.length > 0 ? (
+              <motion.div
+                key={selectedCategory + search + currentPage}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* 2-Column Grid */}
+                <div className="grid sm:grid-cols-2 gap-8">
+                  {paginatedBlogs.map((post) => (
+                    <Link key={post.id} href={`/blog/${post.slug}`} className="group flex flex-col h-full bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
                       
-                      <h3 className="text-[20px] font-bold tracking-tight text-[#343f52] leading-[1.3] transition-colors group-hover:text-[#3f78e0] mb-4">
-                        {post.title}
-                      </h3>
-
-                      <p className="text-[15px] leading-[1.6] text-[#60697b] line-clamp-3 mb-8">
-                        {getExcerpt(post.description || post.content)}
-                      </p>
-
-                      {/* Footer Icons */}
-                      <div className="mt-auto flex items-center pt-6 border-t border-slate-50 text-[12px] font-semibold text-[#aab0bc]">
-                         <div className="flex items-center gap-1.5">
-                            <FiCalendar className="text-[14px]" />
-                            <span className="mt-0.5">{formatPublishedAt(post.publishedAt)}</span>
-                         </div>
+                      {/* Thumbnail */}
+                      <div className="aspect-[16/10] overflow-hidden bg-slate-100 relative">
+                        {post.imageUrl ? (
+                          <img 
+                            src={resolveImageUrl(post.imageUrl) || ''} 
+                            alt={post.title} 
+                            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-300 italic text-xs font-bold uppercase tracking-widest">No Image</div>
+                        )}
                       </div>
-                    </div>
-                  </article>
+
+                      {/* Content */}
+                      <div className="p-6 flex flex-col flex-1">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-3">
+                          {post.category || 'IBT JOURNAL'}
+                        </p>
+                        <h3 className="text-[18px] sm:text-[20px] font-black text-[#0f172a] leading-snug mb-3 group-hover:text-[#e63946] transition-colors">
+                          {post.title}
+                        </h3>
+                        <p className="text-[14px] text-slate-500 font-medium leading-relaxed mb-6 line-clamp-2">
+                          {getExcerpt(post.description || post.content)}
+                        </p>
+
+                        <div className="mt-auto flex items-center gap-4 text-[12px] font-medium text-slate-400 pt-5 border-t border-slate-50">
+                          <span className="flex items-center gap-1.5"><FiCalendar /> {formatPublishedAt(post.publishedAt)}</span>
+                          <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                          <span>{post.readTime || '5'} min read</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="mt-12 flex justify-center">
+                    <Pagination 
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={(page) => {
+                        setCurrentPage(page);
+                        window.scrollTo({ top: 400, behavior: 'smooth' });
+                      }}
+                    />
+                  </div>
+                )}
+              </motion.div>
+            ) : (
+              <div className="rounded-2xl border border-dashed border-slate-200 py-20 text-center bg-white">
+                 <p className="text-[18px] font-bold text-[#0f172a] mb-2">No articles found.</p>
+                 <p className="text-[14px] text-slate-500 mb-6">We couldn't find anything matching your criteria.</p>
+                 <button 
+                  onClick={() => { setSearch(''); setSelectedCategory('All Posts'); }}
+                  className="px-6 py-3 bg-[#0f172a] text-white text-[13px] font-bold rounded-lg hover:bg-slate-800 transition-colors"
+                 >
+                   Clear all filters
+                 </button>
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* RIGHT COLUMN: Sidebar */}
+        <div className="w-full flex flex-col gap-8">
+          
+          {/* Newsletter Widget */}
+          <div className="bg-red-50/50 rounded-2xl p-6 lg:p-8 border border-red-100">
+            <div className="w-12 h-12 bg-white rounded-xl text-[#e63946] flex items-center justify-center shadow-sm mb-5 border border-red-100">
+              <FiMail size={20} />
+            </div>
+            <h4 className="text-[18px] font-black text-[#0f172a] mb-2">Subscribe to Our Newsletter</h4>
+            <p className="text-[13px] text-slate-600 font-medium mb-6">
+              Get the latest articles and insights straight to your inbox.
+            </p>
+            <div className="flex flex-col gap-3">
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                className="w-full bg-white border border-slate-200 rounded-lg px-4 py-3 text-[14px] font-medium outline-none focus:border-[#e63946]"
+              />
+              <button className="w-full bg-[#e63946] text-white font-bold text-[14px] py-3 rounded-lg hover:bg-[#c1121f] transition-colors shadow-md shadow-red-500/20">
+                Subscribe
+              </button>
+            </div>
+          </div>
+
+          {/* Popular Posts Widget */}
+          <div className="bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm">
+            <h4 className="text-[16px] font-black text-[#0f172a] mb-6">Popular Posts</h4>
+            <div className="flex flex-col gap-6">
+              {popularPosts.map((post) => (
+                <Link key={post.id} href={`/blog/${post.slug}`} className="group flex gap-4 items-center">
+                  <img 
+                    src={resolveImageUrl(post.imageUrl) || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=200'} 
+                    alt={post.title} 
+                    className="w-20 h-16 rounded-lg object-cover bg-slate-100 shrink-0" 
+                  />
+                  <div>
+                    <h5 className="text-[13px] font-bold text-[#0f172a] leading-snug line-clamp-2 mb-1 group-hover:text-[#e63946] transition-colors">
+                      {post.title}
+                    </h5>
+                    <p className="text-[11px] font-medium text-slate-400">
+                      {formatPublishedAt(post.publishedAt)}
+                    </p>
+                  </div>
                 </Link>
               ))}
             </div>
-
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="mt-16 flex justify-center pt-8 border-t border-slate-100">
-                <Pagination 
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={(page) => {
-                    setCurrentPage(page);
-                    window.scrollTo({ top: 300, behavior: 'smooth' });
-                  }}
-                />
-              </div>
-            )}
-          </motion.div>
-        ) : (
-          <div className="rounded-[2rem] border border-dashed border-slate-200 py-20 text-center">
-             <p className="text-xl font-bold text-slate-500">No articles match your search.</p>
-             <button 
-              onClick={() => { setSearch(''); setSelectedCategory('All Posts'); }}
-              className="mt-6 inline-flex items-center rounded-full bg-slate-950 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#3f78e0]"
-             >
-               Clear all filters
-             </button>
           </div>
-        )}
-      </AnimatePresence>
+
+          {/* Categories Widget */}
+          <div className="bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm">
+            <h4 className="text-[16px] font-black text-[#0f172a] mb-6">Categories</h4>
+            <div className="flex flex-col gap-4">
+              {Object.entries(categoryCounts).map(([cat, count]) => (
+                <button 
+                  key={cat} 
+                  onClick={() => setSelectedCategory(cat)}
+                  className="flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full border-2 border-red-100 flex items-center justify-center group-hover:border-[#e63946] transition-colors">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#e63946] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <span className="text-[14px] font-medium text-slate-600 group-hover:text-[#0f172a] transition-colors">
+                      {cat}
+                    </span>
+                  </div>
+                  <span className="text-[12px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded">
+                    ({count})
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 }

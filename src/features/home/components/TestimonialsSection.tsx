@@ -98,10 +98,10 @@ export function TestimonialsSection() {
         {/* Header */}
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between">
           <div>
-            <h3 className="text-2xl font-bold uppercase tracking-widest text-red-500 mb-3">
+            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
               TESTIMONIALS
             </h3>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+            <h2 className="font-bold text-slate-900">
               What Our Clients Say
             </h2>
           </div>

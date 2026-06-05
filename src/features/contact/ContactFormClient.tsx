@@ -71,7 +71,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
 
   return (
     <div className="w-full p-6 sm:p-8">
-      <span className="inline-block text-[#3b82f6] font-bold text-[10px] tracking-widest uppercase mb-6">
+      <span className="inline-block text-[#3b82f6] font-bold text-[16px] tracking-widest uppercase mb-6">
         SEND US A MESSAGE
       </span>
 
@@ -151,11 +151,10 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
                   key={type}
                   type="button"
                   onClick={() => setInquiryType(type)}
-                  className={`px-4 py-1.5 text-xs font-semibold rounded-full border transition-all ${
-                    inquiryType === type
+                  className={`px-4 py-1.5 text-xs font-semibold rounded-full border transition-all ${inquiryType === type
                       ? 'bg-[#0f172a] border-[#0f172a] text-white'
                       : 'bg-[#f8fafc] border-slate-200 text-slate-600 hover:bg-slate-100'
-                  }`}
+                    }`}
                 >
                   {type}
                 </button>
@@ -206,9 +205,9 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
           className="py-16 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-6"
         >
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 mb-4">
-             <svg className="h-8 w-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-             </svg>
+            <svg className="h-8 w-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
           </div>
           <h3 className="text-xl font-bold text-slate-900 mb-2">Message Sent Successfully!</h3>
           <p className="text-slate-500 text-sm mb-6">Thank you for getting in touch. We will respond shortly.</p>

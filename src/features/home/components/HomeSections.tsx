@@ -72,26 +72,26 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
 
   if (isFloating) {
     let colorClasses = {
-      bg: 'bg-rose-50',
+      bg: 'bg-rose-50/50',
       text: 'text-rose-500',
       icon: FiUsers
     };
 
     if (label.includes('project')) {
       colorClasses = {
-        bg: 'bg-blue-50',
+        bg: 'bg-blue-50/50',
         text: 'text-blue-500',
         icon: FiBriefcase
       };
     } else if (label.includes('intern')) {
       colorClasses = {
-        bg: 'bg-emerald-50',
+        bg: 'bg-emerald-50/50',
         text: 'text-emerald-500',
         icon: FiAward
       };
     } else if (label.includes('satisfaction') || label.includes('rate') || label.includes('percent')) {
       colorClasses = {
-        bg: 'bg-orange-50',
+        bg: 'bg-orange-50/50',
         text: 'text-orange-500',
         icon: FiSmile
       };
@@ -102,16 +102,16 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
     return (
       <article
         ref={cardRef}
-        className="flex items-center gap-4 py-2"
+        className="flex items-center gap-3 md:gap-4 py-1 w-full justify-center xl:justify-start xl:pl-10"
       >
-        <div className={`w-12 h-12 rounded-full shrink-0 flex items-center justify-center ${colorClasses.bg} ${colorClasses.text}`}>
-          <FloatingIcon size={20} />
+        <div className={`w-14 h-14 rounded-full shrink-0 flex items-center justify-center ${colorClasses.bg} ${colorClasses.text}`}>
+          <FloatingIcon size={24} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col text-left">
-          <p className="text-xl md:text-2xl font-black text-slate-900 leading-tight">
+          <p className="text-[22px] md:text-[26px] font-extrabold text-[#111827] leading-none mb-1.5">
             {startAnimation || !isNumber ? displayValue : item.value.replace(numericString, '0')}
           </p>
-          <p className="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider leading-none mt-0.5">{item.label}</p>
+          <p className="text-[12px] md:text-[13px] font-medium text-slate-500 leading-none tracking-tight">{item.label}</p>
         </div>
       </article>
     );
@@ -201,10 +201,10 @@ export function HomeSections({ isFloating }: { isFloating?: boolean }) {
         <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-5">
           Trusted by startups, SMEs & enterprises
         </p>
-        <div className="w-full rounded-[30px] border border-slate-100 bg-white px-8 py-7 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+        <div className="w-full rounded-2xl border border-slate-100 bg-white px-4 sm:px-8 py-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 lg:divide-x lg:divide-slate-100">
              {stats.map((item) => (
-                <div key={item.id} className="flex justify-center lg:justify-start lg:pl-10 first:pl-0">
+                <div key={item.id} className="flex justify-center first:lg:pl-0">
                   <AnimatedStatCard item={item} isFloating />
                 </div>
               ))}
@@ -221,7 +221,7 @@ export function HomeSections({ isFloating }: { isFloating?: boolean }) {
           {!isFloating && (
             <div className="mb-8 flex flex-col items-center text-center">
               <p className="text-sm font-bold uppercase tracking-[0.24em] text-(--ui-primary)">Our Achievements</p>
-              <h2 className="mt-2 text-3xl font-black text-slate-900">Numbers That Tell Our Story</h2>
+              <h2 className="mt-2 font-black text-slate-900">Numbers That Tell Our Story</h2>
             </div>
           )}
 

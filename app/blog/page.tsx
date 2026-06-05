@@ -1,5 +1,7 @@
 import { apiClient } from '@/src/api/client'
 import { BlogList } from '@/src/features/blog/components/BlogList'
+import { FiArrowRight, FiFileText, FiGrid, FiUsers } from 'react-icons/fi'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'Blog | IBT Solutions',
@@ -31,6 +33,12 @@ const getCategoryCount = (items: Array<{ category?: string | null }>) => {
   return new Set(items.map((blog) => blog.category).filter(Boolean)).size
 }
 
+const resolveImageUrl = (imageUrl?: string | null, apiOrigin?: string) => {
+  if (!imageUrl?.trim()) return null;
+  if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
+  return `${apiOrigin}${imageUrl}`;
+};
+
 export default async function BlogPage() {
   const result = await apiClient.getPublicBlogs(1, 50).catch(() => null)
   const apiOrigin = resolveApiOrigin(process.env.NEXT_PUBLIC_API_URL)
@@ -39,7 +47,7 @@ export default async function BlogPage() {
     return (
       <div className="mx-auto w-full max-w-4xl px-4 py-20 text-center">
         <h1 className="text-4xl font-black text-slate-900">Our Blog</h1>
-        <div className="mt-8 inline-block rounded-2xl border border-red-100 bg-red-50 p-6 text-(--ui-primary)">
+        <div className="mt-8 inline-block rounded-2xl border border-red-100 bg-red-50 p-6 text-[#e63946]">
           <p className="font-bold text-lg">Unable to load stories</p>
           <p className="mt-2 text-sm opacity-80">We&apos;re experiencing some technical issues. Please check back later.</p>
         </div>
@@ -50,90 +58,138 @@ export default async function BlogPage() {
   const { items } = result
   const totalPosts = items.length
   const totalCategories = getCategoryCount(items)
+  
+  // Find a featured post, or fallback to the latest
   const featuredPost = items.find((blog) => blog.featured) ?? items[0]
-  const latestPost = [...items].sort((left, right) => {
-    const leftDate = new Date(left.publishedAt ?? 0).getTime()
-    const rightDate = new Date(right.publishedAt ?? 0).getTime()
-    return rightDate - leftDate
-  })[0]
 
   return (
-    <div className="min-h-full bg-[#f6f1ed] pb-20 text-slate-900">
-      <section className="relative isolate overflow-hidden border-b border-white/70 bg-[radial-gradient(circle_at_top_left,_rgba(220,20,60,0.16),_transparent_30%),radial-gradient(circle_at_right,_rgba(250,204,21,0.16),_transparent_26%),linear-gradient(180deg,#fffaf8_0%,#f8f1ec_45%,#f6f1ed_100%)] py-14 sm:py-20 lg:py-20">
-        <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(148,163,184,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.15)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:linear-gradient(to_bottom,black,transparent_86%)]" />
-        <div className="pointer-events-none absolute left-1/2 top-0 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-(--ui-primary)/10 blur-3xl" />
-
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-            <div className="max-w-4xl">
-              <div className="inline-flex items-center gap-3 rounded-full border border-red-200/70 bg-white/85 px-4 py-2 shadow-[0_12px_30px_rgba(15,23,42,0.06)] backdrop-blur">
-                <span className="h-2.5 w-2.5 rounded-full bg-(--ui-primary) shadow-[0_0_0_6px_rgba(220,20,60,0.12)]" />
-                <span className="text-[10px] font-black uppercase tracking-[0.28em] text-slate-500">Insights & stories</span>
-              </div>
-
-              <h1 className="mt-8 text-5xl font-black tracking-[-0.05em] text-slate-950 sm:text-6xl lg:text-8xl">
-                The IBT
-                <span className="mt-3 block bg-gradient-to-r from-(--ui-primary) via-orange-500 to-amber-500 bg-clip-text italic text-transparent">
-                  Journal
-                </span>
+    <div className="min-h-screen bg-[#f8faff] text-slate-900 font-sans">
+      
+      {/* =====================================================
+          HERO SECTION
+      ===================================================== */}
+      <section className="relative pt-12 pb-8 lg:pt-20 lg:pb-12 bg-white border-b border-slate-100">
+        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center">
+            
+            {/* Left Content */}
+            <div className="relative z-10">
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#e63946] mb-4">
+                IBT BLOG
+              </h3>
+              
+              <h1 className="text-[40px] sm:text-[48px] lg:text-[56px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
+                Ideas, Insights &<br />
+                <span className="text-[#e63946]">Innovation</span>
               </h1>
-
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-                Editorial stories, technical deep dives, and product updates from the I-BACUS-TECH team, designed to help readers skim the latest thinking and open the articles that matter.
+              
+              <p className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
+                Explore expert perspectives, technical guides, industry trends, and innovation stories from the IBACUS TECH team.
               </p>
 
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-[1.5rem] border border-white/80 bg-white/85 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] backdrop-blur">
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-400">Posts</p>
-                  <p className="mt-3 text-3xl font-black text-slate-950">{totalPosts}</p>
-                  <p className="mt-1 text-sm text-slate-500">Published articles in the archive</p>
+              {/* Stats Block */}
+              <div className="grid grid-cols-3 gap-4 border-t border-slate-100 pt-8">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e63946] border border-red-100 flex items-center justify-center shrink-0">
+                    <FiFileText size={18} />
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <div className="text-[18px] font-black text-[#0f172a] leading-none mb-1">{totalPosts}+</div>
+                    <div className="text-[10px] font-medium text-slate-500 uppercase tracking-widest">Articles Published</div>
+                  </div>
                 </div>
-                <div className="rounded-[1.5rem] border border-white/80 bg-white/85 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] backdrop-blur">
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-400">Categories</p>
-                  <p className="mt-3 text-3xl font-black text-slate-950">{totalCategories}</p>
-                  <p className="mt-1 text-sm text-slate-500">Topics shaping the journal</p>
+
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e63946] border border-red-100 flex items-center justify-center shrink-0">
+                    <FiGrid size={18} />
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <div className="text-[18px] font-black text-[#0f172a] leading-none mb-1">{totalCategories}+</div>
+                    <div className="text-[10px] font-medium text-slate-500 uppercase tracking-widest">Categories</div>
+                  </div>
                 </div>
-                <div className="rounded-[1.5rem] border border-white/80 bg-white/85 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] backdrop-blur">
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-400">Latest</p>
-                  <p className="mt-3 text-lg font-black text-slate-950 line-clamp-1">{latestPost?.title ?? 'Fresh stories arriving soon'}</p>
-                  <p className="mt-1 text-sm text-slate-500">{formatPublishedAt(latestPost?.publishedAt)}</p>
+
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e63946] border border-red-100 flex items-center justify-center shrink-0">
+                    <FiUsers size={18} />
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <div className="text-[18px] font-black text-[#0f172a] leading-none mb-1">25K+</div>
+                    <div className="text-[10px] font-medium text-slate-500 uppercase tracking-widest">Readers Monthly</div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <aside className="rounded-[2rem] border border-white/80 bg-white/80 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl lg:translate-y-8">
-              <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-5">
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.28em] text-(--ui-primary)">Featured edition</p>
-                  <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950">{featuredPost?.title ?? 'A cleaner editorial feed'}</h2>
-                </div>
-                <div className="flex gap-1.5 pt-1">
-                  <span className="h-2.5 w-2.5 rounded-full bg-slate-200" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-slate-200" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-(--ui-primary)/60" />
-                </div>
-              </div>
+            {/* Right Featured Article */}
+            <div className="relative z-10">
+              <Link href={`/blog/${featuredPost?.slug || ''}`} className="block group">
+                <div className="bg-[#0f172a] rounded-3xl overflow-hidden relative shadow-2xl h-[400px] flex flex-col justify-end p-8 sm:p-10 border border-slate-800 hover:border-slate-700 transition-colors">
+                  
+                  {/* Background Image (Darkened) */}
+                  <div className="absolute inset-0">
+                    <img 
+                      src={resolveImageUrl(featuredPost?.imageUrl, apiOrigin) || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'} 
+                      alt="Featured Article Background" 
+                      className="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700 ease-out mix-blend-overlay"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/80 to-transparent"></div>
+                  </div>
 
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                <div className="rounded-[1.5rem] bg-slate-950 p-5 text-white shadow-[0_18px_40px_rgba(15,23,42,0.18)]">
-                  <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">Reading guide</p>
-                  <p className="mt-3 text-3xl font-black">Browse fast</p>
-                  <p className="mt-3 text-sm leading-6 text-slate-300">Use the filters below to jump between categories, featured posts, and search results.</p>
+                  {/* Top Badge */}
+                  <div className="absolute top-8 left-8">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#e63946] text-white text-[10px] font-black uppercase tracking-widest">
+                      FEATURED ARTICLE
+                    </span>
+                  </div>
+
+                  <div className="relative z-10 w-full">
+                    <p className="text-[11px] font-bold text-red-400 uppercase tracking-widest mb-3">
+                      {featuredPost?.category || 'SECURITY'}
+                    </p>
+                    <h2 className="text-[28px] sm:text-[32px] font-black text-white leading-tight mb-4 group-hover:text-red-100 transition-colors">
+                      {featuredPost?.title || 'Designing for Accessibility: A Complete Guide'}
+                    </h2>
+                    <p className="text-[13px] text-slate-300 font-medium line-clamp-2 max-w-sm mb-8">
+                      {featuredPost?.description || 'Learn how to build digital products that are inclusive, usable and accessible for everyone.'}
+                    </p>
+
+                    <div className="flex items-center justify-between border-t border-slate-700/50 pt-6">
+                      <div className="flex items-center gap-3">
+                        <img 
+                          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" 
+                          alt="Author" 
+                          className="w-10 h-10 rounded-full object-cover border border-slate-600"
+                        />
+                        <div>
+                          <p className="text-[12px] font-bold text-white leading-tight">IBT Editorial Team</p>
+                          <p className="text-[11px] text-slate-400 font-medium">
+                            {formatPublishedAt(featuredPost?.publishedAt)} • {(featuredPost as any)?.readTime || '6'} min read
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* Round Button */}
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white backdrop-blur-sm group-hover:bg-[#e63946] transition-colors shrink-0">
+                        <FiArrowRight size={16} />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="rounded-[1.5rem] border border-slate-100 bg-gradient-to-br from-red-50 to-orange-50 p-5">
-                  <p className="text-[10px] font-black uppercase tracking-[0.24em] text-(--ui-primary)">Journal focus</p>
-                  <p className="mt-3 text-3xl font-black text-slate-950">Editorial</p>
-                  <p className="mt-3 text-sm leading-6 text-slate-500">A layout made to feel more magazine-like, with stronger hierarchy and calmer spacing.</p>
-                </div>
-              </div>
-            </aside>
+              </Link>
+            </div>
+
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-8 lg:pt-16">
+      {/* =====================================================
+          MAIN BLOG LISTING (Client Component)
+      ===================================================== */}
+      <div className="mx-auto max-w-[1300px] px-4 pt-12 pb-20 sm:px-6 lg:px-8">
         <BlogList initialBlogs={items} apiOrigin={apiOrigin} />
       </div>
+
     </div>
   )
 }

@@ -60,7 +60,7 @@ export function StrategySection() {
             <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#e63946] mb-4">
               {badge}
             </h3>
-            <h2 className="text-[28px] font-bold tracking-tight text-[#1d3557] sm:text-[36px] leading-[1.2] mb-6">
+            <h2 className="font-bold tracking-tight text-[#1d3557] mb-6">
               {title}
             </h2>
             <div 

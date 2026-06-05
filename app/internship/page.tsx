@@ -1,18 +1,27 @@
-import { 
-  FiArrowRight, 
-  FiAward, 
-  FiBookOpen, 
-  FiBriefcase, 
-  FiSend, 
-  FiTarget, 
-  FiUsers, 
-  FiZap 
-} from 'react-icons/fi'
-import Link from 'next/link'
+import {
+  FiArrowRight,
+  FiChevronDown,
+  FiAward,
+  FiBookOpen,
+  FiBriefcase,
+  FiSend,
+  FiTarget,
+  FiUsers,
+  FiZap,
+  FiCode,
+  FiSmartphone,
+  FiBarChart2,
+  FiPenTool,
+  FiCheckCircle,
+  FiUserPlus,
+  FiMonitor,
+  FiThumbsUp
+} from 'react-icons/fi';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Internship | I-BACUS-TECH',
-  description: 'Industry-focused internship program powered by project-based learning and mentorship.',
+  description: 'Learn by Building Real Products. Join our internship program for real-world experience.',
 }
 
 type PublicTestimonial = {
@@ -24,116 +33,12 @@ type PublicTestimonial = {
   avatarUrl?: string | null
 }
 
-type PublicApiResponse<T> = {
-  data?: T
-}
-
 type SiteSettingsPayload = {
   internshipHeroTitle?: string | null
-  internshipHeroSubtitle?: string | null
   internshipHeroDescription?: string | null
   internshipHeroImageUrl?: string | null
-  internshipIntroTitle?: string | null
-  internshipIntroDescription?: string | null
-  internshipApproachTitle?: string | null
-  internshipApproachDescription?: string | null
-  internshipCardOneValue?: string | null
-  internshipCardOneTitle?: string | null
-  internshipCardOneDescription?: string | null
-  internshipCardTwoValue?: string | null
-  internshipCardTwoTitle?: string | null
-  internshipCardTwoDescription?: string | null
-  internshipCardThreeValue?: string | null
-  internshipCardThreeTitle?: string | null
-  internshipCardThreeDescription?: string | null
-  internshipGalleryTitle?: string | null
-  internshipGalleryImageUrls?: string | null
-  internshipTestimonialsTitle?: string | null
-  internshipClosingTitle?: string | null
-  internshipClosingContent?: string | null
   internshipApplyEmail?: string | null
 }
-
-type InternCard = {
-  value: string
-  title: string
-  description: string
-}
-
-const defaults = {
-  heroTitle: 'ENROLLMENT OPEN',
-  heroSubtitle: 'Master Real-World Engineering',
-  heroDescription:
-    'Join a high-performance environment where you build production-grade security solutions alongside industry experts.',
-  heroImageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80',
-  heroStat: '99%',
-  heroStatLabel: 'Post-internship placement rate in 2023.',
-  introTitle: 'The 70/20/10 Model',
-  introDescription:
-    'Our methodology is built on a structured framework to maximize retention, execution, and growth.',
-  approachTitle: 'The Internship Journey',
-  approachDescription:
-    'A structured pathway designed to transform technical potential into professional excellence.',
-  galleryTitle: 'Internship Gallery',
-  testimonialsTitle: 'From Our Alumni',
-  closingTitle: 'Ready to Start Your Journey?',
-  closingContent: 'The next cohort starts in 45 days. Take the first step towards becoming a world-class engineer.',
-  applyEmail: 'hr@ibacustech.com',
-}
-
-const defaultCards: InternCard[] = [
-  {
-    value: '70%',
-    title: 'Experiential Learning',
-    description:
-      'Hands-on project work that mirrors real industry challenges. You won\'t be doing \'busy work\'; you\'ll be building security core modules.',
-  },
-  {
-    value: '20%',
-    title: 'Social Learning',
-    description:
-      'Continuous peer reviews and collaborative sprints. Learn to communicate architectural concepts and defend your architectural choices.',
-  },
-  {
-    value: '10%',
-    title: 'Guided Mentorship',
-    description:
-      'One-on-one sessions with team leads. Get direct feedback on your growth trajectory and professional readiness.',
-  },
-]
-
-const journeySteps = [
-  {
-    step: '01',
-    phase: 'Step 1: Learn',
-    description:
-      'Master our core tech stack. From advanced networking protocols to specialized security frameworks, we build your foundation.',
-    imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80',
-    imageAlt: 'Step 1: Learn Image',
-  },
-  {
-    step: '02',
-    phase: 'Step 2: Build',
-    description:
-      'Ship code for internal security tools and client-facing products. Experience the full SDLC in a high-stakes environment.',
-    imageUrl: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80',
-    imageAlt: 'Step 2: Build Image',
-  },
-  {
-    step: '03',
-    phase: 'Step 3: Grow',
-    description:
-      'Final phase focusing on career coaching, portfolio presentation, and expanding your professional network within the industry.',
-    imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b90473bd58?auto=format&fit=crop&w=800&q=80',
-    imageAlt: 'Step 3: Grow Image',
-  },
-]
-
-const defaultGalleryImages = [
-  'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
-]
 
 function normalizeApiBaseUrl(raw: string | undefined) {
   const fallback = 'http://localhost:5000'
@@ -153,551 +58,557 @@ const resolveImageUrl = (imageUrl?: string | null) => {
   return `${normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_URL)}${imageUrl}`
 }
 
-function parseImageList(value: string | null | undefined) {
-  if (!value) return [] as string[]
-  return value.split('\n').map((line) => line.trim()).filter((line) => line.length > 0)
-}
-
-function renderRichTextContent(content: string) {
-  const trimmed = content.trim().replace(/<p><\/p>/g, '')
-
-  if (!trimmed) {
-    return null
-  }
-
-  if (trimmed.includes('<')) {
-    return <div className="mt-6 text-base text-slate-600 leading-relaxed max-w-xl" dangerouslySetInnerHTML={{ __html: trimmed }} />
-  }
-
-  return <p className="mt-6 text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">{trimmed}</p>
-}
-
-function renderSectionRichText(content: string, className: string) {
-  const trimmed = content.trim().replace(/<p><\/p>/g, '')
-
-  if (!trimmed) {
-    return null
-  }
-
-  if (trimmed.includes('<')) {
-    return <div className={className} dangerouslySetInnerHTML={{ __html: trimmed }} />
-  }
-
-  return <p className={className}>{trimmed}</p>
-}
-
 async function getInternshipData() {
   const baseUrl = normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_URL)
-
   let settings: SiteSettingsPayload = {}
   let testimonials: PublicTestimonial[] = []
 
   try {
     const [settingsRes, testimonialsRes] = await Promise.all([
       fetch(`${baseUrl}/api/public/v1/settings/current`, { cache: 'no-store' }),
-      fetch(`${baseUrl}/api/public/v1/testimonials?page=1&limit=6`, { cache: 'no-store' }),
+      fetch(`${baseUrl}/api/public/v1/testimonials?page=1&limit=3`, { cache: 'no-store' }),
     ])
 
     if (settingsRes.ok) {
-      const body = (await settingsRes.json()) as PublicApiResponse<SiteSettingsPayload>
-      settings = body.data ?? {}
+      const json = await settingsRes.json()
+      settings = json.data || {}
     }
-
     if (testimonialsRes.ok) {
-      const body = (await testimonialsRes.json()) as PublicApiResponse<PublicTestimonial[]>
-      testimonials = body.data ?? []
+      const json = await testimonialsRes.json()
+      testimonials = json.data?.items || []
     }
-  } catch {
-    // Backend unavailable — use defaults
+  } catch (err) {
+    console.error('Failed to fetch internship page data:', err)
   }
 
-  const cards: InternCard[] = [
-    {
-      value: settings.internshipCardOneValue?.trim() || defaultCards[0].value,
-      title: settings.internshipCardOneTitle?.trim() || defaultCards[0].title,
-      description: settings.internshipCardOneDescription?.trim() || defaultCards[0].description,
-    },
-    {
-      value: settings.internshipCardTwoValue?.trim() || defaultCards[1].value,
-      title: settings.internshipCardTwoTitle?.trim() || defaultCards[1].title,
-      description: settings.internshipCardTwoDescription?.trim() || defaultCards[1].description,
-    },
-    {
-      value: settings.internshipCardThreeValue?.trim() || defaultCards[2].value,
-      title: settings.internshipCardThreeTitle?.trim() || defaultCards[2].title,
-      description: settings.internshipCardThreeDescription?.trim() || defaultCards[2].description,
-    },
-  ]
-
-  return {
-    heroTitle: settings.internshipHeroTitle?.trim() || defaults.heroTitle,
-    heroSubtitle: settings.internshipHeroSubtitle?.trim() || defaults.heroSubtitle,
-    heroDescription: settings.internshipHeroDescription?.trim() || defaults.heroDescription,
-    heroImageUrl: settings.internshipHeroImageUrl?.trim() || defaults.heroImageUrl,
-    introTitle: settings.internshipIntroTitle?.trim() || defaults.introTitle,
-    introDescription: settings.internshipIntroDescription?.trim() || defaults.introDescription,
-    approachTitle: settings.internshipApproachTitle?.trim() || defaults.approachTitle,
-    approachDescription: settings.internshipApproachDescription?.trim() || defaults.approachDescription,
-    galleryTitle: settings.internshipGalleryTitle?.trim() || defaults.galleryTitle,
-    galleryImages: parseImageList(settings.internshipGalleryImageUrls),
-    testimonialsTitle: settings.internshipTestimonialsTitle?.trim() || defaults.testimonialsTitle,
-    closingTitle: settings.internshipClosingTitle?.trim() || defaults.closingTitle,
-    closingContent: settings.internshipClosingContent?.trim() || defaults.closingContent,
-    applyEmail: settings.internshipApplyEmail?.trim() || defaults.applyEmail,
-    cards,
-    testimonials,
-  }
+  return { settings, testimonials }
 }
 
 export default async function InternshipPage() {
-  const data = await getInternshipData()
-  const galleryImages = (data.galleryImages.length > 0 ? data.galleryImages : defaultGalleryImages).map(url => resolveImageUrl(url) || '')
+  const { settings, testimonials } = await getInternshipData()
+
+  // Hardcoded defaults matching exactly the mockup text
+  const defaultTestimonials = [
+    {
+      id: 't1',
+      content: 'This internship helped me transition from a student to a developer. The projects and mentors are amazing!',
+      name: 'Ayush Verma',
+      role: 'Web Development Intern',
+      avatarUrl: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 't2',
+      content: 'I gained hands-on experience in real projects. It boosted my confidence and my career opportunities.',
+      name: 'Sneha Patel',
+      role: 'Data Science Intern',
+      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 't3',
+      content: 'Great learning environment, supportive mentors and practical exposure. Highly recommended!',
+      name: 'Rohan Kumar',
+      role: 'AI/ML Intern',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'
+    }
+  ];
+
+  const displayTestimonials = testimonials.length >= 3 ? testimonials.slice(0, 3) : defaultTestimonials;
 
   return (
-    <div className="bg-white text-slate-900 overflow-x-hidden">
-      
-      {/* ── HERO SECTION ── */}
-      <section className="relative bg-[#fafafe] pt-16 pb-24 lg:pt-20 lg:pb-28 overflow-hidden">
-        {/* Background Geometric Elements */}
-        <div className="absolute top-20 right-[10%] w-64 h-64 rounded-full border border-blue-50/50 -z-10 animate-pulse" />
-        <div className="absolute bottom-40 left-[5%] opacity-20 -z-10">
-           <svg width="200" height="200" viewBox="0 0 100 100" fill="none" className="text-slate-200">
-             <circle cx="2" cy="2" r="1.5" fill="currentColor" />
-             <circle cx="22" cy="2" r="1.5" fill="currentColor" />
-             <circle cx="42" cy="2" r="1.5" fill="currentColor" />
-             <circle cx="2" cy="22" r="1.5" fill="currentColor" />
-             <circle cx="22" cy="22" r="1.5" fill="currentColor" />
-             <circle cx="42" cy="22" r="1.5" fill="currentColor" />
-             <circle cx="2" cy="42" r="1.5" fill="currentColor" />
-             <circle cx="22" cy="42" r="1.5" fill="currentColor" />
-             <circle cx="42" cy="42" r="1.5" fill="currentColor" />
-           </svg>
-        </div>
+    <div className="bg-[#f8faff] min-h-screen overflow-hidden font-sans">
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Column: Content */}
-            <div className="lg:col-span-6 flex flex-col items-start">
-              <div className="mb-8 flex items-center gap-2 rounded-full border border-slate-100 bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-(--ui-primary) shadow-sm">
-                <FiAward className="text-sm" />
-                {data.heroTitle}
+      {/* =====================================================
+          1. HERO SECTION
+      ===================================================== */}
+      <section className="relative pt-12 pb-16 lg:pt-20 lg:pb-24">
+        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+            {/* Left Content */}
+            <div className="relative z-10 max-w-xl">
+              <div className="inline-flex items-center gap-2 mb-6">
+                <div className="w-2 h-2 rounded-full bg-[#e63946]" />
+                <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500">
+                  INTERNSHIP PROGRAM
+                </h3>
               </div>
-              
-              <h1 className="text-5xl font-black leading-[1.05] tracking-tight text-slate-950 sm:text-6xl lg:text-[84px]">
-                {data.heroSubtitle.split(' ').map((word, i) => (
-                  <span key={i} className={word.toLowerCase() === 'real' ? 'text-(--ui-primary)' : ''}>
-                    {word}{' '}
-                  </span>
-                ))}
+
+              <h1 className="text-[44px] sm:text-[56px] lg:text-[64px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
+                Learn by Building<br />
+                <span className="text-[#e63946]">Real Products</span>
               </h1>
 
-              {/* Decorative Line */}
-              <div className="mt-8 h-1 w-20 rounded-full bg-gradient-to-r from-(--ui-primary) to-transparent" />
+              <p className="text-[16px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
+                Our internship program is designed to give you real-world experience, mentorship and the skills to thrive in your career.
+              </p>
 
-              <div className="mt-8 max-w-xl">
-                 {renderRichTextContent(data.heroDescription)}
-              </div>
-
-              <div className="mt-12 flex flex-wrap gap-5">
+              <div className="flex flex-wrap items-center gap-4">
                 <Link
                   href="/internship/apply"
-                  className="group flex h-14 items-center gap-3 rounded-2xl bg-(--ui-primary) px-10 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-(--ui-primary-soft)/30 transition hover:brightness-110"
+                  className="inline-flex h-12 sm:h-14 px-8 bg-[#e63946] text-white rounded-lg items-center justify-center text-[14px] font-bold shadow-lg shadow-red-500/20 hover:bg-[#c1121f] transition-colors"
                 >
-                  <FiSend className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  Apply Now
+                  Apply for Internship <FiArrowRight className="ml-2" />
                 </Link>
-                <a
-                  href="#journey"
-                  className="flex h-14 items-center gap-3 rounded-2xl border border-slate-200 bg-white px-10 text-sm font-black uppercase tracking-widest text-slate-900 shadow-sm transition hover:bg-slate-50 hover:shadow-md"
+                <Link
+                  href="#programs"
+                  className="inline-flex h-12 sm:h-14 px-8 bg-white text-[#0f172a] border border-slate-200 rounded-lg items-center justify-center text-[14px] font-bold hover:bg-slate-50 transition-colors shadow-sm"
                 >
-                  <FiBookOpen className="text-lg" />
-                  Curriculum
-                </a>
+                  Explore Programs <FiChevronDown className="ml-2" />
+                </Link>
               </div>
             </div>
 
-            {/* Right Column: Visual Graphic */}
-            <div className="lg:col-span-6 relative mt-16 lg:mt-0">
-              {/* Complex Shaped Background Container */}
-              <div className="relative mx-auto max-w-[540px]">
-                <div 
-                  className="relative aspect-[16/11] overflow-hidden shadow-2xl"
-                  style={{
-                    clipPath: 'polygon(20% 0%, 100% 0%, 100% 80%, 80% 100%, 0% 100%, 0% 20%)',
-                    borderRadius: '40px'
-                  }}
-                >
-                  <img
-                    src={resolveImageUrl(data.heroImageUrl) || ''}
-                    alt="Engineering"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-blue-950/10 mix-blend-multiply" />
+            {/* Right Image & Floating Badge */}
+            <div className="relative z-10">
+              <div className="rounded-[2rem] overflow-hidden shadow-2xl relative">
+                <img
+                  src={resolveImageUrl(settings.internshipHeroImageUrl) || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1200"}
+                  alt="Internship Collaboration"
+                  className="w-full h-auto object-cover aspect-[4/3] lg:aspect-auto lg:h-[500px]"
+                />
+              </div>
+
+              {/* Floating Badge */}
+              <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 flex items-center gap-5 min-w-[280px]">
+                <div className="w-14 h-14 rounded-xl bg-red-50 text-[#e63946] flex items-center justify-center shadow-inner">
+                  <FiUsers size={24} />
                 </div>
-
-                {/* Decorative Shape behind the card */}
-                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-slate-900 rounded-3xl -z-10 hidden lg:block" />
-
-                {/* Floating Stat Card with Circular Progress */}
-                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 lg:left-[-40px] lg:translate-x-0 w-[420px] max-w-[90vw] rounded-3xl border border-slate-100 bg-white/95 p-6 shadow-2xl backdrop-blur sm:p-8">
-                  <div className="flex items-center gap-6">
-                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-(--ui-primary) text-white shadow-lg shadow-(--ui-primary-soft)/30">
-                       <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                         <path d="M12 20V10M18 20V4M6 20v-4" strokeLinecap="round" strokeLinejoin="round" />
-                       </svg>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-4xl font-black text-slate-950 tracking-tight">
-                          {defaults.heroStat}
-                        </span>
-                        {/* Circular Progress Indicator */}
-                        <div className="relative h-10 w-10">
-                          <svg className="h-full w-full rotate-[-90deg]">
-                            <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-slate-100" />
-                            <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="4" fill="transparent" strokeDasharray="100.5" strokeDashoffset="10" className="text-(--ui-primary)" />
-                          </svg>
-                        </div>
-                      </div>
-                      <p className="mt-1 text-xs font-bold uppercase tracking-widest text-slate-500">
-                        Post-Internship
-                      </p>
-                      <p className="text-sm text-slate-400">
-                        placement rate in 2023.
-                      </p>
-                    </div>
+                <div>
+                  <div className="text-[24px] font-black text-[#0f172a] leading-none mb-1">500+</div>
+                  <div className="text-[12px] font-bold text-slate-500 mb-2">Interns Trained</div>
+                  {/* Tiny Avatar Group */}
+                  <div className="flex -space-x-2">
+                    <img className="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Avatar 1" />
+                    <img className="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Avatar 2" />
+                    <img className="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Avatar 3" />
+                    <img className="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Avatar 4" />
+                    <div className="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-500">+</div>
                   </div>
                 </div>
               </div>
             </div>
 
           </div>
-        </div>
-
-        {/* Feature Bar - Removed absolute positioning to fix overlap into component below */}
-        <div className="mt-20 px-4 relative z-30">
-           <div className="mx-auto max-w-7xl">
-              <div className="rounded-[32px] border border-slate-100 bg-white py-8 px-6 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)] sm:px-12">
-                 <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-                    <div className="flex items-center gap-5">
-                       <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-red-50 text-(--ui-primary)">
-                          <FiTarget className="text-2xl" />
-                       </div>
-                       <div>
-                          <h4 className="text-base font-black text-slate-950 leading-tight">Real World Projects</h4>
-                          <p className="mt-1 text-xs text-slate-500 leading-relaxed uppercase tracking-tight font-bold">Industry Relevant</p>
-                       </div>
-                    </div>
-                    <div className="flex items-center gap-5">
-                       <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                          <FiUsers className="text-2xl" />
-                       </div>
-                       <div>
-                          <h4 className="text-base font-black text-slate-950 leading-tight">Learn from Experts</h4>
-                          <p className="mt-1 text-xs text-slate-500 leading-relaxed uppercase tracking-tight font-bold">Mentorship Led</p>
-                       </div>
-                    </div>
-                    <div className="flex items-center gap-5">
-                       <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600">
-                          <FiZap className="text-2xl" />
-                       </div>
-                       <div>
-                          <h4 className="text-base font-black text-slate-950 leading-tight">Skill Development</h4>
-                          <p className="mt-1 text-xs text-slate-500 leading-relaxed uppercase tracking-tight font-bold">Career Growth</p>
-                       </div>
-                    </div>
-                    <div className="flex items-center gap-5">
-                       <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                          <FiBriefcase className="text-2xl" />
-                       </div>
-                       <div>
-                          <h4 className="text-base font-black text-slate-950 leading-tight">Career Opportunities</h4>
-                          <p className="mt-1 text-xs text-slate-500 leading-relaxed uppercase tracking-tight font-bold">Direct Pipeline</p>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-           </div>
         </div>
       </section>
 
-      {/* ── METHODOLOGY SECTION (70/20/10 Model) ── */}
-      <section className="bg-white py-20 text-slate-900 relative">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-500">
-              OUR METHODOLOGY
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight mb-12">
-            The 70/20/10 Model
-          </h2>
+      {/* =====================================================
+          2. STATS BAR
+      ===================================================== */}
+      <section className="relative z-20 pb-16 lg:pb-20">
+        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-100 py-8 px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {data.cards.map((card, idx) => (
-              <div
-                key={idx}
-                className="bg-white border border-slate-100 rounded-[32px] p-8 flex flex-col justify-between hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300"
-              >
-                <div>
-                  <div className="text-5xl font-black text-(--ui-primary) mb-6 tracking-tight">
-                    {card.value}
+            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-start">
+              <div className="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
+                <FiBriefcase size={20} />
+              </div>
+              <div>
+                <div className="text-[24px] font-black text-[#0f172a] leading-tight">20+</div>
+                <div className="text-[12px] font-medium text-slate-500">Programs</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-center">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center">
+                <FiUsers size={20} />
+              </div>
+              <div>
+                <div className="text-[24px] font-black text-[#0f172a] leading-tight">500+</div>
+                <div className="text-[12px] font-medium text-slate-500">Interns Trained</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-center">
+              <div className="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center">
+                <FiAward size={20} />
+              </div>
+              <div>
+                <div className="text-[24px] font-black text-[#0f172a] leading-tight">90%+</div>
+                <div className="text-[12px] font-medium text-slate-500">Success Rate</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-end">
+              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center">
+                <FiCheckCircle size={20} />
+              </div>
+              <div>
+                <div className="text-[24px] font-black text-[#0f172a] leading-tight">100%</div>
+                <div className="text-[12px] font-medium text-slate-500">Hands-on Experience</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          3. HOW IT WORKS (Journey Timeline)
+      ===================================================== */}
+      <section className="py-16 lg:py-20 bg-white border-t border-slate-100">
+        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
+
+          <div className="mb-16 text-center lg:text-left">
+            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
+              HOW IT WORKS
+            </h3>
+            <h2 className="text-[32px] md:text-[40px] font-black tracking-tight text-[#0f172a]">
+              Your Journey with Us
+            </h2>
+          </div>
+
+          <div className="relative">
+            {/* Horizontal Line for Desktop */}
+            <div className="hidden lg:block absolute top-[64px] left-[10%] right-[10%] h-[2px] bg-slate-100 z-0 border-t-2 border-dashed border-slate-200" />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+
+              {/* Step 01 */}
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">01</div>
+                <div className="w-14 h-14 rounded-full bg-red-50 text-red-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
+                  <FiMonitor size={20} />
+                </div>
+                <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Apply Online</h4>
+                <p className="text-[13px] text-slate-500 font-medium leading-relaxed px-2">
+                  Fill the application form and choose your preferred domain.
+                </p>
+              </div>
+
+              {/* Step 02 */}
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">02</div>
+                <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
+                  <FiUserPlus size={20} />
+                </div>
+                <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Screening</h4>
+                <p className="text-[13px] text-slate-500 font-medium leading-relaxed px-2">
+                  Our team reviews your application and shortlists the best fit.
+                </p>
+              </div>
+
+              {/* Step 03 */}
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">03</div>
+                <div className="w-14 h-14 rounded-full bg-yellow-50 text-yellow-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
+                  <FiBookOpen size={20} />
+                </div>
+                <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Onboarding</h4>
+                <p className="text-[13px] text-slate-500 font-medium leading-relaxed px-2">
+                  Get access to resources, tools and your learning roadmap.
+                </p>
+              </div>
+
+              {/* Step 04 */}
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">04</div>
+                <div className="w-14 h-14 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
+                  <FiCode size={20} />
+                </div>
+                <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Learn & Build</h4>
+                <p className="text-[13px] text-slate-500 font-medium leading-relaxed px-2">
+                  Work on real projects with guidance from industry experts.
+                </p>
+              </div>
+
+              {/* Step 05 */}
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">05</div>
+                <div className="w-14 h-14 rounded-full bg-green-50 text-green-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
+                  <FiAward size={20} />
+                </div>
+                <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Evaluate & Grow</h4>
+                <p className="text-[13px] text-slate-500 font-medium leading-relaxed px-2">
+                  Receive feedback, improve your skills and become job-ready.
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          4. EXPLORE INTERNSHIP ROLES
+      ===================================================== */}
+      <section id="programs" className="py-16 lg:py-24 bg-[#f8faff]">
+        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
+
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+              <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
+                PROGRAMS WE OFFER
+              </h3>
+              <h2 className="text-[32px] md:text-[40px] font-black tracking-tight text-[#0f172a]">
+                Explore Internship Roles
+              </h2>
+            </div>
+            <Link href="/services" className="text-[14px] font-bold text-[#e63946] mt-4 md:mt-0 flex items-center gap-1 hover:underline">
+              View All Programs <FiArrowRight />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            {/* Card 1 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-6">
+                <FiMonitor size={22} />
+              </div>
+              <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">Web Development</h4>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-red-400 mt-0.5 shrink-0" size={14} /> HTML, CSS, JavaScript
+                </li>
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-red-400 mt-0.5 shrink-0" size={14} /> React.js, Node.js
+                </li>
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-red-400 mt-0.5 shrink-0" size={14} /> Real-world Projects
+                </li>
+              </ul>
+              <Link href="/internship/apply" className="text-[13px] font-bold text-red-500 flex items-center gap-1 hover:gap-2 transition-all">
+                Learn More <FiArrowRight />
+              </Link>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center mb-6">
+                <FiSmartphone size={22} />
+              </div>
+              <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">Mobile App Development</h4>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-blue-400 mt-0.5 shrink-0" size={14} /> Flutter / React Native
+                </li>
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-blue-400 mt-0.5 shrink-0" size={14} /> Android Development
+                </li>
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-blue-400 mt-0.5 shrink-0" size={14} /> Live Project Experience
+                </li>
+              </ul>
+              <Link href="/internship/apply" className="text-[13px] font-bold text-blue-500 flex items-center gap-1 hover:gap-2 transition-all">
+                Learn More <FiArrowRight />
+              </Link>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center mb-6">
+                <FiBarChart2 size={22} />
+              </div>
+              <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">Data Science & AI</h4>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-yellow-400 mt-0.5 shrink-0" size={14} /> Python, Pandas, NumPy
+                </li>
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-yellow-400 mt-0.5 shrink-0" size={14} /> Machine Learning
+                </li>
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-yellow-400 mt-0.5 shrink-0" size={14} /> AI Model Development
+                </li>
+              </ul>
+              <Link href="/internship/apply" className="text-[13px] font-bold text-yellow-500 flex items-center gap-1 hover:gap-2 transition-all">
+                Learn More <FiArrowRight />
+              </Link>
+            </div>
+
+            {/* Card 4 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
+              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center mb-6">
+                <FiPenTool size={22} />
+              </div>
+              <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">UI/UX Design</h4>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-green-400 mt-0.5 shrink-0" size={14} /> Figma, Adobe XD
+                </li>
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-green-400 mt-0.5 shrink-0" size={14} /> Wireframing & Prototyping
+                </li>
+                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                  <FiCheckCircle className="text-green-400 mt-0.5 shrink-0" size={14} /> Design Thinking
+                </li>
+              </ul>
+              <Link href="/internship/apply" className="text-[13px] font-bold text-green-500 flex items-center gap-1 hover:gap-2 transition-all">
+                Learn More <FiArrowRight />
+              </Link>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          5. MORE THAN JUST AN INTERNSHIP
+      ===================================================== */}
+      <section className="py-16 lg:py-24 bg-white border-t border-slate-100">
+        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
+
+          <div className="mb-14">
+            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
+              WHY INTERN WITH IBACUS TECH
+            </h3>
+            <h2 className="text-[32px] md:text-[40px] font-black tracking-tight text-[#0f172a]">
+              More Than Just an Internship
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+              <div className="w-10 h-10 rounded-lg bg-red-100 text-red-500 flex items-center justify-center mb-4">
+                <FiUsers size={18} />
+              </div>
+              <h4 className="text-[15px] font-bold text-[#0f172a] mb-2">Industry Mentorship</h4>
+              <p className="text-[12px] text-slate-500 font-medium leading-relaxed">
+                Learn directly from experienced professionals.
+              </p>
+            </div>
+
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+              <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-500 flex items-center justify-center mb-4">
+                <FiBriefcase size={18} />
+              </div>
+              <h4 className="text-[15px] font-bold text-[#0f172a] mb-2">Real-world Projects</h4>
+              <p className="text-[12px] text-slate-500 font-medium leading-relaxed">
+                Work on live projects and build your portfolio.
+              </p>
+            </div>
+
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+              <div className="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center mb-4">
+                <FiZap size={18} />
+              </div>
+              <h4 className="text-[15px] font-bold text-[#0f172a] mb-2">Skill Development</h4>
+              <p className="text-[12px] text-slate-500 font-medium leading-relaxed">
+                Upgrade your skills with practical learning.
+              </p>
+            </div>
+
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+              <div className="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mb-4">
+                <FiTarget size={18} />
+              </div>
+              <h4 className="text-[15px] font-bold text-[#0f172a] mb-2">Career Support</h4>
+              <p className="text-[12px] text-slate-500 font-medium leading-relaxed">
+                Get guidance on resumes, interviews and placements.
+              </p>
+            </div>
+
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+              <div className="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mb-4">
+                <FiAward size={18} />
+              </div>
+              <h4 className="text-[15px] font-bold text-[#0f172a] mb-2">Certificate</h4>
+              <p className="text-[12px] text-slate-500 font-medium leading-relaxed">
+                Earn a certificate of completion.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================
+          6. TESTIMONIALS
+      ===================================================== */}
+      <section className="py-16 lg:py-24 bg-[#f8faff]">
+        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
+
+          <div className="mb-14">
+            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
+              WHAT OUR INTERNS SAY
+            </h3>
+            <h2 className="text-[32px] md:text-[40px] font-black tracking-tight text-[#0f172a]">
+              Real Experiences. Real Growth.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {displayTestimonials.map((testimonial, idx) => (
+              <div key={testimonial.id || idx} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between relative">
+
+                {/* Red Quote Mark decoration */}
+                <div className="absolute top-8 left-8 text-red-500 opacity-20 text-4xl font-serif">"</div>
+
+                <p className="text-[14px] text-slate-600 font-medium leading-relaxed mb-8 relative z-10 pl-8 pt-2">
+                  {testimonial.content}
+                </p>
+
+                <div className="flex items-center gap-4 border-t border-slate-100 pt-6 mt-auto">
+                  <img
+                    src={testimonial.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover bg-slate-100"
+                  />
+                  <div>
+                    <h4 className="text-[15px] font-bold text-[#0f172a]">{testimonial.name}</h4>
+                    <p className="text-[12px] font-medium text-slate-500">{testimonial.role || 'Intern'}</p>
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">
-                    {card.title}
-                  </h3>
-                  {renderSectionRichText(card.description, "text-sm leading-relaxed text-slate-500")}
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* ── PROGRESSION: THE INTERNSHIP JOURNEY ── */}
-      <section id="journey" className="py-20 bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          
-          {/* Section Heading */}
-          <div className="mb-20 lg:mb-24">
-            <div className="flex flex-col items-start max-w-3xl">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="h-1 w-10 rounded-full bg-(--ui-primary)" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-(--ui-primary)">
-                  PROGRESSION
-                </span>
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-slate-950 tracking-tight leading-[1.1]">
-                {data.approachTitle}
-              </h2>
-            </div>
-          </div>
-
-          {/* Timeline Layout */}
-          <div className="relative">
-            {/* Vertical timeline center line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-0.5 bg-slate-100 hidden lg:block" />
-
-            <div className="space-y-24 lg:space-y-40">
-              {journeySteps.map((step, idx) => {
-                const isEven = idx % 2 === 0
-                return (
-                  <div
-                    key={idx}
-                    className="relative grid lg:grid-cols-2 gap-12 lg:gap-24 items-center"
-                  >
-                    
-                    {/* Circle badge on timeline for desktop */}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full border-4 border-white bg-slate-950 text-white flex items-center justify-center shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3)] z-10 hidden lg:flex">
-                      <span className="text-sm font-black tracking-tighter">{step.step}</span>
-                    </div>
-
-                    {/* Step Details Column */}
-                    <div className={`flex flex-col justify-center ${isEven ? 'lg:pr-16 text-left' : 'lg:order-last lg:pl-16 text-left'}`}>
-                      {/* Mobile & Section Meta */}
-                      <div className="mb-6 flex items-center gap-4">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-950 text-white font-black text-xs lg:hidden">
-                          {step.step}
-                        </span>
-                        <div className="flex flex-col">
-                           <span className="text-[10px] font-black uppercase tracking-[0.2em] text-(--ui-primary)">
-                              PHASE {step.step}
-                           </span>
-                           <h3 className="text-2xl font-black text-slate-950 mt-1">
-                              {step.phase.split(':')[1]?.trim() || step.phase}
-                           </h3>
-                        </div>
-                      </div>
-                      
-                      <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                        {step.description}
-                      </p>
-
-                      <div className="mt-8 flex items-center gap-3 text-(--ui-primary) font-black text-[11px] uppercase tracking-widest">
-                         <div className="h-px w-8 bg-(--ui-primary)/30" />
-                         Focused Milestone
-                      </div>
-                    </div>
-
-                    {/* Step Image Column */}
-                    <div className={`${isEven ? 'lg:pl-16' : 'lg:order-first lg:pr-16'}`}>
-                      <div className="group relative overflow-hidden rounded-[40px] shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                        <div className="absolute inset-0 z-10 bg-gradient-to-tr from-slate-900/20 to-transparent" />
-                        <div className="aspect-[1.618] w-full overflow-hidden bg-slate-100 border border-slate-100">
-                          <img
-                            src={step.imageUrl}
-                            alt={step.imageAlt}
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                )
-              })}
-            </div>
+          {/* Dots */}
+          <div className="flex justify-center gap-2 mt-10">
+            <div className="w-6 h-1.5 rounded-full bg-[#e63946]"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
           </div>
 
         </div>
       </section>
 
-      {/* ── LIFE AT HEADUS (Internship Gallery) ── */}
-      <section className="py-20 bg-slate-50 border-t border-slate-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          
-          <div className="mb-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-500">
-              LIFE AT HEADUS
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight mb-12">
-            {data.galleryTitle}
-          </h2>
-
-          {/* Asymmetric Gallery Layout matching Screenshot */}
-          <div className="grid md:grid-cols-2 gap-6">
-            
-            {/* Top-Left: Large Square/Rectangle Card */}
-            <div className="relative rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[1.5] md:aspect-[4/3] group shadow-md border border-slate-100">
-              <img
-                src={galleryImages[0]}
-                alt="Collaboration Sessions"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
-              <div className="absolute bottom-6 left-6">
-                <span className="text-sm font-bold text-white tracking-wide">
-                  Collaboration Sessions
-                </span>
-              </div>
+      {/* =====================================================
+          7. BOTTOM CTA RIBBON
+      ===================================================== */}
+      <section className="bg-white py-12 lg:py-20 relative overflow-hidden border-t border-slate-100">
+        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-slate-900 rounded-3xl overflow-hidden relative shadow-2xl">
+            {/* Abstract Background Elements */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
             </div>
 
-            {/* Top-Right: Narrow Vertical Card */}
-            <div className="relative rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[1.5] md:aspect-[4/3] group shadow-md border border-slate-100">
-              <img
-                src={galleryImages[1]}
-                alt="Projects Focus"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
-              <div className="absolute bottom-6 left-6">
-                <span className="text-sm font-bold text-white tracking-wide">
-                  Projects Focus
-                </span>
+            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-center px-8 py-10 md:px-12 md:py-14 gap-8 md:gap-12">
+
+              {/* Left Image / Illustration Placeholder */}
+              <div className="hidden md:flex justify-center items-center relative h-full">
+                <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/20">
+                  <FiBriefcase className="text-white text-5xl opacity-90" />
+                </div>
               </div>
-            </div>
 
-            {/* Bottom Full-Width Landscape Card */}
-            <div className="md:col-span-2 relative rounded-2xl overflow-hidden aspect-[2.1] sm:aspect-[3] md:aspect-[2.3] lg:aspect-[2.8] group shadow-md border border-slate-100">
-              <img
-                src={galleryImages[2]}
-                alt="Team Culture"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
-              <div className="absolute bottom-6 left-6">
-                <span className="text-sm font-bold text-white tracking-wide">
-                  Team Culture
-                </span>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── ALUMNI TESTIMONIALS SECTION ── */}
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          
-          <div className="mb-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-500">
-              VOICES
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight mb-12">
-            {data.testimonialsTitle}
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            
-            {/* Testimonial 1 */}
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 sm:p-10 flex flex-col justify-between shadow-sm relative overflow-hidden">
-              <div className="absolute top-6 left-6 text-[120px] font-sans font-black text-(--ui-primary-soft)/10 leading-none select-none pointer-events-none">
-                99
-              </div>
-              <div className="relative z-10">
-                <p className="text-base sm:text-lg italic text-slate-700 leading-relaxed font-medium">
-                  &ldquo;IBT delivered a highly responsive and user-friendly environment for learning. Their attention to detail and commitment to engineering quality made the entire transition into professional work smooth and successful. I felt prepared for real-world deployments on day one.&rdquo;
+              {/* Text Content */}
+              <div className="text-center md:text-left z-10">
+                <h2 className="text-[28px] md:text-[36px] font-black text-white leading-tight mb-3">
+                  Ready to Start Your Journey?
+                </h2>
+                <p className="text-slate-300 text-[15px] font-medium max-w-md mx-auto md:mx-0">
+                  Join hundreds of learners who are building their future with IBACUS TECH.
                 </p>
               </div>
-              <div className="mt-8 flex items-center gap-4 relative z-10">
-                <div className="w-12 h-12 rounded-full bg-(--ui-primary-soft)/10 flex items-center justify-center text-(--ui-primary) font-extrabold text-lg shadow-inner">
-                  D
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-slate-950 leading-tight">
-                    Deva
-                  </h4>
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-0.5">
-                    Full Stack Engineering Lead
-                  </p>
-                </div>
-              </div>
-            </div>
 
-            {/* Testimonial 2 */}
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 sm:p-10 flex flex-col justify-between shadow-sm relative overflow-hidden">
-              <div className="absolute top-6 left-6 text-[120px] font-sans font-black text-(--ui-primary-soft)/10 leading-none select-none pointer-events-none">
-                99
+              {/* Button */}
+              <div className="text-center md:text-right z-10">
+                <Link
+                  href="/internship/apply"
+                  className="inline-flex h-12 sm:h-14 bg-white text-[#0f172a] rounded-lg px-8 items-center justify-center font-bold text-[14px] hover:bg-slate-50 transition-colors shadow-xl whitespace-nowrap"
+                >
+                  Apply Now <FiArrowRight className="inline-block ml-2 text-[#e63946]" />
+                </Link>
               </div>
-              <div className="relative z-10">
-                <p className="text-base sm:text-lg italic text-slate-700 leading-relaxed font-medium">
-                  &ldquo;Working with the IBT team was a great experience. Their professionalism, communication, and quality of technical mentorship exceeded my expectations. The structured bridge between academic learning and industry standards is exactly what I needed.&rdquo;
-                </p>
-              </div>
-              <div className="mt-8 flex items-center gap-4 relative z-10">
-                <div className="w-12 h-12 rounded-full bg-(--ui-primary-soft)/10 flex items-center justify-center text-(--ui-primary) font-extrabold text-lg shadow-inner">
-                  S
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-slate-950 leading-tight">
-                    Surya
-                  </h4>
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-0.5">
-                    Security Systems Architect
-                  </p>
-                </div>
-              </div>
-            </div>
 
+            </div>
           </div>
-
-        </div>
-      </section>
-
-      {/* ── CALL TO ACTION SECTION ── */}
-      <section className="py-20 bg-[#f4f7fb] text-center">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-          
-          <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#aab0bc] mb-4">
-            CAN'T FIND THE RIGHT POSITION?
-          </p>
-
-          <h2 className="text-[28px] sm:text-[34px] md:text-[38px] font-bold text-[#343f52] leading-[1.3] mb-10 max-w-2xl">
-            {data.closingTitle || "We are a community with 5000+ team members. Join and build the future with us."}
-          </h2>
-          
-          <Link
-            href="/internship/apply"
-            className="inline-flex h-[50px] items-center justify-center rounded-full bg-[#3f78e0] px-9 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(63,120,224,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(63,120,224,0.4)]"
-          >
-            Send Resume
-          </Link>
-          
         </div>
       </section>
 
