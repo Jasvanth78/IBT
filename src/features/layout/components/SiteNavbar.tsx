@@ -76,9 +76,9 @@ export function SiteNavbar() {
                   key={item.href}
                   href={item.href}
                   className={[
-                    'px-4 py-2 text-[15px] font-bold transition-all duration-300',
+                    'px-4 py-2 text-[15px] font-bold transition-all duration-300 relative',
                     isActive
-                      ? 'text-[#e63946]'
+                      ? 'text-[#e63946] after:absolute after:bottom-[-20px] after:left-4 after:right-4 after:h-[3px] after:bg-[#e63946] after:rounded-t-full'
                       : 'text-[#1d3557] hover:text-[#e63946]',
                   ].join(' ')}
                 >
@@ -89,7 +89,12 @@ export function SiteNavbar() {
           </nav>
 
           <div className="hidden items-center gap-4 md:flex">
-
+            <SiteButton
+              href="/contact"
+              className="bg-[#e63946] hover:bg-[#c1121f] text-white rounded-full px-6 py-2.5 text-[15px] font-bold transition-all shadow-md flex items-center gap-1.5"
+            >
+              Get In Touch
+            </SiteButton>
           </div>
 
           <button

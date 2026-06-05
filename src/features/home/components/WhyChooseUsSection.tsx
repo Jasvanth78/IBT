@@ -1,177 +1,140 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
-import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
+import { motion } from 'framer-motion';
+import { FiCheckCircle, FiArrowRight } from 'react-icons/fi';
+import { SiteButton } from '@/src/shared/ui';
 
-interface WhyItem {
-  title: string;
-  description: string;
-}
+const benefits = [
+  {
+    title: 'Experienced & Skilled Team',
+    description: 'Experts with years of industry experience.'
+  },
+  {
+    title: 'Security First Approach',
+    description: 'We follow best practices for top security.'
+  },
+  {
+    title: 'Agile & Transparent Process',
+    description: 'We keep you informed at every step.'
+  },
+  {
+    title: 'On-Time Delivery',
+    description: 'We value time and commit to deadlines.'
+  },
+  {
+    title: 'AI-Powered Solutions',
+    description: 'Leverage AI to drive innovation and growth.'
+  },
+  {
+    title: 'Dedicated Support',
+    description: "We're always here when you need us."
+  }
+];
 
 export function WhyChooseUsSection() {
-  const { settings, loading } = useSocketSettings();
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
-
-  // Parse why items from settings
-  const items = useMemo((): WhyItem[] => {
-    const defaultItems = [
-      { title: 'Professional Design', description: 'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.' },
-      { title: 'Top-Notch Support', description: 'Nililne id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis ornare sem lacinia quam venenatis.' },
-      { title: 'Header and Slider Options', description: 'Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.' }
-    ];
-
-    if (!settings?.servicesWhyItems) return defaultItems;
-
-    try {
-      // Handle the case where the string might not be valid JSON (e.g., plain text or malformed)
-      if (typeof settings.servicesWhyItems === 'string') {
-        const trimmed = settings.servicesWhyItems.trim();
-        // Crude check if it looks like a JSON array or object
-        if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
-          const parsed = JSON.parse(trimmed);
-          return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultItems;
-        }
-        // If it's a string but doesn't look like JSON, it's probably raw text, treat as fallback
-        return defaultItems;
-      }
-      
-      return Array.isArray(settings.servicesWhyItems) && settings.servicesWhyItems.length > 0 
-        ? settings.servicesWhyItems 
-        : defaultItems;
-    } catch (e) {
-      console.warn("Failed to parse servicesWhyItems, using defaults.", e);
-      return defaultItems;
-    }
-  }, [settings?.servicesWhyItems]);
-
-  const badge = settings?.servicesWhyBadge || "WHY CHOOSE US?";
-  const title = settings?.servicesWhyTitle || "We bring solutions to make life easier for our clients.";
-
-  if (loading && items.length === 0) {
-    return null;
-  }
-
   return (
-    <section className="bg-white py-12 lg:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Left Visual Illustration */}
+    <section className="bg-slate-50 py-16 lg:py-24 overflow-hidden">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr_1fr] xl:grid-cols-[1fr_1.6fr_1.1fr] gap-10 lg:gap-16 xl:gap-24 items-center mx-auto">
+
+          {/* Column 1: Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex justify-center"
+            className="flex flex-col items-start"
           >
-             <div className="relative w-full max-w-[500px]">
-                {/* SVG Illustration mimicking the Sandbox style */}
-                <svg viewBox="0 0 500 450" className="w-full h-auto drop-shadow-2xl">
-                  {/* Background Accents */}
-                  <circle cx="450" cy="150" r="15" fill="#e63946" opacity="0.1" />
-                  <circle cx="50" cy="350" r="10" fill="#1d3557" opacity="0.1" />
-                  
-                  {/* Drawing Board / Screen */}
-                  <rect x="80" y="80" width="340" height="260" rx="20" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="2" />
-                  <rect x="100" y="100" width="300" height="220" rx="10" fill="white" className="drop-shadow-sm" />
-                  
-                  {/* People Characters (Simplified) */}
-                  {/* Person 1 - Left */}
-                  <g>
-                    <path d="M120 400 Q150 250 180 400" fill="#1d3557" />
-                    <circle cx="150" cy="280" r="30" fill="#ffdbac" />
-                    <rect x="155" cy="330" width="25" height="40" rx="5" fill="#1d3557" transform="rotate(-20 155 330)" />
-                  </g>
-                  
-                  {/* Person 2 - Center */}
-                  <g>
-                    <path d="M220 420 Q260 230 300 420" fill="#e63946" />
-                    <circle cx="260" cy="270" r="35" fill="#f1c27d" />
-                    <rect x="235" cy="340" width="50" height="30" rx="8" fill="#e63946" />
-                  </g>
-                  
-                  {/* Person 3 - Right */}
-                  <g>
-                    <path d="M350 410 Q380 270 410 410" fill="#457b9d" />
-                    <circle cx="380" cy="300" r="30" fill="#8d5524" />
-                    <rect x="340" y="350" width="40" height="40" rx="5" fill="#1d3557" />
-                  </g>
-
-                  {/* UI Elements on the board */}
-                  <rect x="120" y="120" width="50" height="50" rx="8" fill="#34d399" opacity="0.8" />
-                  <path d="M130 145 L145 155 L160 135" stroke="white" strokeWidth="4" fill="none" />
-                  
-                  <rect x="180" y="120" width="180" height="10" rx="5" fill="#f1f4f9" />
-                  <rect x="180" y="140" width="120" height="10" rx="5" fill="#f1f4f9" />
-                  
-                  <circle cx="350" cy="180" r="20" fill="#3f78e0" opacity="0.6" />
-                  
-                  <rect x="120" y="190" width="220" height="110" rx="15" fill="#1d3557" opacity="0.05" />
-                  <path d="M140 280 L180 230 L230 260 L300 200" stroke="#1d3557" strokeWidth="3" fill="none" />
-                </svg>
-             </div>
+            <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#e63946] mb-3">
+              WHY CHOOSE IBACUS TECH?
+            </h3>
+            <h2 className="text-3xl md:text-[36px] font-extrabold text-[#0f172a] tracking-tight leading-[1.2] mb-5">
+              We Deliver More<br />Than Expectations
+            </h2>
+            <p className="text-sm font-medium text-slate-500 mb-8 max-w-sm leading-relaxed">
+              We combine technology, creativity and strategy to build solutions that create real impact.
+            </p>
+            <SiteButton
+              href="/about"
+              className="bg-[#e63946] text-white rounded-lg px-6 py-3 font-semibold text-xs hover:bg-[#c1121f] transition-colors shadow-lg shadow-red-500/20"
+            >
+              Know More About Us <FiArrowRight className="inline-block ml-1" />
+            </SiteButton>
           </motion.div>
 
-          {/* Right Content Accordion */}
+          {/* Column 2: Features Grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8 relative z-10">
+              {benefits.map((benefit, idx) => (
+                <div key={idx} className="flex items-start gap-3">
+                  <div className="flex-shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-full bg-[#1e40af] flex items-center justify-center">
+                      <FiCheckCircle className="text-white text-[12px]" />
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-[13px] font-extrabold text-[#0f172a] mb-0.5">{benefit.title}</h4>
+                    <p className="text-[11px] font-medium text-slate-500 leading-relaxed max-w-[200px]">{benefit.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Column 3: Illustration */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="relative w-full max-w-[400px] mx-auto lg:ml-auto bg-[#eff6ff] rounded-2xl p-4 hidden lg:block border border-blue-50/50"
           >
-            <div className="mb-8">
-              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#e63946] mb-3">
-                {badge}
-              </h3>
-              <h2 className="text-[28px] font-bold tracking-tight text-[#1d3557] sm:text-[36px] lg:text-[40px] leading-[1.2] mb-4">
-                {title}
-              </h2>
-              {settings?.servicesWhyDescription && (
-                <div 
-                   className="text-[16px] text-[#60697b] mb-6 leading-relaxed [&_*]:!whitespace-normal break-words"
-                   dangerouslySetInnerHTML={{ __html: settings.servicesWhyDescription }}
-                />
-              )}
-            </div>
+              <svg viewBox="0 0 500 250" className="w-full h-auto drop-shadow-lg bg-white rounded-xl">
+                {/* Main Dashboard Area */}
+                <rect x="20" y="20" width="460" height="210" rx="10" fill="#f8fafc" />
 
-            <div className="space-y-4">
-              {items.map((item, idx) => (
-                <div 
-                  key={idx} 
-                  className={`border-b border-slate-100 pb-4 transition-all duration-300`}
-                >
-                  <button
-                    onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
-                    className="flex items-center justify-between w-full py-2 text-left group focus:outline-none"
-                  >
-                    <span className={`text-[17px] font-bold transition-colors ${expandedIndex === idx ? 'text-[#e63946]' : 'text-[#1d3557] group-hover:text-[#e63946]'}`}>
-                      {item.title}
-                    </span>
-                    <span className={`flex-shrink-0 ml-4 transition-transform duration-300 ${expandedIndex === idx ? 'rotate-180 text-[#e63946]' : 'text-[#457b9d]'}`}>
-                      <FiChevronDown size={20} />
-                    </span>
-                  </button>
-                  
-                  <AnimatePresence>
-                    {expandedIndex === idx && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="overflow-hidden"
-                      >
-                        <p className="py-3 text-[15px] leading-relaxed text-[#60697b]">
-                          {item.description}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </div>
+                {/* Sidebar */}
+                <rect x="20" y="20" width="80" height="210" rx="10" fill="#1e293b" />
+                <circle cx="60" cy="50" r="15" fill="#3b82f6" />
+                <rect x="40" y="80" width="40" height="6" rx="3" fill="#334155" />
+                <rect x="40" y="100" width="40" height="6" rx="3" fill="#334155" />
+                <rect x="40" y="120" width="40" height="6" rx="3" fill="#334155" />
+
+                {/* Header */}
+                <rect x="120" y="40" width="150" height="15" rx="5" fill="#e2e8f0" />
+                <circle cx="440" cy="47" r="12" fill="#cbd5e1" />
+
+                {/* Chart area */}
+                <rect x="120" y="80" width="200" height="120" rx="8" fill="white" stroke="#e2e8f0" strokeWidth="2" />
+                <path d="M140 180 L180 130 L220 150 L260 100 L300 120" stroke="#3b82f6" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+
+                {/* Donut Chart */}
+                <circle cx="390" cy="140" r="40" fill="none" stroke="#e2e8f0" strokeWidth="15" />
+                <circle cx="390" cy="140" r="40" fill="none" stroke="#3b82f6" strokeWidth="15" strokeDasharray="180 250" />
+                <circle cx="390" cy="140" r="40" fill="none" stroke="#10b981" strokeWidth="15" strokeDasharray="60 250" strokeDashoffset="-180" />
+
+                {/* Characters */}
+                {/* Person 1 standing near chart */}
+                <path d="M300 190 Q300 130 330 190" fill="#fca5a5" />
+                <circle cx="315" cy="110" r="15" fill="#fbbf24" />
+                <rect x="305" y="125" width="20" height="40" fill="#f87171" rx="5" />
+
+                {/* Person 2 sitting at desk */}
+                <rect x="400" y="170" width="40" height="20" fill="#94a3b8" /> {/* desk */}
+                <rect x="410" y="150" width="20" height="15" fill="#64748b" /> {/* laptop */}
+                <circle cx="450" cy="130" r="15" fill="#fcd34d" />
+                <rect x="440" y="145" width="20" height="45" fill="#3b82f6" rx="5" />
+              </svg>
+              {/* Floating Checkmark Badge */}
+              <div className="absolute top-1/2 -right-4 bg-emerald-500 text-white rounded-full p-1.5 shadow-xl border-4 border-white">
+                <FiCheckCircle className="w-5 h-5" />
+              </div>
           </motion.div>
 
         </div>

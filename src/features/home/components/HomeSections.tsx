@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { apiClient, type PaginationMeta, type PublicStat } from '@/src/api/client';
-import { FiChevronLeft, FiChevronRight, FiUsers, FiCheckCircle, FiActivity, FiClock } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiUsers, FiCheckCircle, FiActivity, FiClock, FiBriefcase, FiAward, FiSmile } from 'react-icons/fi';
 import { Loader } from '@/src/shared/ui';
 import { IconType } from 'react-icons';
 
@@ -69,25 +69,55 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
   }
 
   const label = item.label.toLowerCase();
-  const Icon = statIcons[Object.keys(statIcons).find(key => label.includes(key)) || 'default'];
 
   if (isFloating) {
+    let colorClasses = {
+      bg: 'bg-rose-50',
+      text: 'text-rose-500',
+      icon: FiUsers
+    };
+
+    if (label.includes('project')) {
+      colorClasses = {
+        bg: 'bg-blue-50',
+        text: 'text-blue-500',
+        icon: FiBriefcase
+      };
+    } else if (label.includes('intern')) {
+      colorClasses = {
+        bg: 'bg-emerald-50',
+        text: 'text-emerald-500',
+        icon: FiAward
+      };
+    } else if (label.includes('satisfaction') || label.includes('rate') || label.includes('percent')) {
+      colorClasses = {
+        bg: 'bg-orange-50',
+        text: 'text-orange-500',
+        icon: FiSmile
+      };
+    }
+
+    const FloatingIcon = colorClasses.icon;
+
     return (
       <article
         ref={cardRef}
-        className="flex items-center gap-6 px-8 border-r border-slate-100 last:border-0"
+        className="flex items-center gap-4 py-2"
       >
-        <div className="flex flex-col">
-          <div className="flex items-baseline gap-1">
-             <p className="text-4xl font-black text-(--ui-primary) tracking-tight">
-               {startAnimation || !isNumber ? displayValue : item.value.replace(numericString, '0')}
-             </p>
-          </div>
-          <p className="mt-1 text-[13px] font-bold text-slate-500 max-w-[120px] leading-tight">{item.label}</p>
+        <div className={`w-12 h-12 rounded-full shrink-0 flex items-center justify-center ${colorClasses.bg} ${colorClasses.text}`}>
+          <FloatingIcon size={20} />
+        </div>
+        <div className="flex flex-col text-left">
+          <p className="text-xl md:text-2xl font-black text-slate-900 leading-tight">
+            {startAnimation || !isNumber ? displayValue : item.value.replace(numericString, '0')}
+          </p>
+          <p className="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider leading-none mt-0.5">{item.label}</p>
         </div>
       </article>
     );
   }
+
+  const Icon = statIcons[Object.keys(statIcons).find(key => label.includes(key)) || 'default'];
 
   return (
     <article
@@ -167,13 +197,18 @@ export function HomeSections({ isFloating }: { isFloating?: boolean }) {
 
   if (isFloating) {
     return (
-      <div className="w-full rounded-[40px] border border-white/80 bg-white/70 px-6 py-10 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.1)] backdrop-blur-2xl">
-        <div className="flex items-center justify-between divide-x divide-slate-100">
-           {stats.map((item) => (
-              <div key={item.id} className="flex-1 flex justify-center">
-                <AnimatedStatCard item={item} isFloating />
-              </div>
-            ))}
+      <div className="w-full">
+        <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-5">
+          Trusted by startups, SMEs & enterprises
+        </p>
+        <div className="w-full rounded-[30px] border border-slate-100 bg-white px-8 py-7 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 lg:divide-x lg:divide-slate-100">
+             {stats.map((item) => (
+                <div key={item.id} className="flex justify-center lg:justify-start lg:pl-10 first:pl-0">
+                  <AnimatedStatCard item={item} isFloating />
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     );

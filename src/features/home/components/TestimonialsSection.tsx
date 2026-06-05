@@ -1,85 +1,46 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
 import {
   apiClient,
   type PaginationMeta,
   type PublicTestimonial,
 } from '@/src/api/client';
-
-import {
-  FiChevronLeft,
-  FiChevronRight,
-} from 'react-icons/fi';
-
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { Loader } from '@/src/shared/ui';
-
-import {
-  motion,
-  AnimatePresence,
-} from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function TestimonialsSection() {
-
-  const [testimonials, setTestimonials] =
-    useState<PublicTestimonial[]>([]);
-
-  const [testimonialsMeta, setTestimonialsMeta] =
-    useState<PaginationMeta>({
-      page: 1,
-      limit: 2,
-      totalPages: 1,
-      totalItems: 0,
-    });
-
-  const [testimonialsPage, setTestimonialsPage] =
-    useState(1);
-
-  const [testimonialsLoading, setTestimonialsLoading] =
-    useState(false);
-
-  const [testimonialsError, setTestimonialsError] =
-    useState<string | null>(null);
+  const [testimonials, setTestimonials] = useState<PublicTestimonial[]>([]);
+  const [testimonialsMeta, setTestimonialsMeta] = useState<PaginationMeta>({
+    page: 1, limit: 3, totalPages: 1, totalItems: 0,
+  });
+  const [testimonialsPage, setTestimonialsPage] = useState(1);
+  const [testimonialsLoading, setTestimonialsLoading] = useState(false);
+  const [testimonialsError, setTestimonialsError] = useState<string | null>(null);
 
   const testimonialsLoadingRef = useRef(false);
-
-  
 
   const loadTestimonialsPage = useCallback(
     async (page: number) => {
       if (testimonialsLoadingRef.current) return;
-
       testimonialsLoadingRef.current = true;
-
       setTestimonialsLoading(true);
       setTestimonialsError(null);
 
       try {
-        const result =
-          await apiClient.getTestimonials(page, 2);
-
+        const result = await apiClient.getTestimonials(page, 3);
         setTestimonials(result.items ?? []);
-
         setTestimonialsMeta(
-          result.meta ?? {
-            page: 1,
-            limit: 2,
-            totalPages: 1,
-            totalItems: 0,
-          }
+          result.meta ?? { page: 1, limit: 3, totalPages: 1, totalItems: 0 }
         );
-
         setTestimonialsPage(page);
       } catch (err) {
         setTestimonialsError(
-          err instanceof Error
-            ? err.message
-            : 'Failed to load testimonials'
+          err instanceof Error ? err.message : 'Failed to load testimonials'
         );
       } finally {
         testimonialsLoadingRef.current = false;
-
         setTestimonialsLoading(false);
       }
     },
@@ -95,229 +56,158 @@ export function TestimonialsSection() {
     [testimonials]
   );
 
-  const testimonialsTotalPages = Math.max(
-    1,
-    testimonialsMeta.totalPages ?? 1
-  );
+  const testimonialsTotalPages = Math.max(1, testimonialsMeta.totalPages ?? 1);
+  const canGoPrevTestimonials = testimonialsPage > 1;
+  const canGoNextTestimonials = testimonialsPage < testimonialsTotalPages;
 
-  const canGoPrevTestimonials =
-    testimonialsPage > 1;
+  // Fallback data if no API data is available
+  const fallbackTestimonials = [
+    {
+      id: '1',
+      name: 'Deva',
+      role: 'CEO',
+      company: 'Journey Analytics',
+      content: 'IBT delivered a highly responsive and user-friendly platform. Their attention to detail and commitment to quality made the entire process smooth.',
+      avatarUrl: null,
+    },
+    {
+      id: '2',
+      name: 'Surya',
+      role: 'CTO',
+      company: 'TechCoach',
+      content: 'Working with the IBT team was a great experience. They understood our requirements perfectly and delivered beyond expectations.',
+      avatarUrl: null,
+    },
+    {
+      id: '3',
+      name: 'Manoj',
+      role: 'Founder',
+      company: 'MultipliersKart',
+      content: "Professional, reliable and innovative - that's what defines IBT. We highly recommend their services.",
+      avatarUrl: null,
+    }
+  ];
 
-  const canGoNextTestimonials =
-    testimonialsPage < testimonialsTotalPages;
-
- 
-
-  if (testimonialsLoading && !hasTestimonials) {
-    return (
-      <div className="flex items-center justify-center py-16 sm:py-20">
-        <Loader
-          size="lg"
-          label="Loading Testimonials..."
-        />
-      </div>
-    );
-  }
-
- 
+  const displayTestimonials = hasTestimonials ? testimonials : fallbackTestimonials;
+  const isLoading = testimonialsLoading && !hasTestimonials;
 
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-20">
-
+    <section className="bg-slate-50 py-16 lg:py-24 overflow-hidden relative">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-       
-
-        <div className="mb-12 flex flex-col gap-8 sm:mb-16 lg:mb-20 lg:flex-row lg:items-end lg:justify-between">
-
-          {/* LEFT */}
-          <div className="text-center lg:text-left">
-
-            <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#60708f] sm:text-[12px]">
-              Voices
-            </p>
-
-            <h2 className="mt-4 text-[36px] font-black leading-tight tracking-[-1.5px] text-[#060b1f] xs:text-[42px] sm:text-[58px] lg:text-[72px]">
-              Testimonials
+        {/* Header */}
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between">
+          <div>
+            <h3 className="text-2xl font-bold uppercase tracking-widest text-red-500 mb-3">
+              TESTIMONIALS
+            </h3>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+              What Our Clients Say
             </h2>
           </div>
 
-          {/* DESKTOP ARROWS */}
-          <div className="hidden items-center gap-3 md:flex">
-
-            {/* LEFT */}
+          {/* Navigation Arrows */}
+          <div className="hidden md:flex items-center gap-3 mt-6 md:mt-0">
             <button
               type="button"
-              onClick={() =>
-                void loadTestimonialsPage(
-                  testimonialsPage - 1
-                )
-              }
-              disabled={
-                !canGoPrevTestimonials ||
-                testimonialsLoading
-              }
-              className="group flex h-11 w-11 items-center justify-center rounded-full border border-[#d9dfe8] bg-white text-[#060b1f] transition-all duration-300 hover:border-(--ui-primary) hover:bg-(--ui-primary) hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:h-12 sm:w-12"
+              onClick={() => void loadTestimonialsPage(testimonialsPage - 1)}
+              disabled={!canGoPrevTestimonials || testimonialsLoading}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-all hover:bg-slate-100 disabled:opacity-40"
             >
-              <FiChevronLeft className="text-xl transition-transform duration-300 group-hover:-translate-x-1" />
+              <FiChevronLeft className="text-lg" />
             </button>
-
-            {/* RIGHT */}
             <button
               type="button"
-              onClick={() =>
-                void loadTestimonialsPage(
-                  testimonialsPage + 1
-                )
-              }
-              disabled={
-                !canGoNextTestimonials ||
-                testimonialsLoading
-              }
-              className="group flex h-11 w-11 items-center justify-center rounded-full border border-[#d9dfe8] bg-white text-[#060b1f] transition-all duration-300 hover:border-(--ui-primary) hover:bg-(--ui-primary) hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:h-12 sm:w-12"
+              onClick={() => void loadTestimonialsPage(testimonialsPage + 1)}
+              disabled={!canGoNextTestimonials || testimonialsLoading}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-all hover:bg-slate-100 disabled:opacity-40"
             >
-              <FiChevronRight className="text-xl transition-transform duration-300 group-hover:translate-x-1" />
+              <FiChevronRight className="text-lg" />
             </button>
           </div>
         </div>
 
-       
-
-        {testimonialsError && !hasTestimonials && (
-          <div className="rounded-[24px] bg-red-50 p-8 text-center text-red-600">
-            {testimonialsError}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader size="lg" label="Loading Testimonials..." />
           </div>
-        )}
-
-        
-
-        {hasTestimonials && (
-          <AnimatePresence mode="wait">
-
-            <motion.div
-              key={testimonialsPage}
-              initial={{
-                opacity: 0,
-                x: 60,
-              }}
-              animate={{
-                opacity: 1,
-                x: 0,
-              }}
-              exit={{
-                opacity: 0,
-                x: -60,
-              }}
-              transition={{
-                duration: 0.4,
-              }}
-              className="grid gap-5 lg:grid-cols-2"
+        ) : (
+          <div className="relative">
+            {/* Left Nav Button Mobile */}
+            <button
+              type="button"
+              onClick={() => void loadTestimonialsPage(testimonialsPage - 1)}
+              disabled={!canGoPrevTestimonials || testimonialsLoading}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-10 w-10 h-10 bg-white rounded-full shadow flex md:hidden items-center justify-center text-slate-400 hover:text-slate-800 disabled:opacity-40"
             >
+              <FiChevronLeft size={20} />
+            </button>
+            {/* Right Nav Button Mobile */}
+            <button
+              type="button"
+              onClick={() => void loadTestimonialsPage(testimonialsPage + 1)}
+              disabled={!canGoNextTestimonials || testimonialsLoading}
+              className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-10 w-10 h-10 bg-white rounded-full shadow flex md:hidden items-center justify-center text-slate-400 hover:text-slate-800 disabled:opacity-40"
+            >
+              <FiChevronRight size={20} />
+            </button>
 
-              {testimonials.map((item) => (
-                <div
-                  key={item.id}
-                  className="group relative overflow-hidden rounded-[24px] border border-slate-100 bg-slate-50/50 p-6 transition-all duration-500 hover:-translate-y-1 hover:bg-white hover:shadow-[0_15px_40px_rgba(0,0,0,0.05)] sm:p-8 lg:p-9"
-                >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={testimonialsPage}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.4 }}
+                className="grid gap-6 md:grid-cols-3"
+              >
+                {displayTestimonials.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="flex flex-col bg-white rounded-2xl p-8 border border-slate-100 shadow-sm"
+                  >
+                    {/* Stars */}
+                    <div className="flex gap-1 mb-6 text-yellow-400">
+                      {'★★★★★'.split('').map((star, i) => (
+                        <span key={i} className="text-lg">{star}</span>
+                      ))}
+                    </div>
 
-                  {/* QUOTE */}
-                  <div className="absolute left-5 top-3 text-[80px] font-black leading-none text-slate-100 sm:left-6 sm:top-4 sm:text-[100px]">
-                    “
-                  </div>
-
-                  {/* CONTENT */}
-                  <div className="relative z-10">
-
-                    {/* TEXT */}
-                    <div 
-                      className="max-w-[95%] text-[15px] italic leading-[30px] tracking-[-0.2px] text-[#1b2b4b] sm:text-[16px] sm:leading-[34px] lg:text-[17px] lg:leading-[38px] [&_p]:mb-0 [&_p:last-child]:mb-0"
+                    {/* Text */}
+                    <div
+                      className="text-[15px] leading-relaxed text-slate-600 mb-8 flex-grow"
                       dangerouslySetInnerHTML={{ __html: item.content }}
                     />
 
-                    {/* USER */}
-                    <div className="mt-8 flex items-center gap-4 sm:mt-10">
-
-                      {/* AVATAR */}
-                      <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-[#dbe5f8] text-[18px] font-bold text-[#315efb] sm:h-14 sm:w-14 sm:text-[20px]">
-
+                    {/* User Info */}
+                    <div className="flex items-center gap-4 mt-auto">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-700">
                         {item.avatarUrl ? (
                           <img
                             src={item.avatarUrl}
                             alt={item.name}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full rounded-full object-cover"
                           />
                         ) : (
-                          item.name
-                            ?.split(' ')
-                            .map((word) => word[0])
-                            .join('')
-                            .slice(0, 1)
-                            .toUpperCase()
+                          item.name?.charAt(0).toUpperCase()
                         )}
                       </div>
-
-                      {/* INFO */}
                       <div>
-
-                        <h3 className="text-[24px] font-black tracking-[-1px] text-[#060b1f] sm:text-[28px] lg:text-[30px]">
+                        <h4 className="text-base font-bold text-slate-900">
                           {item.name}
-                        </h3>
-
-                        {(item.role ||
-                          item.company) && (
-                          <p className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#60708f] sm:text-[11px]">
-                            {[item.role, item.company]
-                              .filter(Boolean)
-                              .join(' • ')}
-                          </p>
-                        )}
+                        </h4>
+                        <p className="text-xs text-slate-500 font-medium">
+                          {[item.role, item.company].filter(Boolean).join(', ')}
+                        </p>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         )}
 
-      
-
-        <div className="mt-8 flex items-center justify-center gap-3 md:hidden">
-
-          {/* LEFT */}
-          <button
-            type="button"
-            onClick={() =>
-              void loadTestimonialsPage(
-                testimonialsPage - 1
-              )
-            }
-            disabled={
-              !canGoPrevTestimonials ||
-              testimonialsLoading
-            }
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d9dfe8] bg-white text-[#060b1f] transition-all duration-300 hover:border-(--ui-primary) hover:bg-(--ui-primary) hover:text-white disabled:opacity-40"
-          >
-            <FiChevronLeft className="text-xl" />
-          </button>
-
-          {/* RIGHT */}
-          <button
-            type="button"
-            onClick={() =>
-              void loadTestimonialsPage(
-                testimonialsPage + 1
-              )
-            }
-            disabled={
-              !canGoNextTestimonials ||
-              testimonialsLoading
-            }
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d9dfe8] bg-white text-[#060b1f] transition-all duration-300 hover:border-(--ui-primary) hover:bg-(--ui-primary) hover:text-white disabled:opacity-40"
-          >
-            <FiChevronRight className="text-xl" />
-          </button>
-        </div>
       </div>
     </section>
   );
