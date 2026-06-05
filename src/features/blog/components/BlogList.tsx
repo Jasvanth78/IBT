@@ -167,7 +167,7 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
                         <div className="mt-auto flex items-center gap-4 text-[12px] font-medium text-slate-400 pt-5 border-t border-slate-50">
                           <span className="flex items-center gap-1.5"><FiCalendar /> {formatPublishedAt(post.publishedAt)}</span>
                           <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                          <span>{post.readTime || '5'} min read</span>
+                          <span>{(post as any).readTime || '5'} min read</span>
                         </div>
                       </div>
                     </Link>
