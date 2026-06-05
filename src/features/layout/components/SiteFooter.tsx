@@ -109,12 +109,12 @@ export function SiteFooter() {
                 alt="IBACUS TECH SOLUTION"
                 width={180}
                 height={50}
-                className="h-12 w-auto object-contain bg-white px-2 py-1 rounded"
+                className="h-12 w-auto object-contain !bg-white px-2 py-1 rounded"
                 priority
               />
             </Link>
 
-            <p className="mt-5 text-sm leading-relaxed text-slate-400 max-w-xs">
+            <p className="mt-5 text-sm leading-relaxed !text-white max-w-xs">
               Empowering careers through technology. We build cutting-edge products, AI solutions and career programs that create real impact.
             </p>
 
@@ -130,7 +130,7 @@ export function SiteFooter() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={s.platform}
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-red-500 hover:text-white"
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 !text-white transition-all duration-300 hover:bg-red-500 hover:text-white"
                     >
                       <Icon className="text-sm" />
                     </a>
@@ -138,10 +138,10 @@ export function SiteFooter() {
                 })
               ) : (
                 <>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-slate-400"><FaInstagram className="text-sm" /></span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-slate-400"><FaFacebookF className="text-sm" /></span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-slate-400"><FaLinkedinIn className="text-sm" /></span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-slate-400"><FaYoutube className="text-sm" /></span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white"><FaInstagram className="text-sm" /></span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white"><FaFacebookF className="text-sm" /></span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white"><FaLinkedinIn className="text-sm" /></span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white"><FaYoutube className="text-sm" /></span>
                 </>
               )}
             </div>
@@ -150,7 +150,7 @@ export function SiteFooter() {
           {/* Link Columns */}
           {footerLinks.map((section) => (
             <div key={section.title}>
-              <h4 className="text-sm font-bold text-white mb-5 uppercase tracking-wider">
+              <h4 className="text-md font-bold !text-red-500 mb-5 uppercase tracking-wider">
                 {section.title}
               </h4>
               <ul className="space-y-3">
@@ -158,7 +158,7 @@ export function SiteFooter() {
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      className="text-sm text-slate-400 hover:text-white transition-colors duration-200"
+                      className="text-sm !text-white hover:text-red-500 transition-colors duration-200"
                     >
                       {item.label}
                     </Link>
@@ -170,7 +170,7 @@ export function SiteFooter() {
 
           {/* Contact Us Column */}
           <div>
-            <h4 className="text-sm font-bold text-white mb-5 uppercase tracking-wider">
+            <h4 className="text-md font-bold !text-red-500 mb-5 uppercase tracking-wider">
               Contact Us
             </h4>
             <ul className="space-y-4">
@@ -183,7 +183,7 @@ export function SiteFooter() {
                 const content = (
                   <div className="flex items-start gap-3">
                     <Icon className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
-                    <span className="text-sm text-slate-400 leading-relaxed break-words">
+                    <span className="text-sm !text-white leading-relaxed break-words">
                       {contact.value}
                     </span>
                   </div>
@@ -206,16 +206,16 @@ export function SiteFooter() {
               {contacts.length === 0 && (
                 <>
                   <li className="flex items-start gap-3">
-                    <FiPhone className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
-                    <span className="text-sm text-slate-400">+91 9043045780</span>
+                    <FiPhone className="h-4 w-4 !text-red-400 mt-0.5 shrink-0" />
+                    <span className="text-sm text-white">+91 9043045780</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <FiMail className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
-                    <span className="text-sm text-slate-400">ibacustech@gmail.com</span>
+                    <span className="text-sm text-white">ibacustech@gmail.com</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <FiMapPin className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
-                    <span className="text-sm text-slate-400">Salem, Tamil Nadu, India</span>
+                    <span className="text-sm text-white">Salem, Tamil Nadu, India</span>
                   </li>
                 </>
               )}
@@ -227,10 +227,10 @@ export function SiteFooter() {
       {/* Bottom Bar */}
       <div className="border-t border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs !text-white">
             © {new Date().getFullYear()} IBACUS TECH SOLUTION. All rights reserved.
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs !text-white">
             Made with <span className="text-red-500">I-BACUS TECH TEAM</span>.
           </p>
         </div>

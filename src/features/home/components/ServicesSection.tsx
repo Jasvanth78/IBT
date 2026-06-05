@@ -149,7 +149,7 @@ export function ServicesSection() {
   };
 
   return (
-    <section className="bg-[#FEFAF4] py-12 lg:py-16 relative overflow-hidden">
+    <section className="bg-[#FEFAF4] py-10 lg:py-14 relative overflow-hidden">
       {/* Decorative Dots Backdrop */}
       <div className="absolute top-1/4 -left-10 opacity-20 pointer-events-none hidden lg:block">
         <div className="grid grid-cols-5 gap-3">

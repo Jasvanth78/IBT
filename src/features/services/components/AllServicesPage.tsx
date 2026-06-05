@@ -217,7 +217,7 @@ export function AllServicesPage() {
       {/* =====================================================
           2. WHAT WE DO
       ===================================================== */}
-      <section className="py-20 lg:py-24 bg-slate-50 overflow-hidden">
+      <section className="py-12 lg:py-16 bg-slate-50 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
@@ -316,7 +316,7 @@ export function AllServicesPage() {
       {/* =====================================================
           3. HOW WE DELIVER EXCELLENCE (Process Timeline)
       ===================================================== */}
-      <section className="py-20 lg:py-24 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-4">
             HOW WE DELIVER
@@ -387,7 +387,7 @@ export function AllServicesPage() {
       {/* =====================================================
           4. SOLUTION PORTFOLIO
       ===================================================== */}
-      <section className="py-20 lg:py-24 bg-white border-t border-slate-100">
+      <section className="py-12 lg:py-16 bg-white border-t border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative">
           <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-4">
             SOLUTION PORTFOLIO
@@ -459,7 +459,7 @@ export function AllServicesPage() {
       {/* =====================================================
           5. LET'S TALK
       ===================================================== */}
-      <section className="py-20 lg:py-24 bg-slate-50 overflow-hidden">
+      <section className="py-12 lg:py-16 bg-slate-50 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
@@ -504,7 +504,7 @@ export function AllServicesPage() {
       {/* =====================================================
           6. BOTTOM CTA RIBBON
       ===================================================== */}
-      <section className="bg-white py-10 lg:py-16 relative overflow-hidden">
+      <section className="bg-white py-8 lg:py-12 relative overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

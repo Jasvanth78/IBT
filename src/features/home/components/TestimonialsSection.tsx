@@ -92,7 +92,7 @@ export function TestimonialsSection() {
   const isLoading = testimonialsLoading && !hasTestimonials;
 
   return (
-    <section className="bg-slate-50 py-16 lg:py-24 overflow-hidden relative">
+    <section className="bg-slate-50 py-12 lg:py-16 overflow-hidden relative">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -128,7 +128,7 @@ export function TestimonialsSection() {
         </div>
 
         {isLoading ? (
-          <div className="flex items-center justify-center py-20">
+          <div className="flex items-center justify-center py-12">
             <Loader size="lg" label="Loading Testimonials..." />
           </div>
         ) : (

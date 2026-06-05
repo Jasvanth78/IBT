@@ -45,7 +45,7 @@ export function StrategySection() {
   const description = settings?.servicesProcessDescription || "Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis.";
   
   return (
-    <section className="bg-white py-12 lg:py-16 overflow-hidden">
+    <section className="bg-white py-10 lg:py-14 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           

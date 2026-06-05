@@ -290,7 +290,7 @@ export default function AboutPage() {
       {/* =====================================================
           2. WHO ARE WE SECTION
       ===================================================== */}
-      <section className="py-20 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-12 items-start">
 
@@ -352,7 +352,7 @@ export default function AboutPage() {
       {/* =====================================================
           3. HOW IT WORKS / OUR PURPOSE SECTION
       ===================================================== */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-12 lg:py-16 bg-slate-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-12 items-center">
 
@@ -452,7 +452,7 @@ export default function AboutPage() {
       {/* =====================================================
           MISSION & VISION SPLIT GRID (White Section)
       ===================================================== */}
-      <section className="py-20 bg-white border-b border-slate-100">
+      <section className="py-12 lg:py-16 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 split-divided">
 
@@ -487,7 +487,7 @@ export default function AboutPage() {
       {/* =====================================================
           5. TEAM MEMBERS LEADERSHIP ROW
       ===================================================== */}
-      <section className="py-20 bg-slate-50/40">
+      <section className="py-12 lg:py-16 bg-slate-50/40">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           {/* HEADER HEADER */}

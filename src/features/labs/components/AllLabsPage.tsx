@@ -143,7 +143,7 @@ export function AllLabsPage() {
 
               <h1 className="text-[44px] sm:text-[56px] lg:text-[64px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
                 Precision-led<br />
-                <span className="text-[#e63946]">Future<br />Engineering</span>
+                <span className="text-[#e63946]">Future Engineering</span>
               </h1>
 
               <p className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
@@ -251,7 +251,7 @@ export function AllLabsPage() {
       {/* =====================================================
           3. LAB INITIATIVES (Grid)
       ===================================================== */}
-      <section className="py-16 bg-[#f8faff]">
+      <section className="py-12 lg:py-16 bg-[#f8faff]">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
@@ -343,7 +343,7 @@ export function AllLabsPage() {
       {/* =====================================================
           4. OUR RESEARCH PROCESS (Timeline)
       ===================================================== */}
-      <section className="py-20 bg-white border-y border-slate-100">
+      <section className="py-12 lg:py-16 bg-white border-y border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
           <div className="mb-16">
@@ -394,7 +394,7 @@ export function AllLabsPage() {
       {/* =====================================================
           5. TECHNICAL RIGOR & MENTORSHIP-FIRST
       ===================================================== */}
-      <section className="py-20 bg-[#f8faff]">
+      <section className="py-12 lg:py-16 bg-[#f8faff]">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
 
@@ -466,7 +466,7 @@ export function AllLabsPage() {
       {/* =====================================================
           6. RESEARCH PORTFOLIO
       ===================================================== */}
-      <section className="py-20 bg-white border-t border-slate-100">
+      <section className="py-12 lg:py-16 bg-white border-t border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
@@ -565,7 +565,7 @@ export function AllLabsPage() {
       {/* =====================================================
           8. BOTTOM CTA RIBBON
       ===================================================== */}
-      <section className="bg-white py-12 lg:py-20 relative overflow-hidden border-t border-slate-100">
+      <section className="bg-white py-10 lg:py-16 relative overflow-hidden border-t border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-slate-900 rounded-3xl overflow-hidden relative shadow-2xl">
             {/* Abstract Background Elements */}

@@ -71,7 +71,7 @@ const steps = [
 
 export function HowWeWorkSection() {
   return (
-    <section className="bg-white py-16 lg:py-24 overflow-hidden border-t border-slate-100">
+    <section className="bg-white py-12 lg:py-16 overflow-hidden border-t border-slate-100">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}

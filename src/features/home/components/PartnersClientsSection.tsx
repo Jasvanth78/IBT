@@ -139,7 +139,7 @@ export function PartnersClientsSection() {
   const displayItems = hasItems ? combinedItems : fallbackItems;
 
   return (
-    <section className="bg-white py-20 lg:py-24">
+    <section className="bg-white py-12 lg:py-16">
       <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
         {/* Header */}

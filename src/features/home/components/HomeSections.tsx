@@ -102,7 +102,7 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
     return (
       <article
         ref={cardRef}
-        className="flex items-center gap-3 md:gap-4 py-1 w-full justify-center xl:justify-start xl:pl-10"
+        className="flex items-center gap-3 md:gap-4 py-1 w-[200px] sm:w-[220px] max-w-full mx-auto justify-start xl:w-full xl:mx-0 xl:justify-start xl:pl-10"
       >
         <div className={`w-14 h-14 rounded-full shrink-0 flex items-center justify-center ${colorClasses.bg} ${colorClasses.text}`}>
           <FloatingIcon size={24} strokeWidth={1.5} />
