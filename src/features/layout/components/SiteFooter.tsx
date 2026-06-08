@@ -3,7 +3,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
-import { FaFacebookF, FaLinkedinIn, FaYoutube, FaInstagram } from 'react-icons/fa';
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaYoutube,
+  FaInstagram,
+  FaTwitter,
+  FaGithub,
+  FaWhatsapp,
+  FaDiscord,
+  FaTelegramPlane,
+  FaTiktok,
+  FaPinterestP,
+  FaRedditAlien,
+  FaTwitch,
+  FaGlobe
+} from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { apiClient, type PublicContact } from '@/src/api/client';
 import { resolveImageUrl } from '@/src/utils/image';
@@ -14,8 +29,9 @@ const footerLinks = [
     items: [
       { label: 'About Us', href: '/about' },
       { label: 'Our Team', href: '/about' },
-      { label: 'Careers', href: '/internship' },
-      { label: 'Contact Us', href: '/contact' },
+      { label: "Blog", href: "/blog" },
+      { label: 'Contact Us', href: '/contact' }
+
     ],
   },
   {
@@ -25,14 +41,13 @@ const footerLinks = [
       { label: 'Mobile App Development', href: '/services' },
       { label: 'AI Solutions', href: '/services' },
       { label: 'ERP Systems', href: '/services' },
-      { label: 'Training & Courses', href: '/services' },
+
     ],
   },
   {
     title: 'Resources',
     items: [
       { label: 'IBT Labs', href: '/ibt-labs' },
-      { label: 'FAQ', href: '/contact' },
       { label: 'Privacy Policy', href: '#' },
       { label: 'Terms of Service', href: '#' },
     ],
@@ -86,13 +101,42 @@ export function SiteFooter() {
     loadData();
   }, []);
 
-  const getSocialIcon = (platform: string) => {
-    const name = (platform || '').toLowerCase();
-    if (name.includes('facebook')) return FaFacebookF;
-    if (name.includes('linkedin')) return FaLinkedinIn;
-    if (name.includes('youtube')) return FaYoutube;
-    if (name.includes('instagram')) return FaInstagram;
-    return FaLinkedinIn;
+  const getSocialIcon = (logoUrl: string, platform: string) => {
+    const logoKey = (logoUrl || '').toLowerCase();
+    const isIconKey = logoKey && !logoKey.includes('/') && !logoKey.startsWith('http');
+    if (isIconKey) {
+      if (logoKey.includes('facebook')) return FaFacebookF;
+      if (logoKey.includes('twitter')) return FaTwitter;
+      if (logoKey.includes('linkedin')) return FaLinkedinIn;
+      if (logoKey.includes('youtube')) return FaYoutube;
+      if (logoKey.includes('instagram')) return FaInstagram;
+      if (logoKey.includes('github')) return FaGithub;
+      if (logoKey.includes('whatsapp')) return FaWhatsapp;
+      if (logoKey.includes('discord')) return FaDiscord;
+      if (logoKey.includes('telegram')) return FaTelegramPlane;
+      if (logoKey.includes('tiktok')) return FaTiktok;
+      if (logoKey.includes('pinterest')) return FaPinterestP;
+      if (logoKey.includes('reddit')) return FaRedditAlien;
+      if (logoKey.includes('twitch')) return FaTwitch;
+      if (logoKey.includes('website')) return FaGlobe;
+    }
+
+    const platName = (platform || '').toLowerCase();
+    if (platName.includes('facebook')) return FaFacebookF;
+    if (platName.includes('twitter') || platName.includes('x.com')) return FaTwitter;
+    if (platName.includes('linkedin')) return FaLinkedinIn;
+    if (platName.includes('youtube')) return FaYoutube;
+    if (platName.includes('instagram')) return FaInstagram;
+    if (platName.includes('github')) return FaGithub;
+    if (platName.includes('whatsapp')) return FaWhatsapp;
+    if (platName.includes('discord')) return FaDiscord;
+    if (platName.includes('telegram')) return FaTelegramPlane;
+    if (platName.includes('tiktok')) return FaTiktok;
+    if (platName.includes('pinterest')) return FaPinterestP;
+    if (platName.includes('reddit')) return FaRedditAlien;
+    if (platName.includes('twitch')) return FaTwitch;
+
+    return FaGlobe;
   };
 
   return (
@@ -122,7 +166,7 @@ export function SiteFooter() {
             <div className="mt-6 flex items-center gap-3">
               {socials.length > 0 ? (
                 socials.map((s) => {
-                  const Icon = getSocialIcon(s.platform);
+                  const Icon = getSocialIcon(s.logoUrl, s.platform);
                   return (
                     <a
                       key={s.id}
@@ -230,9 +274,7 @@ export function SiteFooter() {
           <p className="text-xs !text-white">
             © {new Date().getFullYear()} IBACUS TECH SOLUTION. All rights reserved.
           </p>
-          <p className="text-xs !text-white">
-            Made with <span className="text-red-500">I-BACUS TECH TEAM</span>.
-          </p>
+
         </div>
       </div>
     </footer>

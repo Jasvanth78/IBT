@@ -71,6 +71,14 @@ export type PublicPartner = {
   order?: number;
 };
 
+export type PublicPartnerCollege = {
+  id: string;
+  name: string;
+  logoUrl?: string | null;
+  website?: string | null;
+  order?: number;
+};
+
 export type PublicClient = {
   id: string;
   name: string;
@@ -287,6 +295,10 @@ class ApiClient {
 
   async getPartners(page = 1, limit = 10): Promise<PaginatedResult<PublicPartner>> {
     return this.requestPaginated<PublicPartner>('/partners', this.publicPrefix, { page, limit });
+  }
+
+  async getPartnerColleges(page = 1, limit = 10): Promise<PaginatedResult<PublicPartnerCollege>> {
+    return this.requestPaginated<PublicPartnerCollege>('/partner-colleges', this.publicPrefix, { page, limit });
   }
 
   async getClients(page = 1, limit = 10): Promise<PaginatedResult<PublicClient>> {

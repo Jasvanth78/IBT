@@ -43,6 +43,12 @@ import { resolveImageUrl } from '@/src/utils/image'
 import { Loader } from '@/src/shared/ui/Loader'
 import { IoRocketOutline, IoPeopleOutline, IoSchoolOutline, IoTrophyOutline } from 'react-icons/io5'
 
+function cleanHtml(html: string): string {
+  if (!html) return ''
+  if (typeof html !== 'string') return ''
+  return html.replace(/&nbsp;/g, ' ')
+}
+
 export default function AboutPage() {
   const { settings } = useSocketSettings()
   const s = settings as any;
@@ -302,12 +308,14 @@ export default function AboutPage() {
               <h2 className="mt-2 text-[36px] font-extrabold text-[#0f172a] tracking-tight sm:text-[44px] md:text-[50px] leading-[1.1] mb-6">
                 {whoTitle}
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                {whoDescription}
-              </p>
-              <p className="text-base text-slate-500 leading-relaxed mb-10">
-                {whoSecondaryDescription}
-              </p>
+              <div 
+                className="text-lg text-slate-600 leading-relaxed mb-4 prose max-w-none [&>p]:mb-4"
+                dangerouslySetInnerHTML={{ __html: cleanHtml(whoDescription) }}
+              />
+              <div 
+                className="text-base text-slate-500 leading-relaxed mb-10 prose max-w-none [&>p]:mb-4"
+                dangerouslySetInnerHTML={{ __html: cleanHtml(whoSecondaryDescription) }}
+              />
 
               {/* Approach 2x2 Feature Block */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -464,7 +472,10 @@ export default function AboutPage() {
               <div>
                 <span className="text-[14px] font-bold text-[#e63946] uppercase tracking-wider">OUR VISION</span>
                 <h3 className="text-[32px] sm:text-[40px] md:text-[44px] leading-[1.1] font-extrabold text-[#0f172a] tracking-tight mt-2 mb-4">{visionTitle}</h3>
-                <p className="text-base sm:text-lg text-slate-500 leading-relaxed">{visionDesc}</p>
+                <div 
+                  className="text-base sm:text-lg text-slate-500 leading-relaxed prose max-w-none [&>p]:mb-4"
+                  dangerouslySetInnerHTML={{ __html: cleanHtml(visionDesc) }}
+                />
               </div>
             </div>
 
@@ -476,7 +487,10 @@ export default function AboutPage() {
               <div>
                 <span className="text-[14px] font-bold text-[#e63946] uppercase tracking-wider">OUR MISSION</span>
                 <h3 className="text-[32px] sm:text-[40px] md:text-[44px] leading-[1.1] font-extrabold text-[#0f172a] tracking-tight mt-2 mb-4">{missionTitle}</h3>
-                <p className="text-base sm:text-lg text-slate-500 leading-relaxed">{missionDesc}</p>
+                <div 
+                  className="text-base sm:text-lg text-slate-500 leading-relaxed prose max-w-none [&>p]:mb-4"
+                  dangerouslySetInnerHTML={{ __html: cleanHtml(missionDesc) }}
+                />
               </div>
             </div>
 

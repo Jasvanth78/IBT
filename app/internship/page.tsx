@@ -17,6 +17,7 @@ import {
   FiMonitor,
   FiThumbsUp
 } from 'react-icons/fi';
+import * as FiIcons from 'react-icons/fi';
 import Link from 'next/link';
 
 export const metadata = {
@@ -29,15 +30,33 @@ type PublicTestimonial = {
   name: string
   content: string
   role?: string | null
-  company?: string | null
   avatarUrl?: string | null
 }
 
 type SiteSettingsPayload = {
   internshipHeroTitle?: string | null
+  internshipHeroSubtitle?: string | null
   internshipHeroDescription?: string | null
   internshipHeroImageUrl?: string | null
+  internshipTestimonialsTitle?: string | null
+  internshipClosingTitle?: string | null
+  internshipClosingContent?: string | null
   internshipApplyEmail?: string | null
+  internshipPrograms?: string | Array<{
+    id: string
+    title: string
+    icon: string
+    points: string[]
+    learnMoreLink: string
+    colorTheme: string
+  }> | null
+  internshipTestimonials?: string | Array<{
+    id: string
+    name: string
+    content: string
+    role: string
+    avatarUrl: string
+  }> | null
 }
 
 function normalizeApiBaseUrl(raw: string | undefined) {
@@ -61,31 +80,69 @@ const resolveImageUrl = (imageUrl?: string | null) => {
 async function getInternshipData() {
   const baseUrl = normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_URL)
   let settings: SiteSettingsPayload = {}
-  let testimonials: PublicTestimonial[] = []
 
   try {
-    const [settingsRes, testimonialsRes] = await Promise.all([
-      fetch(`${baseUrl}/api/public/v1/settings/current`, { cache: 'no-store' }),
-      fetch(`${baseUrl}/api/public/v1/testimonials?page=1&limit=3`, { cache: 'no-store' }),
-    ])
-
+    const settingsRes = await fetch(`${baseUrl}/api/public/v1/settings/current`, { cache: 'no-store' })
     if (settingsRes.ok) {
       const json = await settingsRes.json()
       settings = json.data || {}
     }
-    if (testimonialsRes.ok) {
-      const json = await testimonialsRes.json()
-      testimonials = json.data?.items || []
-    }
   } catch (err) {
-    console.error('Failed to fetch internship page data:', err)
+    console.error('Failed to fetch internship settings data:', err)
   }
 
-  return { settings, testimonials }
+  return { settings }
+}
+
+const renderProgramIcon = (iconName: string) => {
+  const IconComponent = (FiIcons as any)[iconName] || FiBookOpen;
+  return <IconComponent size={22} />;
+}
+
+const getColorClasses = (theme: string) => {
+  switch (theme?.toLowerCase()) {
+    case 'blue':
+      return {
+        bg: 'bg-blue-50',
+        text: 'text-blue-500',
+        iconBg: 'bg-blue-50',
+        iconText: 'text-blue-500',
+        checkText: 'text-blue-400',
+        linkText: 'text-blue-500'
+      }
+    case 'yellow':
+      return {
+        bg: 'bg-yellow-50',
+        text: 'text-yellow-600',
+        iconBg: 'bg-yellow-50',
+        iconText: 'text-yellow-500',
+        checkText: 'text-yellow-400',
+        linkText: 'text-yellow-500'
+      }
+    case 'green':
+      return {
+        bg: 'bg-green-50',
+        text: 'text-green-500',
+        iconBg: 'bg-green-50',
+        iconText: 'text-green-500',
+        checkText: 'text-green-400',
+        linkText: 'text-green-500'
+      }
+    case 'red':
+    default:
+      return {
+        bg: 'bg-red-50',
+        text: 'text-red-500',
+        iconBg: 'bg-red-50',
+        iconText: 'text-red-500',
+        checkText: 'text-red-400',
+        linkText: 'text-red-500'
+      }
+  }
 }
 
 export default async function InternshipPage() {
-  const { settings, testimonials } = await getInternshipData()
+  const { settings } = await getInternshipData()
 
   // Hardcoded defaults matching exactly the mockup text
   const defaultTestimonials = [
@@ -112,7 +169,55 @@ export default async function InternshipPage() {
     }
   ];
 
-  const displayTestimonials = testimonials.length >= 3 ? testimonials.slice(0, 3) : defaultTestimonials;
+  const defaultPrograms = [
+    {
+      id: 'p1',
+      title: 'Web Development',
+      icon: 'FiMonitor',
+      points: ['HTML, CSS, JavaScript', 'React.js, Node.js', 'Real-world Projects'],
+      learnMoreLink: '/internship/apply',
+      colorTheme: 'red'
+    },
+    {
+      id: 'p2',
+      title: 'Mobile App Development',
+      icon: 'FiSmartphone',
+      points: ['Flutter / React Native', 'Android Development', 'Live Project Experience'],
+      learnMoreLink: '/internship/apply',
+      colorTheme: 'blue'
+    },
+    {
+      id: 'p3',
+      title: 'Data Science & AI',
+      icon: 'FiBarChart2',
+      points: ['Python, Pandas, NumPy', 'Machine Learning', 'AI Model Development'],
+      learnMoreLink: '/internship/apply',
+      colorTheme: 'yellow'
+    },
+    {
+      id: 'p4',
+      title: 'UI/UX Design',
+      icon: 'FiPenTool',
+      points: ['Figma, Adobe XD', 'Wireframing & Prototyping', 'Design Thinking'],
+      learnMoreLink: '/internship/apply',
+      colorTheme: 'green'
+    }
+  ]
+
+  const parseJsonField = (field: any, fallback: any) => {
+    if (!field) return fallback
+    if (Array.isArray(field)) return field
+    if (typeof field === 'string') {
+      try {
+        const parsed = JSON.parse(field)
+        if (Array.isArray(parsed)) return parsed
+      } catch {}
+    }
+    return fallback
+  }
+
+  const programs = parseJsonField(settings.internshipPrograms, defaultPrograms)
+  const displayTestimonials = parseJsonField(settings.internshipTestimonials, defaultTestimonials)
 
   return (
     <div className="bg-[#f8faff] min-h-screen overflow-hidden font-sans">
@@ -129,18 +234,31 @@ export default async function InternshipPage() {
               <div className="inline-flex items-center gap-2 mb-6">
                 <div className="w-2 h-2 rounded-full bg-[#e63946]" />
                 <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500">
-                  INTERNSHIP PROGRAM
+                  {settings.internshipHeroTitle || "INTERNSHIP PROGRAM"}
                 </h3>
               </div>
 
               <h1 className="text-[44px] sm:text-[56px] lg:text-[64px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
-                Learn by Building<br />
-                <span className="text-[#e63946]">Real Products</span>
+                {settings.internshipHeroSubtitle ? (
+                  settings.internshipHeroSubtitle
+                ) : (
+                  <>
+                    Learn by Building<br />
+                    <span className="text-[#e63946]">Real Products</span>
+                  </>
+                )}
               </h1>
 
-              <p className="text-[16px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
-                Our internship program is designed to give you real-world experience, mentorship and the skills to thrive in your career.
-              </p>
+              {settings.internshipHeroDescription ? (
+                <div
+                  className="text-[16px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md html-content"
+                  dangerouslySetInnerHTML={{ __html: settings.internshipHeroDescription }}
+                />
+              ) : (
+                <p className="text-[16px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
+                  Our internship program is designed to give you real-world experience, mentorship and the skills to thrive in your career.
+                </p>
+              )}
 
               <div className="flex flex-wrap items-center gap-4">
                 <Link
@@ -350,95 +468,27 @@ export default async function InternshipPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            {/* Card 1 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-6">
-                <FiMonitor size={22} />
-              </div>
-              <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">Web Development</h4>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-red-400 mt-0.5 shrink-0" size={14} /> HTML, CSS, JavaScript
-                </li>
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-red-400 mt-0.5 shrink-0" size={14} /> React.js, Node.js
-                </li>
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-red-400 mt-0.5 shrink-0" size={14} /> Real-world Projects
-                </li>
-              </ul>
-              <Link href="/internship/apply" className="text-[13px] font-bold text-red-500 flex items-center gap-1 hover:gap-2 transition-all">
-                Learn More <FiArrowRight />
-              </Link>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center mb-6">
-                <FiSmartphone size={22} />
-              </div>
-              <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">Mobile App Development</h4>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-blue-400 mt-0.5 shrink-0" size={14} /> Flutter / React Native
-                </li>
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-blue-400 mt-0.5 shrink-0" size={14} /> Android Development
-                </li>
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-blue-400 mt-0.5 shrink-0" size={14} /> Live Project Experience
-                </li>
-              </ul>
-              <Link href="/internship/apply" className="text-[13px] font-bold text-blue-500 flex items-center gap-1 hover:gap-2 transition-all">
-                Learn More <FiArrowRight />
-              </Link>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center mb-6">
-                <FiBarChart2 size={22} />
-              </div>
-              <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">Data Science & AI</h4>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-yellow-400 mt-0.5 shrink-0" size={14} /> Python, Pandas, NumPy
-                </li>
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-yellow-400 mt-0.5 shrink-0" size={14} /> Machine Learning
-                </li>
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-yellow-400 mt-0.5 shrink-0" size={14} /> AI Model Development
-                </li>
-              </ul>
-              <Link href="/internship/apply" className="text-[13px] font-bold text-yellow-500 flex items-center gap-1 hover:gap-2 transition-all">
-                Learn More <FiArrowRight />
-              </Link>
-            </div>
-
-            {/* Card 4 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center mb-6">
-                <FiPenTool size={22} />
-              </div>
-              <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">UI/UX Design</h4>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-green-400 mt-0.5 shrink-0" size={14} /> Figma, Adobe XD
-                </li>
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-green-400 mt-0.5 shrink-0" size={14} /> Wireframing & Prototyping
-                </li>
-                <li className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
-                  <FiCheckCircle className="text-green-400 mt-0.5 shrink-0" size={14} /> Design Thinking
-                </li>
-              </ul>
-              <Link href="/internship/apply" className="text-[13px] font-bold text-green-500 flex items-center gap-1 hover:gap-2 transition-all">
-                Learn More <FiArrowRight />
-              </Link>
-            </div>
-
+            {programs.map((prog: any, idx: number) => {
+              const colors = getColorClasses(prog.colorTheme);
+              return (
+                <div key={prog.id || idx} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
+                  <div className={`w-12 h-12 rounded-xl ${colors.iconBg} ${colors.iconText} flex items-center justify-center mb-6`}>
+                    {renderProgramIcon(prog.icon)}
+                  </div>
+                  <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">{prog.title}</h4>
+                  <ul className="space-y-3 mb-8">
+                    {(prog.points || []).map((pt: string, ptIdx: number) => (
+                      <li key={ptIdx} className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
+                        <FiCheckCircle className={`${colors.checkText} mt-0.5 shrink-0`} size={14} /> {pt}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link href={prog.learnMoreLink || '/internship/apply'} className={`text-[13px] font-bold ${colors.linkText} flex items-center gap-1 hover:gap-2 transition-all`}>
+                    Learn More <FiArrowRight />
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -522,7 +572,7 @@ export default async function InternshipPage() {
 
           <div className="mb-14">
             <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
-              WHAT OUR INTERNS SAY
+              {settings.internshipTestimonialsTitle || "WHAT OUR INTERNS SAY"}
             </h3>
             <h2 className="text-[32px] md:text-[40px] font-black tracking-tight text-[#0f172a]">
               Real Experiences. Real Growth.
@@ -530,7 +580,7 @@ export default async function InternshipPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {displayTestimonials.map((testimonial, idx) => (
+            {displayTestimonials.map((testimonial: any, idx: number) => (
               <div key={testimonial.id || idx} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between relative">
 
                 {/* Red Quote Mark decoration */}
@@ -542,7 +592,7 @@ export default async function InternshipPage() {
 
                 <div className="flex items-center gap-4 border-t border-slate-100 pt-6 mt-auto">
                   <img
-                    src={testimonial.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"}
+                    src={resolveImageUrl(testimonial.avatarUrl) || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"}
                     alt={testimonial.name}
                     className="w-12 h-12 rounded-full object-cover bg-slate-100"
                   />
@@ -569,39 +619,46 @@ export default async function InternshipPage() {
       {/* =====================================================
           7. BOTTOM CTA RIBBON
       ===================================================== */}
-      <section className="bg-white py-12 lg:py-20 relative overflow-hidden border-t border-slate-100">
+      <section className="bg-white py-6 lg:py-8 relative overflow-hidden border-t border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-slate-900 rounded-3xl overflow-hidden relative shadow-2xl">
+          <div className="bg-slate-900 rounded-3xl overflow-hidden relative shadow-xl">
             {/* Abstract Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
               <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-center px-8 py-10 md:px-12 md:py-14 gap-8 md:gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] items-center px-6 py-6 md:px-10 md:py-8 gap-6 md:gap-8">
 
               {/* Left Image / Illustration Placeholder */}
               <div className="hidden md:flex justify-center items-center relative h-full">
-                <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/20">
-                  <FiBriefcase className="text-white text-5xl opacity-90" />
+                <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm border border-white/20">
+                  <FiBriefcase className="text-white text-4xl opacity-90" />
                 </div>
               </div>
 
               {/* Text Content */}
               <div className="text-center md:text-left z-10">
-                <h2 className="text-[28px] md:text-[36px] font-black text-white leading-tight mb-3">
-                  Ready to Start Your Journey?
+                <h2 className="text-[22px] md:text-[28px] font-black !text-white leading-tight mb-2">
+                  {settings.internshipClosingTitle || "Ready to Start Your Journey?"}
                 </h2>
-                <p className="text-slate-300 text-[15px] font-medium max-w-md mx-auto md:mx-0">
-                  Join hundreds of learners who are building their future with IBACUS TECH.
-                </p>
+                {settings.internshipClosingContent ? (
+                  <div
+                    className="!text-slate-300 text-[14px] font-medium max-w-md mx-auto md:mx-0 html-content"
+                    dangerouslySetInnerHTML={{ __html: settings.internshipClosingContent }}
+                  />
+                ) : (
+                  <p className="!text-slate-300 text-[14px] font-medium max-w-md mx-auto md:mx-0">
+                    Join hundreds of learners who are building their future with IBACUS TECH.
+                  </p>
+                )}
               </div>
 
               {/* Button */}
               <div className="text-center md:text-right z-10">
                 <Link
                   href="/internship/apply"
-                  className="inline-flex h-12 sm:h-14 bg-white text-[#0f172a] rounded-lg px-8 items-center justify-center font-bold text-[14px] hover:bg-slate-50 transition-colors shadow-xl whitespace-nowrap"
+                  className="inline-flex h-11 bg-white text-[#0f172a] rounded-lg px-6 items-center justify-center font-bold text-[13px] hover:bg-slate-50 transition-colors shadow-lg whitespace-nowrap"
                 >
                   Apply Now <FiArrowRight className="inline-block ml-2 text-[#e63946]" />
                 </Link>

@@ -102,16 +102,16 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
     return (
       <article
         ref={cardRef}
-        className="flex items-center gap-3 md:gap-4 py-1 w-[200px] sm:w-[220px] max-w-full mx-auto justify-start xl:w-full xl:mx-0 xl:justify-start xl:pl-10"
+        className="flex items-center gap-3 md:gap-4 py-1 w-[240px] sm:w-[260px] max-w-full mx-auto justify-start xl:w-full xl:mx-0 xl:justify-start xl:pl-10"
       >
         <div className={`w-14 h-14 rounded-full shrink-0 flex items-center justify-center ${colorClasses.bg} ${colorClasses.text}`}>
           <FloatingIcon size={24} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col text-left">
-          <p className="text-[22px] md:text-[26px] font-extrabold text-[#111827] leading-none mb-1.5">
+          <p className="text-[26px] md:text-[32px] font-black text-[#0f172a] leading-none mb-1">
             {startAnimation || !isNumber ? displayValue : item.value.replace(numericString, '0')}
           </p>
-          <p className="text-[12px] md:text-[13px] font-medium text-slate-500 leading-none tracking-tight">{item.label}</p>
+          <p className="text-[14px] md:text-[15px] font-semibold text-slate-600 leading-snug tracking-tight">{item.label}</p>
         </div>
       </article>
     );
@@ -198,7 +198,7 @@ export function HomeSections({ isFloating }: { isFloating?: boolean }) {
   if (isFloating) {
     return (
       <div className="w-full">
-        <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-5">
+        <p className="text-center text-[12px] md:text-[13px] font-black uppercase tracking-[0.24em] text-slate-400 mb-5">
           Trusted by startups, SMEs & enterprises
         </p>
         <div className="w-full rounded-2xl border border-slate-100 bg-white px-4 sm:px-8 py-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">

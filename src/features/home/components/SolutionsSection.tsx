@@ -99,12 +99,7 @@ export function SolutionsSection() {
                 {service.description}
               </p>
 
-              <Link
-                href={service.link}
-                className={`inline-flex items-center text-[13px] font-bold ${service.textColor} opacity-90 hover:opacity-100 transition-opacity`}
-              >
-                Learn More <FiArrowRight className="ml-1.5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+
             </motion.div>
           ))}
         </div>

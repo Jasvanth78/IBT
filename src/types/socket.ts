@@ -76,6 +76,10 @@ export interface SiteSettingsRealtimePayload {
   homeRecentWorkBadge?: string | null;
   homeRecentWorkItems?: any[] | string | null;
 
+  // Home – Services Section
+  homeServicesTitle?: string | null;
+  homeServicesBadge?: string | null;
+
   // Contact – Hero & Presence
   contactHeroTitle?: string | null;
   contactHeroDescription?: string | null;

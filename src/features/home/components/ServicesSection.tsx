@@ -8,6 +8,8 @@ import { FiBriefcase, FiCornerDownRight, FiChevronLeft, FiChevronRight, FiArrowR
 import { Loader, SiteButton } from '@/src/shared/ui';
 import { resolveImageUrl } from '@/src/utils/image';
 
+import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
+
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
@@ -33,6 +35,10 @@ const cardColors = [
 ];
 
 export function ServicesSection() {
+  const { settings } = useSocketSettings();
+  const badge = settings?.homeServicesBadge || 'OUR SERVICES';
+  const title = settings?.homeServicesTitle || 'Solutions That Drive Growth';
+
   const [services, setServices] = useState<PublicService[]>([]);
   const [meta, setMeta] = useState<PaginationMeta>({});
   const [loading, setLoading] = useState(true);
@@ -162,11 +168,11 @@ export function ServicesSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <div className="mb-10 text-left">
           <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
-            OUR SERVICES
+            {badge}
           </h3>
 
-          <h2 className="max-w-2xl font-extrabold text-[#0f172a] tracking-tight">
-            Solutions That Drive Growth
+          <h2 className="max-w-2xl font-extrabold text-[#0f172a] tracking-tight text-[36px] sm:text-[44px]">
+            {title}
           </h2>
         </div>
 

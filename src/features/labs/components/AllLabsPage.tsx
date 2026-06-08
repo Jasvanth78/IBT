@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { apiClient, type PaginationMeta, type PublicLabProject } from '@/src/api/client';
+import { apiClient, type PaginationMeta, type PublicLabProject, type PublicPartner } from '@/src/api/client';
 import { Loader } from '@/src/shared/ui';
 import { motion } from 'framer-motion';
 import { resolveImageUrl } from '@/src/utils/image';
@@ -37,11 +37,100 @@ import {
 } from 'react-icons/fa';
 
 /* =========================================================
+   SUPPORTING COMPONENTS
+========================================================= */
+
+function PartnerMarqueeCard({
+  item,
+}: {
+  item: PublicPartner;
+}) {
+  const textColors = [
+    'text-blue-600',
+    'text-emerald-600',
+    'text-indigo-600',
+    'text-rose-500',
+    'text-amber-500',
+    'text-violet-600'
+  ];
+  const hash = item.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const colorClass = textColors[hash % textColors.length];
+
+  const content = item.logoUrl ? (
+    <img
+      src={resolveImageUrl(item.logoUrl)}
+      alt={item.name}
+      className="h-10 max-w-[140px] object-contain transition-transform duration-300 hover:scale-105"
+    />
+  ) : (
+    <span className={`text-[20px] font-black tracking-tight ${colorClass} hover:opacity-80 transition-opacity duration-300`}>
+      {item.name}
+    </span>
+  );
+
+  if (item.website) {
+    return (
+      <a
+        href={item.website}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block shrink-0 outline-none hover:scale-105 transition-transform duration-300"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return <div className="shrink-0">{content}</div>;
+}
+
+function PartnerInfiniteMarquee({
+  items,
+  direction = 'right',
+  speed = 40
+}: {
+  items: PublicPartner[];
+  direction?: 'left' | 'right';
+  speed?: number;
+}) {
+  if (!items || items.length === 0) return null;
+
+  const multipliedItems = items.length < 8
+    ? [...items, ...items, ...items, ...items]
+    : [...items, ...items];
+
+  return (
+    <div className="relative flex w-full overflow-hidden py-4">
+      {/* Edge fading masks */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 sm:w-36 bg-gradient-to-r from-white to-transparent"></div>
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 sm:w-36 bg-gradient-to-l from-white to-transparent"></div>
+
+      <motion.div
+        className="flex w-max gap-16 items-center pr-16"
+        animate={{
+          x: direction === 'left' ? [0, '-50%'] : ['-50%', 0],
+        }}
+        transition={{
+          repeat: Infinity,
+          ease: 'linear',
+          duration: speed,
+        }}
+      >
+        {multipliedItems.map((item, i) => (
+          <PartnerMarqueeCard key={`${item.id}-${i}`} item={item} />
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+/* =========================================================
    PAGE COMPONENT
 ========================================================= */
 
 export function AllLabsPage() {
   const [projects, setProjects] = useState<PublicLabProject[]>([]);
+  const [partners, setPartners] = useState<PublicPartner[]>([]);
   const [meta, setMeta] = useState<PaginationMeta>({ page: 1, limit: 6, totalPages: 1, totalItems: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -72,13 +161,15 @@ export function AllLabsPage() {
     setLoading(true);
 
     try {
-      const [projectsResult, settingsResult] = await Promise.all([
+      const [projectsResult, settingsResult, partnersResult] = await Promise.all([
         apiClient.getProjects(1, 10),
-        apiClient.getSettings()
+        apiClient.getSettings(),
+        apiClient.getPartners(1, 100)
       ]);
 
       setProjects(projectsResult.items || []);
       setSettings((settingsResult as Record<string, any>) ?? {});
+      setPartners(partnersResult.items || []);
     } catch (err) {
       console.warn("Failed to load lab data", err);
     } finally {
@@ -99,17 +190,105 @@ export function AllLabsPage() {
     { title: "Cyber Threat Detector", desc: "ML based system to detect network threats.", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=400", tag: "Cyber Security" },
   ];
 
-  const portfolioItems = projects.length >= 4
+  const portfolioItems = projects.length > 0
     ? projects.map(p => ({
       title: p.title,
       desc: (p.description || '').replace(/<[^>]*>/g, '').slice(0, 60) + '...',
-      img: p.imageUrl || defaultCarouselItems[0].img,
-      tag: p.techStack?.[0] || 'Research'
+      img: p.imageUrl ? resolveImageUrl(p.imageUrl) : defaultCarouselItems[0].img,
+      tag: p.techStack?.[0] || 'Research',
+      slug: p.slug
     }))
-    : defaultCarouselItems;
+    : defaultCarouselItems.map((item) => ({ ...item, slug: '' }));
+
+  const fallbackPartners = [
+    { id: "fp1", name: "Journey", logoUrl: null, website: "#" },
+    { id: "fp2", name: "TechCoach", logoUrl: null, website: "#" },
+    { id: "fp3", name: "Octosignals", logoUrl: null, website: "#" },
+    { id: "fp4", name: "MultipliersKart", logoUrl: null, website: "#" },
+    { id: "fp5", name: "FIM", logoUrl: null, website: "#" },
+    { id: "fp6", name: "X-Mind", logoUrl: null, website: "#" },
+  ] as PublicPartner[];
+
+  const displayPartners = partners.length > 0 ? partners : fallbackPartners;
+
+  // Lab Initiatives
+  const initiatives = useMemo(() => {
+    const raw = settings['labs_initiatives'];
+    if (Array.isArray(raw) && raw.length > 0) return raw;
+    if (typeof raw === 'string') {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+    return [
+      {
+        id: 'init1',
+        badge: 'ACTIVE RESEARCH',
+        title: 'Next-Gen Robotics.',
+        description: 'Developing autonomous systems for precision manufacturing and hazardous environment exploration.',
+        imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000',
+        link: '/services',
+        btnText: '',
+        layout: 'dark-large'
+      },
+      {
+        id: 'init2',
+        badge: '',
+        title: 'Careersheets',
+        description: 'The ultimate architectural tool for job seekers to track professional growth.',
+        imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600',
+        link: '/services',
+        btnText: 'Learn More',
+        layout: 'light-row'
+      },
+      {
+        id: 'init3',
+        badge: '',
+        title: 'Join the Lab Ecosystem',
+        description: 'Collaborate with industry veterans on real-world challenges that define the next decade.',
+        imageUrl: '',
+        link: '',
+        btnText: 'Submit Portfolio',
+        layout: 'gradient-cta'
+      }
+    ];
+  }, [settings]);
+
+  const largeCards = useMemo(() => initiatives.filter((c: any) => c.layout === 'dark-large'), [initiatives]);
+  const stackedCards = useMemo(() => initiatives.filter((c: any) => c.layout !== 'dark-large'), [initiatives]);
+
+  // Technical Rigor Section
+  const rigorTitle = settings['labs_rigor_title'] || 'Technical Rigor';
+  const rigorDesc = settings['labs_rigor_description'] || 'Our laboratory environment is built on the principles of mechanical and digital precision. We believe that true innovation happens at the intersection of rigorous testing and creative problem-solving.';
+  const rigorPoints = useMemo(() => {
+    const raw = settings['labs_rigor_points'];
+    if (Array.isArray(raw) && raw.length > 0) return raw;
+    if (typeof raw === 'string') {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+    return [
+      'Phase-gate project management systems',
+      'Peer-reviewed code and design standards',
+      'Iterative prototyping and stress testing'
+    ];
+  }, [settings]);
+  const rigorImage = settings['labs_rigor_image'] || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800';
+
+  // Mentorship-First Section
+  const mentorshipTitle = settings['labs_mentorship_title'] || 'Mentorship-First';
+  const mentorshipDesc = settings['labs_mentorship_description'] || 'Every project is guided by industry veterans. This isn\'t just about learning tools; it\'s about adopting the mindset of a senior architect. We foster an environment of constant feedback and high-stakes accountability.';
+  const mentorshipImage = settings['labs_mentorship_image'] || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800';
+  const mentorshipQuote = settings['labs_mentorship_quote'] || 'The laboratory isn\'t just a place of work; it\'s a sanctuary for those who pursue technical excellence with religious devotion.';
+  const mentorshipQuoteAuthor = settings['labs_mentorship_quote_author'] || 'Lead Researcher';
+  const mentorshipQuoteRole = settings['labs_mentorship_quote_role'] || 'IBT LABS CORE TEAM';
+  const mentorshipQuoteAvatar = settings['labs_mentorship_quote_avatar'] || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80';
 
   const showPrev = () => {
-    setCarouselIndex((prev) => (prev <= 0 ? portfolioItems.length - visibleCount : prev - 1));
+    setCarouselIndex((prev) => (prev <= 0 ? Math.max(0, portfolioItems.length - visibleCount) : prev - 1));
   };
   const showNext = () => {
     setCarouselIndex((prev) => (prev >= portfolioItems.length - visibleCount ? 0 : prev + 1));
@@ -267,75 +446,88 @@ export function AllLabsPage() {
           </div>
 
           <div className="grid lg:grid-cols-12 gap-6">
+            {/* Left large cards */}
+            <div className="lg:col-span-7 flex flex-col gap-6">
+              {largeCards.map((card: any) => (
+                <div key={card.id} className="bg-[#0f172a] rounded-[2rem] overflow-hidden relative shadow-lg group min-h-[450px] flex-1 flex flex-col justify-end">
+                  {card.imageUrl && (
+                    <img
+                      src={resolveImageUrl(card.imageUrl)}
+                      alt={card.title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover:scale-105 transition-transform duration-700 pointer-events-none"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent pointer-events-none" />
 
-            {/* Left Large Card (Next-Gen Robotics) */}
-            <div className="lg:col-span-7 bg-[#0f172a] rounded-[2rem] overflow-hidden relative shadow-lg group">
-              <img
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000"
-                alt="Dashboard Data"
-                className="w-full h-[450px] object-cover opacity-60 mix-blend-luminosity group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent" />
-
-              <div className="absolute bottom-0 left-0 p-8 sm:p-10">
-                <div className="inline-block bg-[#e63946] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
-                  ACTIVE RESEARCH
-                </div>
-                <h3 className="text-[28px] sm:text-[36px] font-black text-white leading-tight mb-3">
-                  Next-Gen Robotics<span className="text-[#e63946]">.</span>
-                </h3>
-                <p className="text-[14px] text-slate-300 font-medium max-w-sm">
-                  Developing autonomous systems for precision manufacturing and hazardous environment exploration.
-                </p>
-              </div>
-            </div>
-
-            {/* Right Column (2 Cards stacked) */}
-            <div className="lg:col-span-5 flex flex-col gap-6">
-
-              {/* Careersheets Card */}
-              <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 flex flex-col sm:flex-row gap-6 h-full hover:shadow-lg transition-shadow">
-                <div className="w-full sm:w-1/2 h-40 sm:h-auto rounded-xl overflow-hidden shrink-0">
-                  <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600" alt="Team working" className="w-full h-full object-cover" />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <h4 className="text-[22px] font-black text-[#0f172a] mb-2">Careersheets</h4>
-                  <p className="text-[13px] text-slate-500 font-medium mb-4">
-                    The ultimate architectural tool for job seekers to track professional growth.
-                  </p>
-                  <Link href="/services" className="text-[13px] font-bold text-[#e63946] flex items-center gap-1 hover:gap-2 transition-all">
-                    Learn More <FiArrowRight />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Join the Lab Ecosystem Card */}
-              <div className="bg-gradient-to-br from-[#e63946] to-[#c1121f] rounded-[2rem] p-8 shadow-lg text-white relative overflow-hidden h-full flex flex-col justify-center">
-                {/* Floating graphic */}
-                <FiZap className="absolute -right-8 -bottom-8 text-[180px] opacity-10 transform -rotate-12" />
-
-                <div className="absolute top-8 left-8 w-12 h-12 bg-white rounded-xl text-[#e63946] flex items-center justify-center shadow-md">
-                  <FiFileText size={24} />
-                </div>
-
-                <div className="mt-14 relative z-10">
-                  <h4 className="text-[24px] font-black mb-2">Join the Lab Ecosystem</h4>
-                  <p className="text-[13px] text-red-100 font-medium mb-8 max-w-sm">
-                    Collaborate with industry veterans on real-world challenges that define the next decade.
-                  </p>
-                  <div className="flex gap-4">
-                    <button className="bg-white text-[#e63946] text-[12px] font-bold px-5 py-2.5 rounded-lg shadow-sm hover:bg-red-50 transition-colors">
-                      Submit Portfolio
-                    </button>
-                    <button className="bg-transparent border border-red-300 text-white text-[12px] font-bold px-5 py-2.5 rounded-lg hover:bg-white/10 transition-colors">
-                      Research Papers
-                    </button>
+                  <div className="relative p-8 sm:p-10 z-10">
+                    {card.badge && (
+                      <div className="inline-block bg-[#e63946] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+                        {card.badge}
+                      </div>
+                    )}
+                    <h3 className="text-[28px] sm:text-[36px] font-black text-white leading-tight mb-3">
+                      {card.title}
+                    </h3>
+                    <div className="text-[14px] text-slate-300 font-medium max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
+                    {card.btnText && (
+                      <Link href={card.link || '#'} className="mt-4 inline-flex items-center gap-1 text-[13px] font-bold text-[#e63946] hover:gap-2 transition-all">
+                        {card.btnText} <FiArrowRight />
+                      </Link>
+                    )}
                   </div>
                 </div>
-              </div>
-
+              ))}
             </div>
 
+            {/* Right stacked cards */}
+            <div className="lg:col-span-5 flex flex-col gap-6">
+              {stackedCards.map((card: any) => {
+                if (card.layout === 'gradient-cta') {
+                  return (
+                    <div key={card.id} className="bg-gradient-to-br from-[#e63946] to-[#c1121f] rounded-[2rem] p-8 shadow-lg text-white relative overflow-hidden h-full flex flex-col justify-center min-h-[220px]">
+                      <FiZap className="absolute -right-8 -bottom-8 text-[180px] opacity-10 transform -rotate-12 pointer-events-none" />
+
+                      <div className="absolute top-8 left-8 w-12 h-12 bg-white rounded-xl text-[#e63946] flex items-center justify-center shadow-md">
+                        <FiZap size={24} />
+                      </div>
+
+                      <div className="mt-14 relative z-10">
+                        <h4 className="text-[24px] font-black mb-2">{card.title}</h4>
+                        <div className="text-[13px] text-red-100 font-medium mb-8 max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
+                        <div className="flex gap-4">
+                          {card.btnText && (
+                            <Link href={card.link || '#'} className="bg-white text-[#e63946] text-[12px] font-bold px-5 py-2.5 rounded-lg shadow-sm hover:bg-red-50 transition-colors">
+                              {card.btnText}
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Default: light-row
+                return (
+                  <div key={card.id} className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 flex flex-col sm:flex-row gap-6 h-full hover:shadow-lg transition-shadow">
+                    {card.imageUrl && (
+                      <div className="w-full sm:w-1/2 h-40 sm:h-auto rounded-xl overflow-hidden shrink-0">
+                        <img src={resolveImageUrl(card.imageUrl)} alt={card.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    <div className="flex flex-col justify-center">
+                      {card.badge && (
+                        <span className="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest">{card.badge}</span>
+                      )}
+                      <h4 className="text-[22px] font-black text-[#0f172a] mb-2">{card.title}</h4>
+                      <div className="text-[13px] text-slate-500 font-medium mb-4" dangerouslySetInnerHTML={{ __html: card.description }} />
+                      <Link href={card.link || '/services'} className="text-[13px] font-bold text-[#e63946] flex items-center gap-1 hover:gap-2 transition-all">
+                        {card.btnText || 'Learn More'} <FiArrowRight />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -402,60 +594,58 @@ export function AllLabsPage() {
             <div className="flex flex-col gap-12">
               <div>
                 <h2 className="text-[32px] sm:text-[40px] font-black tracking-tight text-[#0f172a] mb-6">
-                  Technical Rigor
+                  {rigorTitle}
                 </h2>
-                <p className="text-[15px] text-slate-500 font-medium leading-relaxed mb-8 max-w-md">
-                  Our laboratory environment is built on the principles of mechanical and digital precision. We believe that true innovation happens at the intersection of rigorous testing and creative problem-solving.
-                </p>
+                <div className="text-[15px] text-slate-500 font-medium leading-relaxed mb-8 max-w-md" dangerouslySetInnerHTML={{ __html: rigorDesc }} />
                 <div className="flex flex-col gap-5">
-                  <div className="flex items-center gap-4">
-                    <span className="w-8 h-8 rounded-full bg-red-50 text-[#e63946] flex items-center justify-center text-[12px] font-black shrink-0">01</span>
-                    <span className="text-[14px] font-bold text-[#0f172a]">Phase-gate project management systems</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="w-8 h-8 rounded-full bg-red-50 text-[#e63946] flex items-center justify-center text-[12px] font-black shrink-0">02</span>
-                    <span className="text-[14px] font-bold text-[#0f172a]">Peer-reviewed code and design standards</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="w-8 h-8 rounded-full bg-red-50 text-[#e63946] flex items-center justify-center text-[12px] font-black shrink-0">03</span>
-                    <span className="text-[14px] font-bold text-[#0f172a]">Iterative prototyping and stress testing</span>
-                  </div>
+                  {rigorPoints.map((point, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <span className="w-8 h-8 rounded-full bg-red-50 text-[#e63946] flex items-center justify-center text-[12px] font-black shrink-0">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="text-[14px] font-bold text-[#0f172a]">{point}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="rounded-[2rem] overflow-hidden shadow-lg border border-slate-100">
-                <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800" alt="Laboratory Work" className="w-full h-[350px] object-cover" />
-              </div>
+              {rigorImage && (
+                <div className="rounded-[2rem] overflow-hidden shadow-lg border border-slate-100">
+                  <img src={resolveImageUrl(rigorImage)} alt={rigorTitle} className="w-full h-[350px] object-cover" />
+                </div>
+              )}
             </div>
 
             {/* Right Column */}
             <div className="flex flex-col gap-12">
-              <div className="rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 order-last lg:order-first">
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800" alt="Circuit Board" className="w-full h-[350px] object-cover" />
-              </div>
+              {mentorshipImage && (
+                <div className="rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 order-last lg:order-first">
+                  <img src={resolveImageUrl(mentorshipImage)} alt={mentorshipTitle} className="w-full h-[350px] object-cover" />
+                </div>
+              )}
 
               <div className="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100">
                 <h2 className="text-[32px] sm:text-[40px] font-black tracking-tight text-[#0f172a] mb-6">
-                  Mentorship-First
+                  {mentorshipTitle}
                 </h2>
-                <p className="text-[15px] text-slate-500 font-medium leading-relaxed mb-8">
-                  Every project is guided by industry veterans. This isn't just about learning tools; it's about adopting the mindset of a senior architect. We foster an environment of constant feedback and high-stakes accountability.
-                </p>
+                <div className="text-[15px] text-slate-500 font-medium leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: mentorshipDesc }} />
 
                 {/* Quote block */}
-                <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 relative">
-                  <span className="absolute top-4 left-4 text-4xl text-blue-200 font-serif leading-none">"</span>
-                  <p className="text-[14px] font-medium text-slate-600 italic relative z-10 pl-6 pt-2 mb-6">
-                    "The laboratory isn't just a place of work; it's a sanctuary for those who pursue technical excellence with religious devotion."
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Lead Researcher" className="w-12 h-12 rounded-full object-cover" />
-                    <div>
-                      <h4 className="text-[14px] font-bold text-[#0f172a]">Lead Researcher</h4>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">IBT LABS CORE TEAM</p>
+                {(mentorshipQuote || mentorshipQuoteAuthor) && (
+                  <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 relative">
+                    <span className="absolute top-4 left-4 text-4xl text-blue-200 font-serif leading-none">"</span>
+                    <div className="text-[14px] font-medium text-slate-600 italic relative z-10 pl-6 pt-2 mb-6" dangerouslySetInnerHTML={{ __html: mentorshipQuote }} />
+                    <div className="flex items-center gap-4">
+                      {mentorshipQuoteAvatar && (
+                        <img src={resolveImageUrl(mentorshipQuoteAvatar)} alt={mentorshipQuoteAuthor} className="w-12 h-12 rounded-full object-cover" />
+                      )}
+                      <div>
+                        <h4 className="text-[14px] font-bold text-[#0f172a]">{mentorshipQuoteAuthor}</h4>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{mentorshipQuoteRole}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
@@ -482,18 +672,22 @@ export function AllLabsPage() {
           </div>
 
           <div className="relative">
-            <button
-              onClick={showPrev}
-              className="absolute top-1/2 -translate-y-1/2 -left-4 lg:-left-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
-            >
-              <FiChevronLeft />
-            </button>
-            <button
-              onClick={showNext}
-              className="absolute top-1/2 -translate-y-1/2 -right-4 lg:-right-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
-            >
-              <FiChevronRight />
-            </button>
+            {portfolioItems.length > visibleCount && (
+              <>
+                <button
+                  onClick={showPrev}
+                  className="absolute top-1/2 -translate-y-1/2 -left-4 lg:-left-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
+                >
+                  <FiChevronLeft />
+                </button>
+                <button
+                  onClick={showNext}
+                  className="absolute top-1/2 -translate-y-1/2 -right-4 lg:-right-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
+                >
+                  <FiChevronRight />
+                </button>
+              </>
+            )}
 
             <div className="overflow-hidden">
               <motion.div
@@ -509,18 +703,21 @@ export function AllLabsPage() {
                     className="px-3"
                     style={{ flex: `0 0 ${100 / portfolioItems.length}%` }}
                   >
-                    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex gap-4 h-full hover:shadow-md transition-shadow">
-                      <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0">
+                    <Link
+                      href={item.slug ? `/ibt-labs/${item.slug}` : "#"}
+                      className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex gap-4 h-full hover:shadow-md transition-all duration-300 block hover:-translate-y-1"
+                    >
+                      <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-50">
                         <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex flex-col justify-between">
                         <div>
-                          <h4 className="text-[14px] font-bold text-[#0f172a] mb-1 leading-tight">{item.title}</h4>
+                          <h4 className="text-[14px] font-bold text-[#0f172a] mb-1 leading-tight line-clamp-1">{item.title}</h4>
                           <p className="text-[11px] text-slate-500 font-medium leading-snug line-clamp-2 mb-2">{item.desc}</p>
                         </div>
                         <span className="text-[10px] font-bold text-[#e63946] bg-red-50 px-2 py-0.5 rounded self-start uppercase tracking-wider">{item.tag}</span>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 ))}
               </motion.div>
@@ -541,23 +738,8 @@ export function AllLabsPage() {
             <div className="h-px w-10 bg-slate-200" />
           </div>
 
-          <div className="relative flex items-center justify-center gap-8 sm:gap-16 flex-wrap opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-            {/* Nav arrows just for visual accuracy of mockup */}
-            <button className="hidden sm:flex w-8 h-8 rounded-full border border-slate-200 items-center justify-center text-slate-400 shrink-0">
-              <FiChevronLeft size={14} />
-            </button>
-
-            {/* Fake logos via Typography for accuracy to mockup without needing SVGs */}
-            <div className="text-[20px] font-black tracking-tighter text-blue-900 flex items-center gap-1"><FaChartLine className="text-blue-600" /> Journey</div>
-            <div className="text-[20px] font-black tracking-tight text-slate-800 flex items-center gap-1"><FaCheckCircle className="text-slate-800" /> TechCoach</div>
-            <div className="text-[20px] font-black tracking-tighter text-blue-500 flex items-center gap-1"><FaCogs /> Octosignals</div>
-            <div className="text-[20px] font-black tracking-tight text-slate-900">MultipliersKart</div>
-            <div className="text-[20px] font-black text-red-600">FIM</div>
-            <div className="text-[20px] font-black text-slate-800">X-Mind</div>
-
-            <button className="hidden sm:flex w-8 h-8 rounded-full border border-slate-200 items-center justify-center text-slate-400 shrink-0">
-              <FiChevronRight size={14} />
-            </button>
+          <div className="w-full relative overflow-hidden">
+            <PartnerInfiniteMarquee items={displayPartners} direction="right" speed={30} />
           </div>
         </div>
       </section>
@@ -585,7 +767,7 @@ export function AllLabsPage() {
 
               {/* Text Content */}
               <div className="text-center md:text-left z-10">
-                <h2 className="text-[24px] sm:text-[32px] font-black text-white leading-tight mb-2">
+                <h2 className="text-[24px] sm:text-[32px] font-black !text-white leading-tight mb-2">
                   Ready to Innovate<br className="hidden sm:block" /> and Create Impact?
                 </h2>
                 <p className="text-slate-300 text-[14px] font-medium max-w-sm mx-auto md:mx-0">

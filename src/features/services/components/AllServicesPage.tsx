@@ -8,6 +8,7 @@ import { apiClient, type PublicService } from '@/src/api/client';
 import { Loader, SiteButton } from '@/src/shared/ui';
 import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
 import { resolveImageUrl } from '@/src/utils/image';
+import * as FiIcons from 'react-icons/fi';
 import {
   FiArrowRight,
   FiBriefcase,
@@ -82,6 +83,71 @@ export function AllServicesPage() {
     void loadAllServices();
   }, [loadAllServices]);
 
+  // Dynamic configuration maps
+  const whatFeatures = useMemo(() => {
+    const defaultWhatFeatures = [
+      { title: "Software Development", desc: "Custom software solutions that drive efficiency and growth.", icon: "FiCode" },
+      { title: "Mobile App Development", desc: "Engaging mobile experiences for iOS and Android platforms.", icon: "FiSmartphone" },
+      { title: "Web Development", desc: "Fast, secure and scalable websites built with modern technologies.", icon: "FiCloud" },
+      { title: "Digital Solutions", desc: "End-to-end digital solutions for business transformation.", icon: "FiBarChart2" }
+    ];
+
+    if (!settings?.servicesWhatFeatures) return defaultWhatFeatures;
+
+    try {
+      const parsed = typeof settings.servicesWhatFeatures === 'string'
+        ? JSON.parse(settings.servicesWhatFeatures)
+        : settings.servicesWhatFeatures;
+      
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultWhatFeatures;
+    } catch (e) {
+      console.warn('Failed to parse whatFeatures:', e);
+      return defaultWhatFeatures;
+    }
+  }, [settings?.servicesWhatFeatures]);
+
+  const processSteps = useMemo(() => {
+    const defaultProcessSteps = [
+      { step: '01', title: 'Discovery', desc: 'Understanding your requirements, challenges and business goals through deep collaboration.' },
+      { step: '02', title: 'Architecture', desc: 'Designing robust, scalable and secure architecture tailored to your solution needs.' },
+      { step: '03', title: 'Build & Test', desc: 'Agile development, continuous testing and quality assurance at every step.' },
+      { step: '04', title: 'Launch & Scale', desc: 'Seamless deployment, ongoing support and optimization to help you scale.' }
+    ];
+
+    if (!settings?.servicesProcessSteps) return defaultProcessSteps;
+
+    try {
+      const parsed = typeof settings.servicesProcessSteps === 'string'
+        ? JSON.parse(settings.servicesProcessSteps)
+        : settings.servicesProcessSteps;
+      
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultProcessSteps;
+    } catch (e) {
+      console.warn('Failed to parse processSteps:', e);
+      return defaultProcessSteps;
+    }
+  }, [settings?.servicesProcessSteps]);
+
+  const renderServiceIcon = (iconName: string) => {
+    const IconComponent = (FiIcons as any)[iconName] || FiIcons.FiBriefcase;
+    return <IconComponent size={20} />;
+  };
+
+  const renderStepIcon = (index: number) => {
+    switch (index) {
+      case 0: return <FiMessageSquare size={20} />;
+      case 1: return <FiCode size={20} />;
+      case 2: return <FiSend size={20} />;
+      case 3:
+      default:
+        return <FiThumbsUp size={20} />;
+    }
+  };
+
+  const whatTitle = settings?.servicesWhatTitle || "What We Do";
+  const processTitle = settings?.servicesProcessTitle || "How We Deliver Excellence";
+  const processBadge = settings?.servicesProcessBadge || "HOW WE DELIVER";
+
   // Carousel logic for Solution Portfolio
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(4);
@@ -98,34 +164,48 @@ export function AllServicesPage() {
     return () => window.removeEventListener('resize', updateVisible);
   }, []);
 
-  const portfolioItems = [
+  const fallbackServices = [
     {
+      id: "1",
       title: "Analytics Dashboard",
-      category: "Web Application",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
+      slug: "analytics-dashboard",
+      tags: ["Web Application"],
+      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
+      description: ""
     },
     {
+      id: "2",
       title: "Edu LMS Platform",
-      category: "Web Application",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800"
+      slug: "edu-lms-platform",
+      tags: ["Web Application"],
+      imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800",
+      description: ""
     },
     {
+      id: "3",
       title: "ThreatShield AI",
-      category: "AI / ML Solution",
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
+      slug: "threatshield-ai",
+      tags: ["AI / ML Solution"],
+      imageUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800",
+      description: ""
     },
     {
+      id: "4",
       title: "Smart Inventory System",
-      category: "IoT Solution",
-      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800"
+      slug: "smart-inventory-system",
+      tags: ["IoT Solution"],
+      imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800",
+      description: ""
     }
-  ];
+  ] as PublicService[];
+
+  const displayServices = services.length > 0 ? services : fallbackServices;
 
   const showPrev = () => {
-    setCarouselIndex((prev) => (prev <= 0 ? portfolioItems.length - visibleCount : prev - 1));
+    setCarouselIndex((prev) => (prev <= 0 ? Math.max(0, displayServices.length - visibleCount) : prev - 1));
   };
   const showNext = () => {
-    setCarouselIndex((prev) => (prev >= portfolioItems.length - visibleCount ? 0 : prev + 1));
+    setCarouselIndex((prev) => (prev >= displayServices.length - visibleCount ? 0 : prev + 1));
   };
 
   /* =========================================================
@@ -227,54 +307,32 @@ export function AllServicesPage() {
                 WHAT WE DO
               </h3>
               <h2 className="mb-6 font-extrabold tracking-tight text-[#0f172a]">
-                What We Do
+                {whatTitle}
               </h2>
-              <p className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg">
-                We offer a wide range of technology and engineering services to transform ideas into powerful solutions.
-              </p>
+              {settings?.servicesWhatDescription ? (
+                <div 
+                  className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg html-content"
+                  dangerouslySetInnerHTML={{ __html: settings.servicesWhatDescription }}
+                />
+              ) : (
+                <p className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg">
+                  We offer a wide range of technology and engineering services to transform ideas into powerful solutions.
+                </p>
+              )}
 
               {/* 2x2 Feature Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Software Dev */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                  <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-[#e63946] mb-4">
-                    <FiCode size={20} />
+                {whatFeatures.map((feat: any, idx: number) => (
+                  <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-[#e63946] mb-4">
+                      {renderServiceIcon(feat.icon)}
+                    </div>
+                    <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">{feat.title}</h4>
+                    <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
+                      {feat.desc}
+                    </p>
                   </div>
-                  <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Software Development</h4>
-                  <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                    Custom software solutions that drive efficiency and growth.
-                  </p>
-                </div>
-                {/* Mobile App */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                  <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-4">
-                    <FiSmartphone size={20} />
-                  </div>
-                  <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Mobile App Development</h4>
-                  <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                    Engaging mobile experiences for iOS and Android platforms.
-                  </p>
-                </div>
-                {/* Web Dev */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                  <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600 mb-4">
-                    <FiCloud size={20} />
-                  </div>
-                  <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Web Development</h4>
-                  <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                    Fast, secure and scalable websites built with modern technologies.
-                  </p>
-                </div>
-                {/* Digital Solutions */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                  <div className="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 mb-4">
-                    <FiBarChart2 size={20} />
-                  </div>
-                  <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Digital Solutions</h4>
-                  <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                    End-to-end digital solutions for business transformation.
-                  </p>
-                </div>
+                ))}
               </div>
             </motion.div>
 
@@ -319,15 +377,22 @@ export function AllServicesPage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-4">
-            HOW WE DELIVER
+            {processBadge}
           </h3>
           <h2 className="mb-6 font-extrabold tracking-tight text-[#0f172a]">
-            How We Deliver Excellence
+            {processTitle}
           </h2>
           <div className="w-full flex justify-center mb-20">
-            <p className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0">
-              A proven process, a skilled team and the right technology to deliver exceptional results.
-            </p>
+            {settings?.servicesProcessDescription ? (
+              <div 
+                className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0 html-content"
+                dangerouslySetInnerHTML={{ __html: settings.servicesProcessDescription }}
+              />
+            ) : (
+              <p className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0">
+                A proven process, a skilled team and the right technology to deliver exceptional results.
+              </p>
+            )}
           </div>
 
           <div className="relative">
@@ -335,49 +400,20 @@ export function AllServicesPage() {
             <div className="hidden lg:block absolute top-[28px] left-[10%] right-[10%] h-[2px] bg-slate-100 z-0" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-              {/* Step 1 */}
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shadow-sm mb-6 border border-white">
-                  <FiMessageSquare size={20} />
-                </div>
-                <h4 className="text-[15px] font-bold text-[#0f172a] uppercase tracking-wider mb-3">Discovery</h4>
-                <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                  Understanding your requirements, challenges and business goals through deep collaboration.
-                </p>
-              </div>
-
-              {/* Step 2 */}
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/30 mb-6 border border-white">
-                  <FiCode size={20} />
-                </div>
-                <h4 className="text-[15px] font-bold text-[#0f172a] uppercase tracking-wider mb-3">Architecture</h4>
-                <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                  Designing robust, scalable and secure architecture tailored to your solution needs.
-                </p>
-              </div>
-
-              {/* Step 3 */}
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shadow-sm mb-6 border border-white">
-                  <FiSend size={20} />
-                </div>
-                <h4 className="text-[15px] font-bold text-[#0f172a] uppercase tracking-wider mb-3">Build & Test</h4>
-                <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                  Agile development, continuous testing and quality assurance at every step.
-                </p>
-              </div>
-
-              {/* Step 4 */}
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shadow-sm mb-6 border border-white">
-                  <FiThumbsUp size={20} />
-                </div>
-                <h4 className="text-[15px] font-bold text-[#0f172a] uppercase tracking-wider mb-3">Launch & Scale</h4>
-                <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
-                  Seamless deployment, ongoing support and optimization to help you scale.
-                </p>
-              </div>
+              {processSteps.map((step: any, idx: number) => {
+                const isEven = idx % 2 === 1;
+                return (
+                  <div key={idx} className="relative z-10 flex flex-col items-center">
+                    <div className={`w-14 h-14 rounded-full ${isEven ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'bg-blue-50 text-blue-500 shadow-sm'} flex items-center justify-center mb-6 border border-white`}>
+                      {renderStepIcon(idx)}
+                    </div>
+                    <h4 className="text-[15px] font-bold text-[#0f172a] uppercase tracking-wider mb-3">{step.title}</h4>
+                    <p className="text-[13px] text-slate-500 font-medium leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -403,50 +439,56 @@ export function AllServicesPage() {
 
           <div className="relative">
             {/* Arrows */}
-            <button
-              onClick={showPrev}
-              className="absolute top-[40%] -translate-y-1/2 -left-4 lg:-left-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
-            >
-              <FiChevronLeft />
-            </button>
-            <button
-              onClick={showNext}
-              className="absolute top-[40%] -translate-y-1/2 -right-4 lg:-right-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
-            >
-              <FiChevronRight />
-            </button>
+            {displayServices.length > visibleCount && (
+              <>
+                <button
+                  onClick={showPrev}
+                  className="absolute top-[40%] -translate-y-1/2 -left-4 lg:-left-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
+                >
+                  <FiChevronLeft />
+                </button>
+                <button
+                  onClick={showNext}
+                  className="absolute top-[40%] -translate-y-1/2 -right-4 lg:-right-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
+                >
+                  <FiChevronRight />
+                </button>
+              </>
+            )}
 
             {/* Carousel Track */}
             <div className="overflow-hidden">
               <motion.div
                 className="flex transition-transform duration-500 ease-out"
                 style={{
-                  width: `${(portfolioItems.length * 100) / visibleCount}%`,
-                  transform: `translateX(-${(carouselIndex * 100) / portfolioItems.length}%)`,
+                  width: `${(displayServices.length * 100) / visibleCount}%`,
+                  transform: `translateX(-${(carouselIndex * 100) / displayServices.length}%)`,
                 }}
               >
-                {portfolioItems.map((item, idx) => (
+                {displayServices.map((service, idx) => (
                   <div
-                    key={idx}
+                    key={service.id || idx}
                     className="px-3 text-left"
-                    style={{ flex: `0 0 ${100 / portfolioItems.length}%` }}
+                    style={{ flex: `0 0 ${100 / displayServices.length}%` }}
                   >
-                    <div className="group cursor-pointer">
-                      <div className="overflow-hidden rounded-2xl mb-5 shadow-sm border border-slate-100">
+                    <Link href={`/services/${service.slug}`} className="group block cursor-pointer">
+                      <div className="overflow-hidden rounded-2xl mb-5 shadow-sm border border-slate-100 aspect-video bg-slate-50">
                         <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-700"
+                          src={resolveImageUrl(service.imageUrl)}
+                          alt={service.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
                       </div>
-                      <h4 className="text-[16px] font-bold text-[#0f172a] mb-1 group-hover:text-blue-600 transition-colors">
-                        {item.title}
+                      <h4 className="text-[16px] font-bold text-[#0f172a] mb-1 group-hover:text-blue-600 transition-colors line-clamp-1">
+                        {service.title}
                       </h4>
-                      <p className="text-[13px] text-slate-500 font-medium mb-3">{item.category}</p>
+                      <p className="text-[13px] text-slate-500 font-medium mb-3 line-clamp-1">
+                        {service.tags && service.tags.length > 0 ? service.tags.join(', ') : 'Service'}
+                      </p>
                       <div className="text-[13px] font-bold text-[#e63946] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                         View Case Study <FiArrowRight />
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 ))}
               </motion.div>
