@@ -88,11 +88,7 @@ export function WhyChooseUsSection() {
           </motion.div>
 
           {/* Column 3: Illustration */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+          <div
             className="relative w-full max-w-[380px] mx-auto lg:ml-auto hidden lg:block"
           >
             <img
@@ -104,7 +100,7 @@ export function WhyChooseUsSection() {
             <div className="absolute top-1/2 -right-3 bg-emerald-500 text-white rounded-full p-1.5 shadow-md border-[3px] border-white transform -translate-y-1/2">
               <FiCheckCircle className="w-4 h-4" />
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </div>

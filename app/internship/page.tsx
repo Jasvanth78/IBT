@@ -476,16 +476,13 @@ export default async function InternshipPage() {
                     {renderProgramIcon(prog.icon)}
                   </div>
                   <h4 className="text-[18px] font-bold text-[#0f172a] mb-4">{prog.title}</h4>
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-3">
                     {(prog.points || []).map((pt: string, ptIdx: number) => (
                       <li key={ptIdx} className="flex items-start gap-2 text-[13px] text-slate-500 font-medium">
                         <FiCheckCircle className={`${colors.checkText} mt-0.5 shrink-0`} size={14} /> {pt}
                       </li>
                     ))}
                   </ul>
-                  <Link href={prog.learnMoreLink || '/internship/apply'} className={`text-[13px] font-bold ${colors.linkText} flex items-center gap-1 hover:gap-2 transition-all`}>
-                    Learn More <FiArrowRight />
-                  </Link>
                 </div>
               );
             })}

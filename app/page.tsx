@@ -1,6 +1,8 @@
 import {
   LandingPage, 
-  ServicesSection,
+  SolutionsSection,
+  WhyChooseUsSection,
+  HowWeWorkSection,
   RecentWorkSection,
   StatsDarkSection,
   PartnersClientsSection, 
@@ -13,7 +15,9 @@ export default function Home() {
   return (
     <>
       <LandingPage />
-      <ServicesSection />
+      <SolutionsSection />
+      <WhyChooseUsSection />
+      <HowWeWorkSection />
       <RecentWorkSection />
       <StatsDarkSection />
       <PartnersClientsSection />

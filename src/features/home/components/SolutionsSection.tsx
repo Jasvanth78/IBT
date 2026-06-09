@@ -67,13 +67,23 @@ export function SolutionsSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
-        <div className="mb-12">
-          <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
-            OUR SERVICES
-          </h3>
-          <h2 className="font-black tracking-tight text-[#0f172a]">
-            Solutions That Drive Growth
-          </h2>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div>
+            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
+              OUR SERVICES
+            </h3>
+            <h2 className="font-black tracking-tight text-[#0f172a] text-[28px] sm:text-[36px]">
+              Solutions That Drive Growth
+            </h2>
+          </div>
+          <div className="mt-4 md:mt-0">
+            <Link 
+              href="/services" 
+              className="inline-flex items-center text-md font-bold text-[#e63946] hover:text-[#d62839] transition-colors"
+            >
+              View All Services <FiArrowRight className="ml-1.5" />
+            </Link>
+          </div>
         </div>
 
         {/* Services Grid */}
@@ -95,11 +105,9 @@ export function SolutionsSection() {
                 {service.title}
               </h4>
 
-              <p className="text-[13px] text-slate-500 mb-6 flex-grow leading-relaxed">
+              <p className="text-[13px] text-slate-500 flex-grow leading-relaxed">
                 {service.description}
               </p>
-
-
             </motion.div>
           ))}
         </div>
