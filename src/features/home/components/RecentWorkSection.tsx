@@ -100,7 +100,11 @@ export function RecentWorkSection() {
               {/* Image Area */}
               <div className="h-[200px] w-full relative overflow-hidden bg-slate-50 border-b border-slate-100 p-4 pb-0 flex justify-center items-end">
                 <div className="w-full h-[90%] rounded-t-xl overflow-hidden shadow-md transform group-hover:-translate-y-2 transition-transform duration-500">
-                  <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+                  {project.imageUrl ? (
+                    <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400 text-xs font-medium">No Image</div>
+                  )}
                 </div>
               </div>
 

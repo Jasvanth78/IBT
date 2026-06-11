@@ -29,7 +29,7 @@ export function LandingPage() {
               transition={{ duration: 0.8 }}
               className="lg:col-span-6 max-w-2xl xl:max-w-none xl:pr-8"
             >
-              <h1 className="text-[28px] sm:text-[30px] lg:text-[48px] font-extrabold leading-[1.1] text-[#1d3557] tracking-tight mb-6">
+              <h1 className="text-[24px] sm:text-[28px] lg:text-[40px] font-extrabold leading-[1.1] text-[#1d3557] tracking-tight mb-6">
                 Building Intelligent <br />
                 <span className="text-[#e63946] whitespace-nowrap">
                   Software for a Digital Future.
