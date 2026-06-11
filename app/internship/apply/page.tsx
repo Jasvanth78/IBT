@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  FiArrowLeft, 
-  FiMail, 
-  FiPhone, 
-  FiUser, 
-  FiCheckCircle, 
-  FiLoader, 
+import {
+  FiArrowLeft,
+  FiMail,
+  FiPhone,
+  FiUser,
+  FiCheckCircle,
+  FiLoader,
   FiSend,
   FiCode,
   FiBriefcase,
@@ -28,7 +28,7 @@ export default function InternshipApplyPage() {
   const [loading, setLoading] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -155,24 +155,24 @@ export default function InternshipApplyPage() {
 
   return (
     <div className="min-h-screen bg-[#f8faff] font-sans pb-24 relative overflow-hidden">
-      <Toast 
-        open={toast.open} 
-        message={toast.message} 
-        variant={toast.variant} 
-        onClose={() => setToast(prev => ({ ...prev, open: false }))} 
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        variant={toast.variant}
+        onClose={() => setToast(prev => ({ ...prev, open: false }))}
       />
-      
+
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-[600px] bg-gradient-to-bl from-slate-100 to-transparent -z-10 opacity-60" />
 
       <div className="mx-auto w-full max-w-[1300px] px-4 pt-10 sm:px-6 lg:px-8">
-        
+
         {/* =========================================
             HEADER SECTION (Matches exact layout)
         ========================================= */}
         <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
           <div className="max-w-xl">
-            <button 
+            <button
               onClick={() => router.back()}
               className="group inline-flex items-center gap-2 text-[13px] font-bold text-[#e63946] hover:text-red-700 transition-colors mb-6"
             >
@@ -192,19 +192,19 @@ export default function InternshipApplyPage() {
             <div className="absolute w-[200px] h-[200px] bg-slate-100/50 rounded-full blur-2xl"></div>
             <div className="absolute top-10 left-0 w-2 h-2 rounded-full bg-red-400"></div>
             <div className="absolute top-20 right-4 w-2 h-2 rounded-full bg-red-400"></div>
-            
+
             {/* Clipboard Graphic */}
             <div className="relative z-10 w-[140px] h-[180px] bg-white rounded-xl shadow-xl border border-slate-100 flex flex-col items-center pt-8 pb-4 px-4">
               {/* Clip */}
               <div className="absolute -top-3 w-16 h-6 bg-slate-300 rounded-lg flex justify-center">
-                 <div className="w-8 h-3 bg-slate-400 rounded-b-md"></div>
+                <div className="w-8 h-3 bg-slate-400 rounded-b-md"></div>
               </div>
-              
+
               {/* Profile area inside clipboard */}
               <div className="flex items-center gap-3 w-full mb-6">
                 <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 overflow-hidden shrink-0">
-                   {/* User Silhouette SVG */}
-                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 mt-2"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                  {/* User Silhouette SVG */}
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 mt-2"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
                 </div>
                 <div className="space-y-2 w-full">
                   <div className="h-2 bg-slate-200 rounded w-full"></div>
@@ -231,24 +231,24 @@ export default function InternshipApplyPage() {
             MAIN CARD WRAPPER
         ========================================= */}
         <div className="bg-white rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-slate-100 p-3 lg:p-4 flex flex-col lg:flex-row gap-4 lg:gap-8 min-h-[800px]">
-          
+
           {/* -------------------------------------
               LEFT PANEL (DARK BLUE SIDEBAR)
           ------------------------------------- */}
           <div className="bg-[#0f172a] rounded-[2rem] w-full lg:w-[420px] shrink-0 p-8 sm:p-10 lg:p-12 flex flex-col relative overflow-hidden">
             {/* Background Texture Overlay (Subtle dots) */}
             <div className="absolute bottom-0 right-0 w-64 h-64 opacity-5 bg-[radial-gradient(#ffffff_2px,transparent_2px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_bottom_right,black,transparent_70%)] pointer-events-none"></div>
-            
+
             <div className="relative z-10 flex-1">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-8 shadow-sm">
                 <FiStar className="text-[#e63946]" size={20} />
               </div>
-              
-              <h2 className="text-[32px] sm:text-[36px] font-black text-white leading-[1.1] mb-6 tracking-tight">
-                Start Your<br/>
+
+              <h2 className="text-[32px] sm:text-[36px] font-black !text-white leading-[1.1] mb-6 tracking-tight">
+                Start Your<br />
                 <span className="text-[#e63946]">Career Journey</span>
               </h2>
-              
+
               <p className="text-[15px] text-slate-300 font-medium leading-relaxed mb-12 max-w-sm">
                 Join our innovative team at IBT. We're looking for passionate individuals ready to make an impact.
               </p>
@@ -260,20 +260,20 @@ export default function InternshipApplyPage() {
                     <FiBriefcase className="text-[#e63946]" size={20} />
                   </div>
                   <div>
-                    <h4 className="text-[15px] font-bold text-white mb-1">Real-world Projects</h4>
+                    <h4 className="text-[15px] font-bold !text-white mb-1">Real-world Projects</h4>
                     <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-[200px]">
                       Work on things that matter.
                     </p>
                   </div>
                 </div>
-                
+
                 {/* Feature 2 */}
                 <div className="flex items-start gap-5">
                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shrink-0 shadow-sm">
                     <FiUsers className="text-[#e63946]" size={20} />
                   </div>
                   <div>
-                    <h4 className="text-[15px] font-bold text-white mb-1">Expert Mentorship</h4>
+                    <h4 className="text-[15px] font-bold !text-white mb-1">Expert Mentorship</h4>
                     <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-[200px]">
                       Learn from industry experts.
                     </p>
@@ -286,7 +286,7 @@ export default function InternshipApplyPage() {
                     <FiTrendingUp className="text-[#e63946]" size={20} />
                   </div>
                   <div>
-                    <h4 className="text-[15px] font-bold text-white mb-1">Career Growth</h4>
+                    <h4 className="text-[15px] font-bold !text-white mb-1">Career Growth</h4>
                     <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-[200px]">
                       Opportunities to learn, grow and lead.
                     </p>
@@ -313,22 +313,22 @@ export default function InternshipApplyPage() {
           <div className="flex-1 py-8 px-4 sm:px-8 lg:px-12">
             <AnimatePresence mode="wait">
               {step === 1 ? (
-                <motion.form 
+                <motion.form
                   key="step1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  onSubmit={handleRequestOTP} 
+                  onSubmit={handleRequestOTP}
                   className="max-w-3xl"
                 >
-                  
+
                   {/* Section 1: Personal Information */}
                   <div className="mb-10">
                     <h3 className="text-[18px] font-black text-[#0f172a] mb-2">Personal Information</h3>
                     <div className="h-1 w-8 bg-[#e63946] rounded-full mb-8"></div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
-                      
+
                       {/* Full Name */}
                       <div>
                         <label className="block text-[13px] font-bold text-slate-700 mb-2">Full Name</label>
@@ -336,8 +336,8 @@ export default function InternshipApplyPage() {
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                             <FiUser size={16} />
                           </div>
-                          <input 
-                            type="text" 
+                          <input
+                            type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleInputChange}
@@ -355,8 +355,8 @@ export default function InternshipApplyPage() {
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                             <FiMail size={16} />
                           </div>
-                          <input 
-                            type="email" 
+                          <input
+                            type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
@@ -374,8 +374,8 @@ export default function InternshipApplyPage() {
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                             <FiPhone size={16} />
                           </div>
-                          <input 
-                            type="tel" 
+                          <input
+                            type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
@@ -390,7 +390,7 @@ export default function InternshipApplyPage() {
                       <div>
                         <label className="block text-[13px] font-bold text-slate-700 mb-2">Applying For</label>
                         <div className="relative">
-                          <select 
+                          <select
                             name="applicationType"
                             value={formData.applicationType}
                             onChange={handleInputChange}
@@ -401,7 +401,7 @@ export default function InternshipApplyPage() {
                             <option value="Job">Full-time Job</option>
                           </select>
                           <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
                           </div>
                         </div>
                       </div>
@@ -410,7 +410,7 @@ export default function InternshipApplyPage() {
                       <div>
                         <label className="block text-[13px] font-bold text-slate-700 mb-2">Role / Interest</label>
                         <div className="relative">
-                          <select 
+                          <select
                             name="jobType"
                             value={formData.jobType}
                             onChange={handleInputChange}
@@ -427,7 +427,7 @@ export default function InternshipApplyPage() {
                             <option value="Cloud Computing">Cloud Computing</option>
                           </select>
                           <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
                           </div>
                         </div>
                       </div>
@@ -439,8 +439,8 @@ export default function InternshipApplyPage() {
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                             <FiCode size={16} />
                           </div>
-                          <input 
-                            type="text" 
+                          <input
+                            type="text"
                             name="skills"
                             value={formData.skills}
                             onChange={handleInputChange}
@@ -458,10 +458,10 @@ export default function InternshipApplyPage() {
                   <div className="mb-10">
                     <h3 className="text-[18px] font-black text-[#0f172a] mb-2">About You</h3>
                     <div className="h-1 w-8 bg-[#e63946] rounded-full mb-8"></div>
-                    
+
                     <div>
                       <label className="block text-[13px] font-bold text-slate-700 mb-2">Cover Letter / About You</label>
-                      <textarea 
+                      <textarea
                         name="about"
                         value={formData.about}
                         onChange={handleInputChange}
@@ -477,11 +477,10 @@ export default function InternshipApplyPage() {
                   <div className="mb-10">
                     <h3 className="text-[18px] font-black text-[#0f172a] mb-2">Resume Upload</h3>
                     <div className="h-1 w-8 bg-[#e63946] rounded-full mb-8"></div>
-                    
-                    <div 
-                      className={`relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 text-center transition-all cursor-pointer ${
-                        dragActive ? 'border-[#e63946] bg-red-50' : 'border-slate-200 bg-[#f8faff] hover:border-[#e63946] hover:bg-red-50/50'
-                      }`}
+
+                    <div
+                      className={`relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 text-center transition-all cursor-pointer ${dragActive ? 'border-[#e63946] bg-red-50' : 'border-slate-200 bg-[#f8faff] hover:border-[#e63946] hover:bg-red-50/50'
+                        }`}
                       onDragEnter={() => setDragActive(true)}
                       onDragLeave={() => setDragActive(false)}
                       onDragOver={(e) => e.preventDefault()}
@@ -495,13 +494,12 @@ export default function InternshipApplyPage() {
                         className="hidden"
                         id="resume-upload"
                       />
-                      
-                      <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-sm mb-4 bg-white border border-slate-100 ${
-                        resume ? 'text-green-500' : 'text-[#e63946]'
-                      }`}>
+
+                      <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-sm mb-4 bg-white border border-slate-100 ${resume ? 'text-green-500' : 'text-[#e63946]'
+                        }`}>
                         {resume ? <FiCheckCircle size={24} /> : <FiUploadCloud size={24} />}
                       </div>
-                      
+
                       <h4 className="text-[15px] font-bold text-[#0f172a] mb-1">
                         {resume ? resume.name : 'Click to upload or drag and drop'}
                       </h4>
@@ -509,7 +507,7 @@ export default function InternshipApplyPage() {
                         {resume ? `${(resume.size / 1024 / 1024).toFixed(2)} MB • Ready` : 'PDF, DOCX up to 5MB'}
                       </p>
                     </div>
-                    
+
                     <div className="flex items-center gap-2 mt-4 text-[12px] font-medium text-slate-500">
                       <FiInfo className="text-slate-400" /> Please ensure your resume is up to date and relevant to the role.
                     </div>
@@ -530,7 +528,7 @@ export default function InternshipApplyPage() {
                         </>
                       )}
                     </button>
-                    
+
                     <div className="flex items-center justify-center gap-2 mt-6 text-[12px] font-bold text-slate-400">
                       <FiLock /> Your information is secure and protected.
                     </div>
@@ -538,12 +536,12 @@ export default function InternshipApplyPage() {
 
                 </motion.form>
               ) : (
-                <motion.form 
+                <motion.form
                   key="step2"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  onSubmit={handleSubmit} 
+                  onSubmit={handleSubmit}
                   className="flex flex-col items-center justify-center h-full min-h-[500px] text-center"
                 >
                   <div className="mx-auto mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-red-50 text-[#e63946]">
@@ -586,12 +584,12 @@ export default function InternshipApplyPage() {
                         </>
                       )}
                     </button>
-                    <button 
+                    <button
                       type="button"
                       onClick={() => setStep(1)}
                       className="text-[13px] font-bold text-slate-400 hover:text-slate-800 transition py-2 w-full flex items-center justify-center gap-2"
                     >
-                      <FiArrowLeft size={14}/> Use a different email
+                      <FiArrowLeft size={14} /> Use a different email
                     </button>
                   </div>
                 </motion.form>
