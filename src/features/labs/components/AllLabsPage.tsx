@@ -219,7 +219,7 @@ export function AllLabsPage() {
       try {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      } catch {}
+      } catch { }
     }
     return [
       {
@@ -235,11 +235,11 @@ export function AllLabsPage() {
       {
         id: 'init2',
         badge: '',
-        title: 'Careersheets',
-        description: 'The ultimate architectural tool for job seekers to track professional growth.',
+        title: 'Practice Log',
+        description: 'The ultimate tool to track your skills.',
         imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600',
-        link: '/services',
-        btnText: 'Learn More',
+        link: 'https://practice-skill-log.vercel.app/login',
+        btnText: 'Visit',
         layout: 'light-row'
       },
       {
@@ -268,7 +268,7 @@ export function AllLabsPage() {
       try {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      } catch {}
+      } catch { }
     }
     return [
       'Phase-gate project management systems',
@@ -402,7 +402,7 @@ export function AllLabsPage() {
             <div className="flex flex-col md:flex-row items-center gap-4 justify-center pt-8 md:pt-0">
               <FaUserGraduate className="text-white text-3xl opacity-80" />
               <div className="text-center md:text-left">
-                <div className="text-[28px] font-black text-white leading-tight">100+</div>
+                <div className="text-[28px] font-black text-white leading-tight">5000+</div>
                 <div className="text-[12px] font-medium text-slate-300">Students Trained</div>
               </div>
             </div>
@@ -418,7 +418,7 @@ export function AllLabsPage() {
             <div className="flex flex-col md:flex-row items-center gap-4 justify-center pt-8 md:pt-0">
               <FaHandshake className="text-white text-3xl opacity-80" />
               <div className="text-center md:text-left">
-                <div className="text-[28px] font-black text-white leading-tight">5+</div>
+                <div className="text-[28px] font-black text-white leading-tight">20+</div>
                 <div className="text-[12px] font-medium text-slate-300">Industry Collaborations</div>
               </div>
             </div>
@@ -465,12 +465,12 @@ export function AllLabsPage() {
                         {card.badge}
                       </div>
                     )}
-                    <h3 className="text-[28px] sm:text-[36px] font-black text-white leading-tight mb-3">
+                    <h3 className="text-[28px] sm:text-[36px] font-black !text-white leading-tight mb-3">
                       {card.title}
                     </h3>
                     <div className="text-[14px] text-slate-300 font-medium max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
                     {card.btnText && (
-                      <Link href={card.link || '#'} className="mt-4 inline-flex items-center gap-1 text-[13px] font-bold text-[#e63946] hover:gap-2 transition-all">
+                      <Link href={card.link || '#'} className="mt-4 inline-flex items-center gap-1 text-[13px] font-bold text-[#e63946] hover:gap-2 transition-all target='_blank' ">
                         {card.btnText} <FiArrowRight />
                       </Link>
                     )}
@@ -491,15 +491,11 @@ export function AllLabsPage() {
                         <FiZap size={24} />
                       </div>
 
-                      <div className="mt-14 relative z-10">
-                        <h4 className="text-[24px] font-black mb-2">{card.title}</h4>
+                      <div className="mt-14 relative z-10 mt-5">
+                        <h4 className="text-[24px] font-black mb-2 text-black">{card.title}</h4>
                         <div className="text-[13px] text-red-100 font-medium mb-8 max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
                         <div className="flex gap-4">
-                          {card.btnText && (
-                            <Link href={card.link || '#'} className="bg-white text-[#e63946] text-[12px] font-bold px-5 py-2.5 rounded-lg shadow-sm hover:bg-red-50 transition-colors">
-                              {card.btnText}
-                            </Link>
-                          )}
+
                         </div>
                       </div>
                     </div>

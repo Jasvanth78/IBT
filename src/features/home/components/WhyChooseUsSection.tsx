@@ -46,10 +46,10 @@ export function WhyChooseUsSection() {
             className="flex flex-col items-start"
           >
             <h3 className="text-[16px] font-bold uppercase tracking-wider !text-red-500 mb-2">
-              WHY CHOOSE IBACUS TECH?
+              WHY CHOOSE I BACUS TECH?
             </h3>
             <h2 className="text-[28px] sm:text-[32px] font-extrabold text-[#0f172a] leading-tight mb-3 pr-4">
-              We Deliver More<br />Than Expectations
+              Exceeding Expectations<br />Every Time
             </h2>
             <p className="text-[13px] font-medium text-slate-500 mb-6 max-w-[300px] leading-relaxed">
               We combine technology, creativity and strategy to build solutions that create real impact.

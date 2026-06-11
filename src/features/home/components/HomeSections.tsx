@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { apiClient, type PaginationMeta, type PublicStat } from '@/src/api/client';
-import { FiChevronLeft, FiChevronRight, FiUsers, FiCheckCircle, FiActivity, FiClock, FiBriefcase, FiAward, FiSmile } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiUsers, FiCheckCircle, FiActivity, FiClock, FiBriefcase, FiAward, FiSmile, FiGlobe } from 'react-icons/fi';
 import { Loader } from '@/src/shared/ui';
 import { IconType } from 'react-icons';
 
@@ -72,28 +72,32 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
 
   if (isFloating) {
     let colorClasses = {
-      bg: 'bg-rose-50/50',
-      text: 'text-rose-500',
+      gradientBg: 'from-rose-500/10 to-rose-500/2',
+      borderClass: 'border-rose-500/15',
+      text: 'text-rose-600',
       icon: FiUsers
     };
 
-    if (label.includes('project')) {
+    if (label.includes('project') && !label.includes('country')) {
       colorClasses = {
-        bg: 'bg-blue-50/50',
-        text: 'text-blue-500',
+        gradientBg: 'from-blue-500/10 to-blue-500/2',
+        borderClass: 'border-blue-500/15',
+        text: 'text-blue-600',
         icon: FiBriefcase
       };
-    } else if (label.includes('intern')) {
+    } else if (label.includes('country') || label.includes('globe') || label.includes('intern')) {
       colorClasses = {
-        bg: 'bg-emerald-50/50',
-        text: 'text-emerald-500',
-        icon: FiAward
+        gradientBg: 'from-emerald-500/10 to-emerald-500/2',
+        borderClass: 'border-emerald-500/15',
+        text: 'text-emerald-600',
+        icon: FiGlobe
       };
-    } else if (label.includes('satisfaction') || label.includes('rate') || label.includes('percent')) {
+    } else if (label.includes('satisfaction') || label.includes('rate') || label.includes('percent') || label.includes('value')) {
       colorClasses = {
-        bg: 'bg-orange-50/50',
-        text: 'text-orange-500',
-        icon: FiSmile
+        gradientBg: 'from-amber-500/10 to-amber-500/2',
+        borderClass: 'border-amber-500/15',
+        text: 'text-amber-600',
+        icon: FiAward
       };
     }
 
@@ -102,16 +106,16 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
     return (
       <article
         ref={cardRef}
-        className="flex items-center gap-3 md:gap-4 py-1 w-[240px] sm:w-[260px] max-w-full mx-auto justify-start xl:w-full xl:mx-0 xl:justify-start xl:pl-10"
+        className="flex items-center gap-4 py-3 px-4 rounded-2xl w-full transition-all duration-300 hover:bg-slate-50/50 group/item"
       >
-        <div className={`w-14 h-14 rounded-full shrink-0 flex items-center justify-center ${colorClasses.bg} ${colorClasses.text}`}>
+        <div className={`w-14 h-14 rounded-2xl shrink-0 flex items-center justify-center bg-gradient-to-br ${colorClasses.gradientBg} shadow-sm border ${colorClasses.borderClass} ${colorClasses.text} transition-transform duration-300 group-hover/item:scale-110`}>
           <FloatingIcon size={24} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col text-left">
-          <p className="text-[26px] md:text-[32px] font-black text-[#0f172a] leading-none mb-1">
+          <p className="text-[28px] md:text-[32px] font-black text-slate-900 leading-none mb-1 tracking-tight">
             {startAnimation || !isNumber ? displayValue : item.value.replace(numericString, '0')}
           </p>
-          <p className="text-[14px] md:text-[15px] font-semibold text-slate-600 leading-snug tracking-tight">{item.label}</p>
+          <p className="text-[13px] md:text-[14px] font-bold text-slate-500 leading-tight tracking-tight uppercase">{item.label}</p>
         </div>
       </article>
     );
@@ -201,8 +205,8 @@ export function HomeSections({ isFloating }: { isFloating?: boolean }) {
         <p className="text-center text-[12px] md:text-[13px] font-black uppercase tracking-[0.24em] text-slate-400 mb-5">
           Trusted by startups, SMEs & enterprises
         </p>
-        <div className="w-full rounded-2xl border border-slate-100 bg-white px-4 sm:px-8 py-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 lg:divide-x lg:divide-slate-100">
+        <div className="w-full rounded-3xl border border-slate-200/60 bg-white/80 backdrop-blur-md px-6 sm:px-10 py-8 shadow-[0_20px_50px_rgba(15,23,42,0.05)] transition-all duration-300 hover:shadow-[0_30px_60px_rgba(15,23,42,0.08)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 lg:divide-x lg:divide-slate-100/80">
              {stats.map((item) => (
                 <div key={item.id} className="flex justify-center first:lg:pl-0">
                   <AnimatedStatCard item={item} isFloating />

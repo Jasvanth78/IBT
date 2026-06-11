@@ -19,6 +19,9 @@ import {
 } from 'react-icons/fi';
 import * as FiIcons from 'react-icons/fi';
 import Link from 'next/link';
+import { InternshipTestimonials } from './InternshipTestimonials';
+
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Internship | I-BACUS-TECH',
@@ -211,7 +214,7 @@ export default async function InternshipPage() {
       try {
         const parsed = JSON.parse(field)
         if (Array.isArray(parsed)) return parsed
-      } catch {}
+      } catch { }
     }
     return fallback
   }
@@ -292,7 +295,7 @@ export default async function InternshipPage() {
                   <FiUsers size={24} />
                 </div>
                 <div>
-                  <div className="text-[24px] font-black text-[#0f172a] leading-none mb-1">500+</div>
+                  <div className="text-[24px] font-black text-[#0f172a] leading-none mb-1">5000+</div>
                   <div className="text-[12px] font-bold text-slate-500 mb-2">Interns Trained</div>
                   {/* Tiny Avatar Group */}
                   <div className="flex -space-x-2">
@@ -332,7 +335,7 @@ export default async function InternshipPage() {
                 <FiUsers size={20} />
               </div>
               <div>
-                <div className="text-[24px] font-black text-[#0f172a] leading-tight">500+</div>
+                <div className="text-[24px] font-black text-[#0f172a] leading-tight">5000+</div>
                 <div className="text-[12px] font-medium text-slate-500">Interns Trained</div>
               </div>
             </div>
@@ -342,7 +345,7 @@ export default async function InternshipPage() {
                 <FiAward size={20} />
               </div>
               <div>
-                <div className="text-[24px] font-black text-[#0f172a] leading-tight">90%+</div>
+                <div className="text-[24px] font-black text-[#0f172a] leading-tight">99%+</div>
                 <div className="text-[12px] font-medium text-slate-500">Success Rate</div>
               </div>
             </div>
@@ -564,54 +567,10 @@ export default async function InternshipPage() {
       {/* =====================================================
           6. TESTIMONIALS
       ===================================================== */}
-      <section className="py-16 lg:py-24 bg-[#f8faff]">
-        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
-
-          <div className="mb-14">
-            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
-              {settings.internshipTestimonialsTitle || "WHAT OUR INTERNS SAY"}
-            </h3>
-            <h2 className="text-[32px] md:text-[40px] font-black tracking-tight text-[#0f172a]">
-              Real Experiences. Real Growth.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {displayTestimonials.map((testimonial: any, idx: number) => (
-              <div key={testimonial.id || idx} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between relative">
-
-                {/* Red Quote Mark decoration */}
-                <div className="absolute top-8 left-8 text-red-500 opacity-20 text-4xl font-serif">"</div>
-
-                <p className="text-[14px] text-slate-600 font-medium leading-relaxed mb-8 relative z-10 pl-8 pt-2">
-                  {testimonial.content}
-                </p>
-
-                <div className="flex items-center gap-4 border-t border-slate-100 pt-6 mt-auto">
-                  <img
-                    src={resolveImageUrl(testimonial.avatarUrl) || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover bg-slate-100"
-                  />
-                  <div>
-                    <h4 className="text-[15px] font-bold text-[#0f172a]">{testimonial.name}</h4>
-                    <p className="text-[12px] font-medium text-slate-500">{testimonial.role || 'Intern'}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Dots */}
-          <div className="flex justify-center gap-2 mt-10">
-            <div className="w-6 h-1.5 rounded-full bg-[#e63946]"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
-          </div>
-
-        </div>
-      </section>
+      <InternshipTestimonials
+        testimonials={displayTestimonials}
+        title={settings.internshipTestimonialsTitle || "WHAT OUR INTERNS SAY"}
+      />
 
       {/* =====================================================
           7. BOTTOM CTA RIBBON

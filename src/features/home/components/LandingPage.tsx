@@ -30,13 +30,13 @@ export function LandingPage() {
               className="lg:col-span-6 max-w-2xl xl:max-w-none xl:pr-8"
             >
               <h1 className="text-[28px] sm:text-[30px] lg:text-[48px] font-extrabold leading-[1.1] text-[#1d3557] tracking-tight mb-6">
-                Where Ideas <br />
+                Building Intelligent <br />
                 <span className="text-[#e63946] whitespace-nowrap">
-                  Become Products
+                  Software for a Digital Future.
                 </span>
               </h1>
               <p className="text-base sm:text-lg text-slate-500 mb-8 max-w-[480px] leading-relaxed font-medium">
-                We build powerful digital products, AI solutions, and career development programs that help businesses grow and students build successful careers.
+                We design and develop custom software, AI-powered solutions, data analytics platforms, and enterprise applications that help businesses stay ahead in a rapidly evolving world.
               </p>
 
               <div className="flex flex-wrap gap-4 items-center">
@@ -48,7 +48,7 @@ export function LandingPage() {
                   Get Free Consultation
                 </SiteButton>
                 <SiteButton
-                  href="/portfolio"
+                  href="/services"
                   variant="secondary"
                   className="border border-slate-200 text-[#1d3557] bg-white hover:bg-slate-50 rounded-md px-7 py-3.5 font-bold text-sm transition-all shadow-sm"
                   rightIcon={<FiPlayCircle size={18} />}

@@ -64,6 +64,27 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       homeSolutionsDescription: data?.homeSolutionsDescription ?? null,
       homeSolutionsItems: data?.homeSolutionsItems ?? null,
 
+      // Home – Services & Recent Work Sections
+      homeServicesTitle: data?.homeServicesTitle ?? null,
+      homeServicesBadge: data?.homeServicesBadge ?? null,
+      homeRecentWorkTitle: data?.homeRecentWorkTitle ?? null,
+      homeRecentWorkBadge: data?.homeRecentWorkBadge ?? null,
+      homeRecentWorkItems: data?.homeRecentWorkItems ?? null,
+
+      // Labs – Initiatives, Rigor, Mentorship
+      labs_initiatives: data?.labs_initiatives ?? null,
+      labs_rigor_title: data?.labs_rigor_title ?? null,
+      labs_rigor_description: data?.labs_rigor_description ?? null,
+      labs_rigor_points: data?.labs_rigor_points ?? null,
+      labs_rigor_image: data?.labs_rigor_image ?? null,
+      labs_mentorship_title: data?.labs_mentorship_title ?? null,
+      labs_mentorship_description: data?.labs_mentorship_description ?? null,
+      labs_mentorship_image: data?.labs_mentorship_image ?? null,
+      labs_mentorship_quote: data?.labs_mentorship_quote ?? null,
+      labs_mentorship_quote_author: data?.labs_mentorship_quote_author ?? null,
+      labs_mentorship_quote_role: data?.labs_mentorship_quote_role ?? null,
+      labs_mentorship_quote_avatar: data?.labs_mentorship_quote_avatar ?? null,
+
       // About Page
       aboutWhoTitle: data?.aboutWhoTitle ?? null,
       aboutWhoDescription: data?.aboutWhoDescription ?? null,
@@ -188,6 +209,27 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       servicesWhatDescription: null,
       servicesWhatFeatures: null,
       servicesWhatImages: null,
+
+      // Home – Services & Recent Work Sections
+      homeServicesTitle: null,
+      homeServicesBadge: null,
+      homeRecentWorkTitle: null,
+      homeRecentWorkBadge: null,
+      homeRecentWorkItems: null,
+
+      // Labs – Initiatives, Rigor, Mentorship
+      labs_initiatives: null,
+      labs_rigor_title: null,
+      labs_rigor_description: null,
+      labs_rigor_points: null,
+      labs_rigor_image: null,
+      labs_mentorship_title: null,
+      labs_mentorship_description: null,
+      labs_mentorship_image: null,
+      labs_mentorship_quote: null,
+      labs_mentorship_quote_author: null,
+      labs_mentorship_quote_role: null,
+      labs_mentorship_quote_avatar: null,
 
       // About Defaults
       aboutWhoTitle: null,

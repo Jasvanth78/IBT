@@ -80,6 +80,20 @@ export interface SiteSettingsRealtimePayload {
   homeServicesTitle?: string | null;
   homeServicesBadge?: string | null;
 
+  // Labs – Initiatives, Rigor, Mentorship
+  labs_initiatives?: any[] | null;
+  labs_rigor_title?: string | null;
+  labs_rigor_description?: string | null;
+  labs_rigor_points?: any[] | null;
+  labs_rigor_image?: string | null;
+  labs_mentorship_title?: string | null;
+  labs_mentorship_description?: string | null;
+  labs_mentorship_image?: string | null;
+  labs_mentorship_quote?: string | null;
+  labs_mentorship_quote_author?: string | null;
+  labs_mentorship_quote_role?: string | null;
+  labs_mentorship_quote_avatar?: string | null;
+
   // Contact – Hero & Presence
   contactHeroTitle?: string | null;
   contactHeroDescription?: string | null;

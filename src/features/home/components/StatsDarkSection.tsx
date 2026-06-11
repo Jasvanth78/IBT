@@ -6,20 +6,20 @@ import { FiTarget, FiUsers, FiAward, FiBook } from 'react-icons/fi';
 const stats = [
   {
     id: 1,
-    value: '500+',
+    value: '250+',
     label: 'Projects Delivered',
     icon: <FiTarget className="w-8 h-8 text-white opacity-80" />
   },
   {
     id: 2,
-    value: '100+',
+    value: '200+',
     label: 'Happy Clients',
     icon: <FiUsers className="w-8 h-8 text-white opacity-80" />
   },
   {
     id: 3,
     value: '50+',
-    label: 'Interns Trained',
+    label: 'International Clients',
     icon: <FiBook className="w-8 h-8 text-white opacity-80" />
   },
   {
@@ -36,7 +36,7 @@ export function StatsDarkSection() {
       {/* Background decorations */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-slate-800 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-slate-800 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2"></div>
-      
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x divide-slate-700/0 md:divide-slate-700/50">
           {stats.map((stat, index) => (

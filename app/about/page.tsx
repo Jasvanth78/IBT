@@ -133,9 +133,9 @@ export default function AboutPage() {
   const visionTitle = s.aboutVisionTitle || 'Our Vision'
   const visionDesc = s.aboutVisionDesc || 'To be a global leader in digital transformation and career development. We aim to empower businesses and individuals by delivering innovative solutions, skill development programs and technology-driven products that create a lasting impact.'
   const missionCards = (s.aboutMissionCards && s.aboutMissionCards.length === 4) ? s.aboutMissionCards : [
-    { value: '500+', label: 'Projects Delivered' },
-    { value: '100+', label: 'Happy Clients' },
-    { value: '50+', label: 'Interns Trained' },
+    { value: '250+', label: 'Projects Delivered' },
+    { value: '200+', label: 'Happy Clients' },
+    { value: '50+', label: 'International Client' },
     { value: '10+', label: 'Years Experience' },
   ]
 
@@ -204,7 +204,7 @@ export default function AboutPage() {
               </h1>
 
               <p className="mt-6 max-w-xl text-base leading-relaxed text-[#475569]">
-                IBACUS TECH SOLUTION is a leading digital solutions provider dedicated to empowering businesses through innovative technology, product engineering and career development programs.
+                I BACUS TECH SOLUTION specializes in custom software development, AI solutions, web and mobile application development, data analytics, and enterprise technology solutions that drive business success.
               </p>
 
               {/* BUTTONS */}
@@ -308,11 +308,11 @@ export default function AboutPage() {
               <h2 className="mt-2 text-[36px] font-extrabold text-[#0f172a] tracking-tight sm:text-[44px] md:text-[50px] leading-[1.1] mb-6">
                 {whoTitle}
               </h2>
-              <div 
+              <div
                 className="text-lg text-slate-600 leading-relaxed mb-4 prose max-w-none [&>p]:mb-4"
                 dangerouslySetInnerHTML={{ __html: cleanHtml(whoDescription) }}
               />
-              <div 
+              <div
                 className="text-base text-slate-500 leading-relaxed mb-10 prose max-w-none [&>p]:mb-4"
                 dangerouslySetInnerHTML={{ __html: cleanHtml(whoSecondaryDescription) }}
               />
@@ -429,7 +429,7 @@ export default function AboutPage() {
                 Define Our Journey
               </h2>
               <p className="text-[13px] text-slate-300/80 leading-relaxed">
-                From a small team with a big vision to a trusted partner for 500+ businesses — our numbers reflect our passion and commitment.
+                From a small team with a big vision to a trusted partner for 200+ businesses contents — our numbers reflect our passion and commitment.
               </p>
             </div>
 
@@ -472,7 +472,7 @@ export default function AboutPage() {
               <div>
                 <span className="text-[14px] font-bold text-[#e63946] uppercase tracking-wider">OUR VISION</span>
                 <h3 className="text-[32px] sm:text-[40px] md:text-[44px] leading-[1.1] font-extrabold text-[#0f172a] tracking-tight mt-2 mb-4">{visionTitle}</h3>
-                <div 
+                <div
                   className="text-base sm:text-lg text-slate-500 leading-relaxed prose max-w-none [&>p]:mb-4"
                   dangerouslySetInnerHTML={{ __html: cleanHtml(visionDesc) }}
                 />
@@ -487,7 +487,7 @@ export default function AboutPage() {
               <div>
                 <span className="text-[14px] font-bold text-[#e63946] uppercase tracking-wider">OUR MISSION</span>
                 <h3 className="text-[32px] sm:text-[40px] md:text-[44px] leading-[1.1] font-extrabold text-[#0f172a] tracking-tight mt-2 mb-4">{missionTitle}</h3>
-                <div 
+                <div
                   className="text-base sm:text-lg text-slate-500 leading-relaxed prose max-w-none [&>p]:mb-4"
                   dangerouslySetInnerHTML={{ __html: cleanHtml(missionDesc) }}
                 />

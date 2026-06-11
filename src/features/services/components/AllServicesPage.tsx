@@ -98,7 +98,7 @@ export function AllServicesPage() {
       const parsed = typeof settings.servicesWhatFeatures === 'string'
         ? JSON.parse(settings.servicesWhatFeatures)
         : settings.servicesWhatFeatures;
-      
+
       return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultWhatFeatures;
     } catch (e) {
       console.warn('Failed to parse whatFeatures:', e);
@@ -120,7 +120,7 @@ export function AllServicesPage() {
       const parsed = typeof settings.servicesProcessSteps === 'string'
         ? JSON.parse(settings.servicesProcessSteps)
         : settings.servicesProcessSteps;
-      
+
       return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultProcessSteps;
     } catch (e) {
       console.warn('Failed to parse processSteps:', e);
@@ -283,7 +283,7 @@ export function AllServicesPage() {
               {/* Floating Badge */}
               <div className="absolute -bottom-8 left-8 bg-white py-6 px-8 rounded-xl shadow-2xl border border-slate-100 flex items-center gap-4">
                 <div>
-                  <div className="text-[36px] font-black text-[#0f172a] leading-none mb-1">150+</div>
+                  <div className="text-[36px] font-black text-[#0f172a] leading-none mb-1">200+</div>
                   <div className="text-[13px] font-bold text-slate-500">Projects Completed</div>
                 </div>
                 <FiTrendingUp className="text-[#e63946] text-3xl" />
@@ -310,7 +310,7 @@ export function AllServicesPage() {
                 {whatTitle}
               </h2>
               {settings?.servicesWhatDescription ? (
-                <div 
+                <div
                   className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg html-content"
                   dangerouslySetInnerHTML={{ __html: settings.servicesWhatDescription }}
                 />
@@ -384,7 +384,7 @@ export function AllServicesPage() {
           </h2>
           <div className="w-full flex justify-center mb-20">
             {settings?.servicesProcessDescription ? (
-              <div 
+              <div
                 className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0 html-content"
                 dangerouslySetInnerHTML={{ __html: settings.servicesProcessDescription }}
               />
@@ -518,7 +518,7 @@ export function AllServicesPage() {
 
               {/* Center Floating Badge */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-8 py-6 rounded-2xl shadow-2xl border border-slate-100 text-center min-w-[220px]">
-                <div className="text-[36px] font-black text-[#0f172a] leading-none mb-2">5000+</div>
+                <div className="text-[36px] font-black text-[#0f172a] leading-none mb-2">200+</div>
                 <div className="text-[13px] font-bold text-slate-500 uppercase tracking-widest">Happy Clients<br />Worldwide</div>
               </div>
             </motion.div>

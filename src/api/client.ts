@@ -83,6 +83,7 @@ export type PublicClient = {
   id: string;
   name: string;
   logoUrl?: string | null;
+  website?: string | null;
   order?: number;
 };
 

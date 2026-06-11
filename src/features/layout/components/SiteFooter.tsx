@@ -28,28 +28,18 @@ const footerLinks = [
     title: 'Company',
     items: [
       { label: 'About Us', href: '/about' },
-      { label: 'Our Team', href: '/about' },
-      { label: "Blog", href: "/blog" },
+
       { label: 'Contact Us', href: '/contact' }
 
     ],
   },
-  {
-    title: 'Services',
-    items: [
-      { label: 'Web Development', href: '/services' },
-      { label: 'Mobile App Development', href: '/services' },
-      { label: 'AI Solutions', href: '/services' },
-      { label: 'ERP Systems', href: '/services' },
 
-    ],
-  },
   {
     title: 'Resources',
     items: [
       { label: 'IBT Labs', href: '/ibt-labs' },
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Service', href: '#' },
+      { label: "Blog", href: "/blog" },
+
     ],
   },
 ];
@@ -159,7 +149,8 @@ export function SiteFooter() {
             </Link>
 
             <p className="mt-5 text-sm leading-relaxed !text-white max-w-xs">
-              Empowering careers through technology. We build cutting-edge products, AI solutions and career programs that create real impact.
+              Empowering Businesses Through Technology.
+              We build cutting-edge software, AI-powered solutions, and scalable digital products that drive innovation, efficiency, and growth.
             </p>
 
             {/* Social Icons */}
@@ -213,7 +204,7 @@ export function SiteFooter() {
           ))}
 
           {/* Contact Us Column */}
-          <div>
+          <div className="lg:col-span-2">
             <h4 className="text-md font-bold !text-red-500 mb-5 uppercase tracking-wider">
               Contact Us
             </h4>
@@ -224,11 +215,15 @@ export function SiteFooter() {
 
                 if (!Icon) return null;
 
+                const displayValue = contact.type === 'ADDRESS'
+                  ? contact.value.replace(/,([^ ])/g, ', $1')
+                  : contact.value;
+
                 const content = (
                   <div className="flex items-start gap-3">
-                    <Icon className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
+                    <Icon className="h-4 w-4 text-red-400 mt-1 shrink-0" />
                     <span className="text-sm !text-white leading-relaxed break-words">
-                      {contact.value}
+                      {displayValue}
                     </span>
                   </div>
                 );
@@ -272,7 +267,7 @@ export function SiteFooter() {
       <div className="border-t border-slate-800">
         <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs !text-white">
-            © {new Date().getFullYear()} IBACUS TECH SOLUTION. All rights reserved.
+            © {new Date().getFullYear()} I BACUS TECH SOLUTION. All rights reserved.
           </p>
 
         </div>
