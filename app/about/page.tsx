@@ -61,40 +61,7 @@ export default function AboutPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Carousel State
-  const [carouselIndex, setCarouselIndex] = useState(0)
-  const [visibleCount, setVisibleCount] = useState(5)
-  const [showAllMembers, setShowAllMembers] = useState(false)
 
-  useEffect(() => {
-    const updateVisible = () => {
-      const w = window.innerWidth
-      if (w >= 1280) setVisibleCount(5)
-      else if (w >= 1024) setVisibleCount(4)
-      else if (w >= 768) setVisibleCount(3)
-      else if (w >= 640) setVisibleCount(2)
-      else setVisibleCount(1)
-    }
-    updateVisible()
-    window.addEventListener('resize', updateVisible)
-    return () => window.removeEventListener('resize', updateVisible)
-  }, [])
-
-  useEffect(() => {
-    const n = members.length
-    const maxIndex = Math.max(0, n - visibleCount)
-    setCarouselIndex((prev) => Math.min(prev, maxIndex))
-  }, [visibleCount, members])
-
-  const showPrev = () => {
-    const n = members.length
-    setCarouselIndex((prev) => (prev <= 0 ? Math.max(0, n - visibleCount) : prev - 1))
-  }
-
-  const showNext = () => {
-    const n = members.length
-    setCarouselIndex((prev) => (prev >= n - visibleCount ? 0 : prev + 1))
-  }
 
   // Who Are We dynamic data
   const whoTitle = s.aboutWhoTitle || 'Who Are We?'
@@ -264,7 +231,7 @@ export default function AboutPage() {
                 <FiUsers size={22} />
               </div>
               <div>
-                <div className="text-2xl font-extrabold text-[#0f172a]">500+</div>
+                <div className="text-2xl font-extrabold text-[#0f172a]">250+</div>
                 <div className="text-xs font-medium text-slate-500">Projects Delivered</div>
               </div>
             </div>
@@ -521,140 +488,59 @@ export default function AboutPage() {
             <div className="space-y-16">
               {members.length > 0 ? (
                 <>
-                  {!showAllMembers ? (
-                    <div className="relative group/carousel">
-                      {members.length > visibleCount && (
-                        <>
-                          <button
-                            onClick={showPrev}
-                            className="flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-white text-slate-500 hover:text-[#0f172a] shadow-md hover:shadow-lg transition-all -left-2 sm:-left-5"
-                          >
-                            <FiChevronLeft size={20} />
-                          </button>
-                          <button
-                            onClick={showNext}
-                            className="flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-white text-slate-500 hover:text-[#0f172a] shadow-md hover:shadow-lg transition-all -right-2 sm:-right-5"
-                          >
-                            <FiChevronRight size={20} />
-                          </button>
-                        </>
-                      )}
-
-                      <div className="overflow-hidden px-2 py-4 -mx-2">
-                        <motion.div
-                          className="flex transition-transform duration-500 ease-in-out"
-                          style={{
-                            width: `${(members.length * 100) / visibleCount}%`,
-                            transform: `translateX(-${(carouselIndex * 100) / members.length}%)`,
-                          }}
-                        >
-                          {members.map((member) => (
-                            <div
-                              key={member.id}
-                              className="px-3"
-                              style={{ flex: `0 0 ${100 / members.length}%` }}
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                      {members.map((member) => (
+                        <div key={member.id} className="bg-white group flex flex-col h-full shadow-[0_2px_15px_rgb(0,0,0,0.06)] hover:shadow-[0_10px_30px_rgb(0,0,0,0.12)] transition-all duration-300">
+                          <div className="relative w-full aspect-[4/5] shrink-0">
+                            {/* Blue background acting as bottom border */}
+                            <div 
+                              className="absolute inset-0 bg-[#0f172a]"
+                              style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))' }}
                             >
-                              <div className="bg-white rounded-[1.5rem] p-8 text-center shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition duration-300 flex flex-col items-center h-full">
-                                <div className="h-28 w-28 rounded-full overflow-hidden mb-5 bg-slate-50 shrink-0">
-                                  {member.avatarUrl ? (
-                                    <img src={member.avatarUrl} alt={member.name} className="h-full w-full object-cover" />
-                                  ) : (
-                                    <div className="h-full w-full flex items-center justify-center text-slate-300"><FiUsers size={28} /></div>
-                                  )}
+                              {member.avatarUrl ? (
+                                <img 
+                                  src={member.avatarUrl} 
+                                  alt={member.name}
+                                  className="absolute top-0 left-0 w-full h-[calc(100%-4px)] object-cover grayscale-[15%] group-hover:grayscale-0 transition-all duration-500"
+                                  style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))' }}
+                                />
+                              ) : (
+                                <div 
+                                  className="absolute top-0 left-0 w-full h-[calc(100%-4px)] flex items-center justify-center bg-slate-100 text-slate-300"
+                                  style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))' }}
+                                >
+                                  <FiUsers size={40} />
                                 </div>
-                                <h4 className="text-lg font-bold text-[#0f172a]">{member.name}</h4>
-                                <p className="text-[13px] font-semibold text-[#e63946] mt-1">{member.role}</p>
-
-                                <div className="flex gap-4 mt-6 items-center justify-center min-h-[24px]">
-                                  {member.linkedinUrl && (
-                                    <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="text-[#0f172a] hover:text-blue-600 transition">
-                                      <FiLinkedin size={16} />
-                                    </a>
-                                  )}
-                                  {member.email && (
-                                    <a href={`mailto:${member.email}`} className="text-[#0f172a] hover:text-[#e63946] transition">
-                                      <FiMail size={16} />
-                                    </a>
-                                  )}
-                                </div>
-                              </div>
+                              )}
+                              {/* Red Triangle at bottom center */}
+                              <div 
+                                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-2.5 bg-[#e63946]"
+                                style={{ clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}
+                              />
                             </div>
-                          ))}
-                        </motion.div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      {(() => {
-                        const groupedByBranch = new Map<string, PublicMember[]>()
-                        const branchMetaById = new Map(
-                          branches.map((branch) => [
-                            branch.id,
-                            { name: branch.name, order: branch.order ?? Number.MAX_SAFE_INTEGER },
-                          ])
-                        )
+                          </div>
 
-                        members.forEach((member) => {
-                          if (member.branches && member.branches.length > 0) {
-                            const branchId = member.branches[0].branch.id
-                            if (!groupedByBranch.has(branchId)) groupedByBranch.set(branchId, [])
-                            groupedByBranch.get(branchId)!.push(member)
-                          }
-                        })
+                          <div className="pt-6 pb-6 px-4 text-center flex flex-col items-center flex-1 bg-white">
+                            <h4 className="text-[18px] font-extrabold text-[#0f172a] tracking-tight">{member.name}</h4>
+                            <div className="w-6 h-[2px] bg-[#e63946] my-2.5" />
+                            <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide">{member.role}</p>
 
-                        return Array.from(groupedByBranch.keys()).map((branchId) => {
-                          const branchMeta = branchMetaById.get(branchId)
-                          const branchMembers = groupedByBranch.get(branchId) || []
-
-                          return (
-                            <div key={branchId} className="space-y-6">
-                              <div className="text-left font-bold text-xl text-[#0f172a] border-b border-slate-200 pb-2">
-                                {branchMeta?.name || 'Main'} Office
-                              </div>
-
-                              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-                                {branchMembers.map((member) => (
-                                  <div key={member.id} className="bg-white rounded-[1.5rem] p-6 text-center shadow-xs hover:shadow-md transition duration-300 flex flex-col items-center h-full">
-                                    <div className="h-24 w-24 rounded-full overflow-hidden mb-4 bg-slate-50 shrink-0">
-                                      {member.avatarUrl ? (
-                                        <img src={member.avatarUrl} alt={member.name} className="h-full w-full object-cover" />
-                                      ) : (
-                                        <div className="h-full w-full flex items-center justify-center text-slate-300"><FiUsers size={24} /></div>
-                                      )}
-                                    </div>
-                                    <h4 className="text-base font-bold text-[#0f172a]">{member.name}</h4>
-                                    <p className="text-xs font-semibold text-[#e63946] mt-1">{member.role}</p>
-
-                                    <div className="flex gap-4 mt-5 items-center justify-center min-h-[20px]">
-                                      {member.linkedinUrl && (
-                                        <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="text-[#0f172a] hover:text-blue-600 transition">
-                                          <FiLinkedin size={14} />
-                                        </a>
-                                      )}
-                                      {member.email && (
-                                        <a href={`mailto:${member.email}`} className="text-[#0f172a] hover:text-[#e63946] transition">
-                                          <FiMail size={14} />
-                                        </a>
-                                      )}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
+                            <div className="flex gap-3 mt-4 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              {member.linkedinUrl && (
+                                <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-50 text-[#0f172a] hover:bg-blue-50 hover:text-blue-600 transition">
+                                  <FiLinkedin size={14} />
+                                </a>
+                              )}
+                              {member.email && (
+                                <a href={`mailto:${member.email}`} className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-50 text-[#0f172a] hover:bg-red-50 hover:text-[#e63946] transition">
+                                  <FiMail size={14} />
+                                </a>
+                              )}
                             </div>
-                          );
-                        })
-                      })()}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  )}
-
-                  <div className="mt-12 flex justify-center">
-                    <button
-                      onClick={() => setShowAllMembers(!showAllMembers)}
-                      className="inline-flex h-12 items-center justify-center rounded-lg border border-slate-200 bg-white px-8 text-sm font-semibold text-[#0f172a] shadow-sm hover:bg-slate-50 transition"
-                    >
-                      {showAllMembers ? 'Hide Full List' : 'View All Members'}
-                    </button>
-                  </div>
                 </>
               ) : (
                 <div className="text-center text-xs text-slate-400 py-12">No active leaders currently populated.</div>

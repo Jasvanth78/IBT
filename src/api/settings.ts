@@ -163,8 +163,8 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
 
       updatedAt: data?.updatedAt ?? new Date().toISOString(),
     };
-  } catch (error) {
-    console.warn('[Settings API] Error:', error);
+  } catch (error: any) {
+    console.warn('[Settings API] Warning: Could not fetch settings from backend:', error?.message || 'Connection refused');
     // Return safe defaults if fetch fails
     return {
       maintenanceMode: false,

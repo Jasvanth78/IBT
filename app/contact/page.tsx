@@ -52,35 +52,13 @@ export default async function ContactPage(_: Props) {
               <span className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#e63946]">
                 GET IN TOUCH
               </span>
-              <h1 className="mt-3 text-[36px] sm:text-[44px] lg:text-[54px] font-black tracking-tight text-[#0f172a] leading-[1.1]">
-                {heroTitle ? (
-                  heroTitle.split('\n').map((line, index, array) => {
-                    if (line.toLowerCase().includes('amazing')) {
-                      const parts = line.split(/(amazing)/i);
-                      return (
-                        <span key={line + index}>
-                          {parts.map((p, i) => p.toLowerCase() === 'amazing' ? <span key={i} className="text-[#e63946]">{p}</span> : p)}
-                          {index < array.length - 1 ? <br /> : null}
-                        </span>
-                      )
-                    }
-                    return (
-                      <span key={line + index}>
-                        {line}
-                        {index < array.length - 1 ? <br /> : null}
-                      </span>
-                    )
-                  })
-                ) : (
-                  <>
-                    Let's Build <br />
-                    Something <span className="text-[#e63946]">Amazing</span> <br />
-                    Together!
-                  </>
-                )}
+              <h1 className="mt-3 text-[36px] sm:text-[44px] lg:text-[48px] font-black tracking-tight text-[#0f172a] leading-[1.1]">
+                Let's build
+                something impactful
+                together.
               </h1>
               <p className="mt-4 text-sm text-[#475569] leading-relaxed font-medium">
-                {heroDescription ?? "Have a project in mind or want to join our programs? We'd love to hear from you. Fill out the form and our team will get back to you within 24 hours."}
+                Share your requirements with us, and our team will get back to you within 24 hours.
               </p>
             </div>
 
