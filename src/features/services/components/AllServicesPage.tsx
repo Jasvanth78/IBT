@@ -471,12 +471,17 @@ export function AllServicesPage() {
                     className="px-3 text-left"
                     style={{ flex: `0 0 ${100 / displayServices.length}%` }}
                   >
-                    <Link href={`/services/${service.slug}`} className="group block cursor-pointer">
+                    <Link 
+                      href={service.projectUrl || `/services/${service.slug}`} 
+                      target={service.projectUrl ? "_blank" : undefined}
+                      rel={service.projectUrl ? "noopener noreferrer" : undefined}
+                      className="group block cursor-pointer"
+                    >
                       <div className="overflow-hidden rounded-2xl mb-5 shadow-sm border border-slate-100 aspect-video bg-slate-50">
                         <img
                           src={resolveImageUrl(service.imageUrl)}
                           alt={service.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                         />
                       </div>
                       <h4 className="text-[16px] font-bold text-[#0f172a] mb-1 group-hover:text-blue-600 transition-colors line-clamp-1">
@@ -486,7 +491,7 @@ export function AllServicesPage() {
                         {service.tags && service.tags.length > 0 ? service.tags.join(', ') : 'Service'}
                       </p>
                       <div className="text-[13px] font-bold text-[#e63946] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        View Case Study <FiArrowRight />
+                        {service.projectUrl ? 'Visit Website' : 'View Case Study'} <FiArrowRight />
                       </div>
                     </Link>
                   </div>

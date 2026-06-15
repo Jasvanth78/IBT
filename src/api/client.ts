@@ -34,6 +34,7 @@ export type PublicService = {
   slug: string;
   description: string;
   imageUrl?: string | null;
+  projectUrl?: string | null;
   tags?: string[];
 };
 
@@ -367,6 +368,16 @@ class ApiClient {
   }): Promise<ApiResponse<null>> {
     const url = this.buildUrl('/contact/submit', this.publicPrefix);
     const response = await this.axiosInstance.post<ApiResponse<null>>(url, data);
+    return response.data;
+  }
+
+  async submitLabIdea(formData: FormData): Promise<ApiResponse<any>> {
+    const url = this.buildUrl('/lab-ideas/v1/submit', this.cmsPrefix); // It's under /api/lab-ideas/v1/submit
+    const response = await this.axiosInstance.post<ApiResponse<any>>(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   }
 }

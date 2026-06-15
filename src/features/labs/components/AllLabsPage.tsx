@@ -649,79 +649,7 @@ export function AllLabsPage() {
         </div>
       </section>
 
-      {/* =====================================================
-          6. RESEARCH PORTFOLIO
-      ===================================================== */}
-      <section className="py-12 lg:py-16 bg-white border-t border-slate-100">
-        <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <h2 className="text-[32px] md:text-[40px] font-black tracking-tight text-[#0f172a] mb-2">
-                Research Portfolio
-              </h2>
-              <p className="text-[15px] text-slate-500 font-medium">Explore our active laboratory projects.</p>
-            </div>
-            <Link href="/services" className="text-[14px] font-bold text-[#e63946] mt-4 md:mt-0 flex items-center gap-1 hover:underline">
-              View All Projects <FiArrowRight />
-            </Link>
-          </div>
-
-          <div className="relative">
-            {portfolioItems.length > visibleCount && (
-              <>
-                <button
-                  onClick={showPrev}
-                  className="absolute top-1/2 -translate-y-1/2 -left-4 lg:-left-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
-                >
-                  <FiChevronLeft />
-                </button>
-                <button
-                  onClick={showNext}
-                  className="absolute top-1/2 -translate-y-1/2 -right-4 lg:-right-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
-                >
-                  <FiChevronRight />
-                </button>
-              </>
-            )}
-
-            <div className="overflow-hidden">
-              <motion.div
-                className="flex transition-transform duration-500 ease-out py-2"
-                style={{
-                  width: `${(portfolioItems.length * 100) / visibleCount}%`,
-                  transform: `translateX(-${(carouselIndex * 100) / portfolioItems.length}%)`,
-                }}
-              >
-                {portfolioItems.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="px-3"
-                    style={{ flex: `0 0 ${100 / portfolioItems.length}%` }}
-                  >
-                    <Link
-                      href={item.slug ? `/ibt-labs/${item.slug}` : "#"}
-                      className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex gap-4 h-full hover:shadow-md transition-all duration-300 block hover:-translate-y-1"
-                    >
-                      <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-50">
-                        <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex flex-col justify-between">
-                        <div>
-                          <h4 className="text-[14px] font-bold text-[#0f172a] mb-1 leading-tight line-clamp-1">{item.title}</h4>
-                          <p className="text-[11px] text-slate-500 font-medium leading-snug line-clamp-2 mb-2">{item.desc}</p>
-                        </div>
-                        <span className="text-[10px] font-bold text-[#e63946] bg-red-50 px-2 py-0.5 rounded self-start uppercase tracking-wider">{item.tag}</span>
-                      </div>
-                    </Link>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
-
-        </div>
-      </section>
 
       {/* =====================================================
           7. OUR INNOVATION PARTNERS
@@ -746,6 +674,7 @@ export function AllLabsPage() {
       <section className="bg-white py-10 lg:py-16 relative overflow-hidden border-t border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-slate-900 rounded-3xl overflow-hidden relative shadow-2xl">
+
             {/* Abstract Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -772,12 +701,18 @@ export function AllLabsPage() {
               </div>
 
               {/* Button */}
-              <div className="text-center md:text-right z-10">
+              <div className="text-center md:text-right z-10 flex flex-col sm:flex-row items-center justify-end gap-4">
                 <Link
-                  href="/internship/apply"
+                  href="/ibt-labs/submit-idea"
                   className="inline-flex h-12 bg-white text-[#e63946] rounded-lg px-8 items-center justify-center font-bold text-[14px] hover:bg-slate-50 transition-colors shadow-xl whitespace-nowrap"
                 >
-                  Apply to Lab <FiArrowRight className="inline-block ml-2" />
+                  Submit your idea <FiArrowRight className="inline-block ml-2" />
+                </Link>
+                <Link
+                  href="/internship/apply"
+                  className="inline-flex h-12 bg-transparent border-2 border-white/20 text-white rounded-lg px-8 items-center justify-center font-bold text-[14px] hover:bg-white/10 transition-colors whitespace-nowrap"
+                >
+                  Apply to Lab
                 </Link>
               </div>
 

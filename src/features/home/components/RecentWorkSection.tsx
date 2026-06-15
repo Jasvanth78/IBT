@@ -79,11 +79,6 @@ export function RecentWorkSection() {
               {title}
             </h2>
           </div>
-          <div className="mt-4 md:mt-0">
-            <Link href="/portfolio" className="inline-flex items-center text-md font-bold text-[#e63946] hover:text-[#d62839] transition-colors">
-              View All Projects <FiArrowRight className="ml-1.5" />
-            </Link>
-          </div>
         </div>
 
         {/* Projects Grid */}

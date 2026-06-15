@@ -72,9 +72,15 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
       </div>
 
       <article className="overflow-hidden rounded-3xl border border-(--ui-border) bg-white shadow-[0_14px_36px_rgba(35,24,21,0.06)]">
-        <div className="relative aspect-[16/7] w-full bg-(--ui-surface-muted)">
+        <div className="relative aspect-[16/7] w-full bg-slate-50 flex items-center justify-center p-6 border-b border-slate-100">
           {imageSrc ? (
-            <img src={imageSrc} alt={service.title} className="h-full w-full object-cover" />
+            service.projectUrl ? (
+              <a href={service.projectUrl} target="_blank" rel="noopener noreferrer" className="block max-h-full max-w-full">
+                <img src={imageSrc} alt={service.title} className="max-h-full max-w-full object-contain hover:opacity-90 transition-opacity" />
+              </a>
+            ) : (
+              <img src={imageSrc} alt={service.title} className="max-h-full max-w-full object-contain" />
+            )
           ) : (
             <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-(--ui-muted)">
               No service cover image

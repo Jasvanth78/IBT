@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
@@ -27,6 +27,8 @@ import {
   FiEye,
   FiSend,
   FiBookOpen,
+  FiTwitter,
+  FiFacebook,
 } from 'react-icons/fi'
 
 import {
@@ -60,9 +62,19 @@ export default function AboutPage() {
   const [clients, setClients] = useState<PublicClient[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const sliderRef = useRef<HTMLDivElement>(null)
 
+  const scrollLeft = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: -320, behavior: 'smooth' })
+    }
+  }
 
-
+  const scrollRight = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: 320, behavior: 'smooth' })
+    }
+  }
   // Who Are We dynamic data
   const whoTitle = s.aboutWhoTitle || 'Who Are We?'
   const whoDescription = s.aboutWhoDescription || 'We are a digital and branding company that believes in the power of creative strategy and along with great design.'
@@ -488,59 +500,69 @@ export default function AboutPage() {
             <div className="space-y-16">
               {members.length > 0 ? (
                 <>
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                      {members.map((member) => (
-                        <div key={member.id} className="bg-white group flex flex-col h-full shadow-[0_2px_15px_rgb(0,0,0,0.06)] hover:shadow-[0_10px_30px_rgb(0,0,0,0.12)] transition-all duration-300">
-                          <div className="relative w-full aspect-[4/5] shrink-0">
-                            {/* Blue background acting as bottom border */}
-                            <div 
-                              className="absolute inset-0 bg-[#0f172a]"
-                              style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))' }}
-                            >
+                    <div className="relative group/slider flex items-center">
+                      <button
+                        onClick={scrollLeft}
+                        className="absolute -left-4 sm:-left-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-slate-600 hover:text-[#e63946] transition-colors focus:outline-none"
+                      >
+                        <FiChevronLeft size={20} />
+                      </button>
+
+                      <div 
+                        ref={sliderRef}
+                        className="flex overflow-x-auto gap-6 pb-8 pt-4 px-2 snap-x snap-mandatory hide-scrollbar w-full"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                      >
+                        {members.map((member) => (
+                          <div 
+                            key={member.id} 
+                            className="snap-start shrink-0 w-[260px] sm:w-[280px] bg-white rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 flex flex-col items-center p-6"
+                          >
+                            <div className="w-24 h-24 rounded-full overflow-hidden mb-5 border-4 border-slate-50 shadow-sm shrink-0">
                               {member.avatarUrl ? (
                                 <img 
                                   src={member.avatarUrl} 
                                   alt={member.name}
-                                  className="absolute top-0 left-0 w-full h-[calc(100%-4px)] object-cover grayscale-[15%] group-hover:grayscale-0 transition-all duration-500"
-                                  style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))' }}
+                                  className="w-full h-full object-cover"
                                 />
                               ) : (
-                                <div 
-                                  className="absolute top-0 left-0 w-full h-[calc(100%-4px)] flex items-center justify-center bg-slate-100 text-slate-300"
-                                  style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))' }}
-                                >
-                                  <FiUsers size={40} />
+                                <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                  <FiUsers size={32} />
                                 </div>
                               )}
-                              {/* Red Triangle at bottom center */}
-                              <div 
-                                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-2.5 bg-[#e63946]"
-                                style={{ clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}
-                              />
+                            </div>
+
+                            <h4 className="text-[17px] font-bold text-[#0f172a] text-center tracking-tight leading-snug">{member.name}</h4>
+                            <p className="text-[13px] font-semibold text-[#e63946] text-center mt-1.5 mb-6">{member.role}</p>
+
+                            <div className="flex gap-4 mt-auto items-center justify-center text-slate-500">
+                              {member.linkedinUrl ? (
+                                <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="hover:text-[#0a66c2] transition">
+                                  <FiLinkedin size={16} />
+                                </a>
+                              ) : (
+                                <span className="hover:text-[#0a66c2] transition cursor-pointer"><FiLinkedin size={16} /></span>
+                              )}
+                              
+                              <span className="hover:text-[#1da1f2] transition cursor-pointer"><FiTwitter size={16} /></span>
+                              <span className="hover:text-[#1877f2] transition cursor-pointer"><FiFacebook size={16} /></span>
                             </div>
                           </div>
+                        ))}
+                      </div>
 
-                          <div className="pt-6 pb-6 px-4 text-center flex flex-col items-center flex-1 bg-white">
-                            <h4 className="text-[18px] font-extrabold text-[#0f172a] tracking-tight">{member.name}</h4>
-                            <div className="w-6 h-[2px] bg-[#e63946] my-2.5" />
-                            <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide">{member.role}</p>
-
-                            <div className="flex gap-3 mt-4 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              {member.linkedinUrl && (
-                                <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-50 text-[#0f172a] hover:bg-blue-50 hover:text-blue-600 transition">
-                                  <FiLinkedin size={14} />
-                                </a>
-                              )}
-                              {member.email && (
-                                <a href={`mailto:${member.email}`} className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-50 text-[#0f172a] hover:bg-red-50 hover:text-[#e63946] transition">
-                                  <FiMail size={14} />
-                                </a>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                      <button
+                        onClick={scrollRight}
+                        className="absolute -right-4 sm:-right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-slate-600 hover:text-[#e63946] transition-colors focus:outline-none"
+                      >
+                        <FiChevronRight size={20} />
+                      </button>
                     </div>
+                    <style dangerouslySetInnerHTML={{__html: `
+                      .hide-scrollbar::-webkit-scrollbar {
+                        display: none;
+                      }
+                    `}} />
                 </>
               ) : (
                 <div className="text-center text-xs text-slate-400 py-12">No active leaders currently populated.</div>

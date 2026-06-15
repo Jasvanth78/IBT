@@ -453,10 +453,10 @@ export default async function InternshipPage() {
       {/* =====================================================
           4. EXPLORE INTERNSHIP ROLES
       ===================================================== */}
-      <section id="programs" className="py-16 lg:py-24 bg-[#f8faff]">
+      <section id="programs" className="py-10 lg:py-16 bg-[#f8faff]">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
             <div>
               <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
                 PROGRAMS WE OFFER
@@ -496,10 +496,10 @@ export default async function InternshipPage() {
       {/* =====================================================
           5. MORE THAN JUST AN INTERNSHIP
       ===================================================== */}
-      <section className="py-16 lg:py-24 bg-white border-t border-slate-100">
+      <section className="py-10 lg:py-16 bg-white border-t border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
-          <div className="mb-14">
+          <div className="mb-8">
             <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
               WHY INTERN WITH IBACUS TECH
             </h3>
