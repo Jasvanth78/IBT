@@ -202,10 +202,10 @@ export function AllServicesPage() {
   const displayServices = services.length > 0 ? services : fallbackServices;
 
   const showPrev = () => {
-    setCarouselIndex((prev) => (prev <= 0 ? Math.max(0, displayServices.length - visibleCount) : prev - 1));
+    setCarouselIndex((prev) => Math.max(0, prev - 1));
   };
   const showNext = () => {
-    setCarouselIndex((prev) => (prev >= displayServices.length - visibleCount ? 0 : prev + 1));
+    setCarouselIndex((prev) => Math.min(displayServices.length - visibleCount, prev + 1));
   };
 
   /* =========================================================
@@ -438,19 +438,25 @@ export function AllServicesPage() {
             </p>
           </div>
 
-          <div className="relative">
+          <div className="relative px-6 lg:px-12">
             {/* Arrows */}
             {displayServices.length > visibleCount && (
               <>
                 <button
                   onClick={showPrev}
-                  className="absolute top-[40%] -translate-y-1/2 -left-4 lg:-left-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
+                  disabled={carouselIndex <= 0}
+                  className={`absolute top-[40%] -translate-y-1/2 left-0 lg:-left-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${
+                    carouselIndex <= 0 ? 'opacity-30 cursor-not-allowed text-slate-300' : 'text-slate-600 hover:bg-slate-50'
+                  }`}
                 >
                   <FiChevronLeft />
                 </button>
                 <button
                   onClick={showNext}
-                  className="absolute top-[40%] -translate-y-1/2 -right-4 lg:-right-6 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 shadow-md hover:bg-slate-50 transition-colors"
+                  disabled={carouselIndex >= displayServices.length - visibleCount}
+                  className={`absolute top-[40%] -translate-y-1/2 right-0 lg:-right-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${
+                    carouselIndex >= displayServices.length - visibleCount ? 'opacity-30 cursor-not-allowed text-slate-300' : 'text-slate-600 hover:bg-slate-50'
+                  }`}
                 >
                   <FiChevronRight />
                 </button>
