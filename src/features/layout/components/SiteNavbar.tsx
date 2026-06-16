@@ -113,10 +113,10 @@ export function SiteNavbar() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav-drawer"
             onClick={() => setMobileOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-[#1d3557] lg:hidden"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-xl text-[#1d3557] lg:hidden"
           >
             <span className="sr-only">Menu</span>
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg viewBox="0 0 24 24" className="h-7 w-7 sm:h-8 sm:w-8" fill="none" stroke="currentColor" strokeWidth="2">
               {mobileOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
               ) : (
@@ -151,10 +151,10 @@ export function SiteNavbar() {
           <button
             type="button"
             onClick={() => setMobileOpen(false)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-(--ui-border) text-(--ui-text) transition-colors hover:bg-(--ui-surface-muted)"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-(--ui-border) text-(--ui-text) transition-colors hover:bg-(--ui-surface-muted)"
             aria-label="Close menu"
           >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
@@ -170,7 +170,7 @@ export function SiteNavbar() {
                   key={item.href}
                   href={item.href}
                   className={[
-                    'rounded-xl px-4 py-3 text-sm font-medium transition-colors',
+                    'rounded-xl px-4 py-3 text-base sm:text-lg font-semibold transition-colors',
                     isActive
                       ? 'bg-(--ui-primary) text-white'
                       : 'text-(--ui-text) hover:bg-(--ui-surface-muted)',

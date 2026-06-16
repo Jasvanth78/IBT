@@ -159,30 +159,21 @@ export function SiteFooter() {
 
             {/* Social Icons */}
             <div className="mt-6 flex items-center gap-3">
-              {socials.length > 0 ? (
-                socials.map((s) => {
-                  const Icon = getSocialIcon(s.logoUrl, s.platform);
-                  return (
-                    <a
-                      key={s.id}
-                      href={s.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={s.platform}
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 !text-white transition-all duration-300 hover:bg-red-500 hover:text-white"
-                    >
-                      <Icon className="text-sm" />
-                    </a>
-                  );
-                })
-              ) : (
-                <>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white"><FaInstagram className="text-sm" /></span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white"><FaFacebookF className="text-sm" /></span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white"><FaLinkedinIn className="text-sm" /></span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white"><FaYoutube className="text-sm" /></span>
-                </>
-              )}
+              {socials.map((s) => {
+                const Icon = getSocialIcon(s.logoUrl, s.platform);
+                return (
+                  <a
+                    key={s.id}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.platform}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 !text-white transition-all duration-300 hover:bg-red-500 hover:text-white"
+                  >
+                    <Icon className="text-sm" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
