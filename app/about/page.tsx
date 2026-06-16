@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
@@ -63,6 +63,22 @@ export default function AboutPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const sliderRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    if (sliderRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [checkScroll, members]);
 
   const scrollLeft = () => {
     if (sliderRef.current) {
@@ -227,7 +243,7 @@ export default function AboutPage() {
           </div>
 
           {/* COUNTER GRID ROW RIGHT UNDER HERO */}
-          <div className="mt-16 grid grid-cols-2 gap-6 border-t border-slate-100 pt-12 sm:grid-cols-4">
+          <div className="mt-16 grid grid-cols-2 gap-6 border-t border-slate-100 pt-12 sm:grid-cols-2 lg:grid-cols-4">
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-rose-50 text-[#e63946]">
                 <FiAward size={22} />
@@ -412,7 +428,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="lg:col-span-8 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:pl-6">
+            <div className="lg:col-span-8 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:pl-6">
               {missionCards.map((card: any, idx: number) => {
                 const icons = [
                   <IoRocketOutline size={26} />,
@@ -491,7 +507,7 @@ export default function AboutPage() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-5">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="animate-pulse h-64 rounded-[1.5rem] bg-slate-200" />
               ))}
@@ -500,52 +516,63 @@ export default function AboutPage() {
             <div>
               {members.length > 0 ? (
                 <>
-                  <div className="relative group/slider flex items-center">
-                    <button
-                      onClick={scrollLeft}
-                      className="absolute -left-4 sm:-left-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-slate-600 hover:text-[#e63946] transition-colors focus:outline-none"
-                    >
-                      <FiChevronLeft size={20} />
-                    </button>
+                  <div className="px-4 sm:px-12 w-full">
+                    <div className="relative group/slider flex items-center w-full">
+                      <button
+                        onClick={scrollLeft}
+                        disabled={!canScrollLeft}
+                        className={`absolute -left-4 sm:-left-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${
+                          !canScrollLeft
+                            ? 'opacity-30 cursor-not-allowed text-slate-300'
+                            : 'text-slate-600 hover:text-[#e63946]'
+                        }`}
+                      >
+                        <FiChevronLeft size={20} />
+                      </button>
 
-                    <div
-                      ref={sliderRef}
-                      className="flex overflow-x-auto gap-6 pb-4 pt-4 px-2 snap-x snap-mandatory hide-scrollbar w-full"
-                      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                    >
-                      {members.map((member) => (
-                        <div
-                          key={member.id}
-                          className="snap-start shrink-0 w-[260px] sm:w-[280px] bg-white rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 flex flex-col items-center p-6"
-                        >
-                          <div className="w-24 h-24 rounded-full overflow-hidden mb-5 border-4 border-slate-50 shadow-sm shrink-0">
-                            {member.avatarUrl ? (
-                              <img
-                                src={member.avatarUrl}
-                                alt={member.name}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
-                                <FiUsers size={32} />
-                              </div>
-                            )}
+                      <div
+                        ref={sliderRef}
+                        onScroll={checkScroll}
+                        className="flex overflow-x-auto gap-6 pb-4 pt-4 px-2 snap-x snap-mandatory hide-scrollbar w-full"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                      >
+                        {members.map((member) => (
+                          <div
+                            key={member.id}
+                            className="snap-start shrink-0 w-[220px] sm:w-[240px] bg-white rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 flex flex-col items-center p-6"
+                          >
+                            <div className="w-24 h-24 rounded-full overflow-hidden mb-5 border-4 border-slate-50 shadow-sm shrink-0">
+                              {member.avatarUrl ? (
+                                <img
+                                  src={member.avatarUrl}
+                                  alt={member.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                  <FiUsers size={32} />
+                                </div>
+                              )}
+                            </div>
+
+                            <h4 className="text-[17px] font-bold text-[#0f172a] text-center tracking-tight leading-snug">{member.name}</h4>
+                            <p className="text-[13px] font-semibold text-[#e63946] text-center mt-1.5">{member.role}</p>
                           </div>
+                        ))}
+                      </div>
 
-                          <h4 className="text-[17px] font-bold text-[#0f172a] text-center tracking-tight leading-snug">{member.name}</h4>
-                          <p className="text-[13px] font-semibold text-[#e63946] text-center mt-1.5">{member.role}</p>
-
-
-                        </div>
-                      ))}
+                      <button
+                        onClick={scrollRight}
+                        disabled={!canScrollRight}
+                        className={`absolute -right-4 sm:-right-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${
+                          !canScrollRight
+                            ? 'opacity-30 cursor-not-allowed text-slate-300'
+                            : 'text-slate-600 hover:text-[#e63946]'
+                        }`}
+                      >
+                        <FiChevronRight size={20} />
+                      </button>
                     </div>
-
-                    <button
-                      onClick={scrollRight}
-                      className="absolute -right-4 sm:-right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-slate-600 hover:text-[#e63946] transition-colors focus:outline-none"
-                    >
-                      <FiChevronRight size={20} />
-                    </button>
                   </div>
                   <style dangerouslySetInnerHTML={{
                     __html: `

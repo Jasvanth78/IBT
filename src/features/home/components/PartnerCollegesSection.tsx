@@ -140,14 +140,12 @@ export function PartnerCollegesSection() {
             </h2>
 
           </div>
-          <div className="shrink-0 flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
-          </div>
+
         </div>
 
         {/* Marquee Wrapper */}
         <div className="w-full relative rounded-3xl bg-slate-50/50 p-3 sm:p-6 border border-slate-100">
-          <CollegeInfiniteMarquee items={displayColleges} direction="right" speed={35} />
+          <CollegeInfiniteMarquee items={displayColleges} direction="right" speed={40} />
         </div>
 
       </div>

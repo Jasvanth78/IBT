@@ -389,7 +389,7 @@ export function AllLabsPage() {
       ===================================================== */}
       <section className="relative z-20 pb-16">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#0f172a] rounded-[2rem] shadow-2xl py-10 px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-700/50">
+          <div className="bg-[#0f172a] rounded-[2rem] shadow-2xl py-10 px-6 lg:px-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-700/50">
 
             <div className="flex flex-col md:flex-row items-center gap-4 justify-center">
               <FaRocket className="text-white text-3xl opacity-80" />

@@ -28,10 +28,11 @@ const footerLinks = [
   {
     title: 'Company',
     items: [
+      { label: 'Home', href: '/' },
       { label: 'About Us', href: '/about' },
 
       { label: 'Contact Us', href: '/contact' },
-      { label: 'Service', href: '/services' },
+      { label: 'Services', href: '/services' },
       { label: 'Internship', href: '/internship' }
 
     ],
@@ -268,8 +269,8 @@ export function SiteFooter() {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs !text-white">
+        <div className="mx-auto max-w-7xl px-6 pt-5 pb-24 md:pb-5 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs !text-white text-center sm:text-left">
             © {new Date().getFullYear()} I BACUS TECH SOLUTION. All rights reserved.
           </p>
 

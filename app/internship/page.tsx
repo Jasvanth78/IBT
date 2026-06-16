@@ -305,7 +305,7 @@ export default async function InternshipPage() {
       ===================================================== */}
       <section className="relative z-20 pb-16 lg:pb-20">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-100 py-8 px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-100 py-8 px-6 lg:px-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
 
             <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-start">
               <div className="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
@@ -495,7 +495,7 @@ export default async function InternshipPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6">
 
             <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
               <div className="w-10 h-10 rounded-lg bg-red-100 text-red-500 flex items-center justify-center mb-4">

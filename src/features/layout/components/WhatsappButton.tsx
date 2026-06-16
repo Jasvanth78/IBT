@@ -51,7 +51,7 @@ export function WhatsappButton() {
   const cleanNumber = phoneNumber ? phoneNumber.replace(/\D/g, '') : ''
 
   return (
-    <div className="fixed bottom-6 right-6 z-[999999] flex flex-col items-center gap-3">
+    <div className="whatsapp-btn-wrapper fixed bottom-6 right-6 z-[999999] flex flex-col items-center gap-3 transition-opacity duration-300">
       <AnimatePresence>
         {showScrollTop && (
           <motion.button
@@ -61,7 +61,7 @@ export function WhatsappButton() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={scrollToTop}
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-800 text-white shadow-xl transition-colors hover:bg-slate-700"
+            className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-slate-800 text-white shadow-xl transition-colors hover:bg-slate-700"
             aria-label="Scroll to top"
           >
             <FiArrowUp size={20} />
@@ -80,10 +80,10 @@ export function WhatsappButton() {
             exit={{ scale: 0, opacity: 0 }}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.96 }}
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition-all hover:bg-[#128C7E] active:scale-95"
+            className="flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition-all hover:bg-[#128C7E] active:scale-95"
             aria-label="Contact us on WhatsApp"
           >
-            <FaWhatsapp className="text-3xl" />
+            <FaWhatsapp className="text-2xl md:text-3xl" />
             <span className="absolute -top-1 -right-1 flex h-4 w-4">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
               <span className="relative inline-flex rounded-full h-4 w-4 bg-white/20"></span>

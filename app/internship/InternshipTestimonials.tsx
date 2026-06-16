@@ -120,7 +120,7 @@ export function InternshipTestimonials({
 
         {/* Cards Grid */}
         <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-500 ease-out ${slideClass}`}
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500 ease-out ${slideClass}`}
         >
           {visibleTestimonials.map((testimonial, idx) => (
             <div

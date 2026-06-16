@@ -32,7 +32,7 @@ export function LandingPage() {
               <h1 className="text-[24px] sm:text-[28px] lg:text-[40px] font-extrabold leading-[1.1] text-[#1d3557] tracking-tight mb-6">
                 Building Intelligent <br />
                 <span className="text-[#e63946] whitespace-nowrap">
-                  Software for a Digital Future.
+                  Software for a Digital Future
                 </span>
               </h1>
               <p className="text-base sm:text-lg text-slate-500 mb-8 max-w-[480px] leading-relaxed font-medium">

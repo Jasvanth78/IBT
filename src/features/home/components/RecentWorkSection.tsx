@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { FiArrowRight, FiArrowLeft } from 'react-icons/fi';
 import Link from 'next/link';
@@ -45,6 +45,8 @@ const fallbackProjects = [
 export function RecentWorkSection() {
   const { settings, loading } = useSocketSettings();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const title = settings?.homeRecentWorkTitle || 'Some Of Our Recent Work';
   const badge = settings?.homeRecentWorkBadge || 'FEATURED PROJECTS';
@@ -66,6 +68,20 @@ export function RecentWorkSection() {
   if (loading && projects === fallbackProjects) {
     return null; // Avoid flashing fallback if real data is loading
   }
+
+  const checkScroll = useCallback(() => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [checkScroll, projects.length]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -97,7 +113,12 @@ export function RecentWorkSection() {
           {/* Slider Controls */}
           <button 
             onClick={() => scroll('left')}
-            className="absolute left-0 md:left-2 top-[calc(50%-24px)] -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#0f172a] hover:text-white hover:border-[#0f172a] transition-all shadow-xl z-20 opacity-90 hover:opacity-100"
+            disabled={!canScrollLeft}
+            className={`absolute left-0 md:left-2 top-[calc(50%-24px)] -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center transition-all shadow-xl z-20 ${
+              !canScrollLeft 
+                ? 'opacity-30 cursor-not-allowed text-slate-300' 
+                : 'text-slate-600 hover:bg-[#0f172a] hover:text-white hover:border-[#0f172a] opacity-90 hover:opacity-100'
+            }`}
             aria-label="Previous slide"
           >
             <FiArrowLeft size={20} />
@@ -105,7 +126,12 @@ export function RecentWorkSection() {
           
           <button 
             onClick={() => scroll('right')}
-            className="absolute right-0 md:right-2 top-[calc(50%-24px)] -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#e63946] hover:text-white hover:border-[#e63946] transition-all shadow-xl z-20 opacity-90 hover:opacity-100"
+            disabled={!canScrollRight}
+            className={`absolute right-0 md:right-2 top-[calc(50%-24px)] -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center transition-all shadow-xl z-20 ${
+              !canScrollRight 
+                ? 'opacity-30 cursor-not-allowed text-slate-300' 
+                : 'text-slate-600 hover:bg-[#e63946] hover:text-white hover:border-[#e63946] opacity-90 hover:opacity-100'
+            }`}
             aria-label="Next slide"
           >
             <FiArrowRight size={20} />
@@ -113,6 +139,7 @@ export function RecentWorkSection() {
 
           <div 
             ref={scrollRef}
+            onScroll={checkScroll}
             className="flex overflow-x-auto gap-6 snap-x snap-mandatory pb-4 hide-scrollbar"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >

@@ -159,7 +159,7 @@ export function TestimonialsSection() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4 }}
-                className="grid gap-6 md:grid-cols-3"
+                className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
               >
                 {displayTestimonials.map((item, index) => (
                   <div

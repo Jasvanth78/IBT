@@ -37,12 +37,15 @@ export function SiteNavbar() {
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('mobile-nav-open');
     } else {
       document.body.style.overflow = '';
+      document.body.classList.remove('mobile-nav-open');
     }
 
     return () => {
       document.body.style.overflow = '';
+      document.body.classList.remove('mobile-nav-open');
     };
   }, [mobileOpen]);
 
@@ -72,7 +75,7 @@ export function SiteNavbar() {
             />
           </Link>
 
-          <nav className="hidden items-center gap-2 md:flex">
+          <nav className="hidden items-center gap-2 lg:flex">
             {navItems.map((item) => {
               // Avoid hydration mismatch by waiting for client mount to set active state
               const isActive = mounted && pathname === item.href;
@@ -94,7 +97,7 @@ export function SiteNavbar() {
             })}
           </nav>
 
-          <div className="hidden items-center gap-4 md:flex">
+          <div className="hidden items-center gap-4 lg:flex">
             <SiteButton
               href="/contact"
               className="bg-[#e63946] hover:bg-[#c1121f] text-white rounded-md px-6 py-2.5 text-[14px] font-bold transition-all shadow-md"
@@ -110,7 +113,7 @@ export function SiteNavbar() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav-drawer"
             onClick={() => setMobileOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-[#1d3557] md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-[#1d3557] lg:hidden"
           >
             <span className="sr-only">Menu</span>
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -128,7 +131,7 @@ export function SiteNavbar() {
         aria-hidden={!mobileOpen}
         onClick={() => setMobileOpen(false)}
         className={[
-          'fixed inset-0 z-60 bg-slate-900/35 backdrop-blur-[2px] transition-opacity duration-300 md:hidden',
+          'fixed inset-0 z-60 bg-slate-900/35 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden',
           mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
         ].join(' ')}
       />
@@ -139,12 +142,12 @@ export function SiteNavbar() {
         aria-modal="true"
         aria-hidden={!mobileOpen}
         className={[
-          'fixed inset-y-0 right-0 z-70 flex h-screen w-[86vw] max-w-sm flex-col overflow-y-auto border-l border-(--ui-border) bg-white shadow-[-24px_0_50px_rgba(35,24,21,0.15)] transition-transform duration-300 ease-out md:hidden',
+          'fixed inset-y-0 right-0 z-70 flex h-[100dvh] w-[86vw] max-w-sm flex-col overflow-y-auto border-l border-(--ui-border) bg-white shadow-[-24px_0_50px_rgba(35,24,21,0.15)] transition-transform duration-300 ease-out lg:hidden',
           mobileOpen ? 'translate-x-0 pointer-events-auto' : 'translate-x-full pointer-events-none',
         ].join(' ')}
       >
         <div className="flex items-center justify-between border-b border-(--ui-border) px-4 py-4">
-          <Image src="/logo.png" alt="IBT Website" width={150} height={37} className="block h-7 w-auto object-contain" />
+          <Image src="/logo.png" alt="IBT Website" width={180} height={50} className="block h-10 w-auto object-contain" />
           <button
             type="button"
             onClick={() => setMobileOpen(false)}
@@ -179,9 +182,9 @@ export function SiteNavbar() {
             })}
           </div>
 
-          <div className="sticky bottom-0 mt-auto -mx-4 border-t border-(--ui-border) bg-white px-4 pb-4 pt-4">
+          <div className="sticky bottom-0 mt-auto -mx-4 border-t border-(--ui-border) bg-white px-4 pb-8 pt-4 sm:pb-4">
             <SiteButton href="/contact" variant="primary" size="md" fullWidth>
-              Contact Us
+              Get In Touch
             </SiteButton>
           </div>
         </nav>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { FiSearch, FiFileText, FiLayout, FiCode, FiCheckSquare, FiSend, FiLifeBuoy, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
@@ -70,31 +71,82 @@ const steps = [
 ];
 
 export function HowWeWorkSection() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [checkScroll]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { current } = scrollRef;
+      const scrollAmount = current.clientWidth / 2; // scroll half the container
+      current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="bg-white py-12 lg:py-16 overflow-hidden border-t border-slate-100">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
-        <div className="mb-16">
-          <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
-            OUR PROCESS
-          </h3>
-          <h2 className="font-black tracking-tight text-[#0f172a]">
-            How We Work
-          </h2>
+        <div className="mb-12 md:mb-16 flex flex-row items-end justify-between gap-4">
+          <div>
+            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-2 md:mb-3">
+              OUR PROCESS
+            </h3>
+            <h2 className="font-black tracking-tight text-[#0f172a] text-2xl md:text-4xl">
+              How We Work
+            </h2>
+          </div>
+          
+          {/* Navigation Buttons (Moved Above Content) */}
+          <div className="flex items-center gap-2 xl:hidden shrink-0 pb-1">
+            <button 
+              onClick={() => scroll('left')}
+              disabled={!canScrollLeft}
+              className={`w-10 h-10 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center transition-all ${
+                !canScrollLeft 
+                  ? 'opacity-30 cursor-not-allowed text-slate-300' 
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <FiChevronLeft size={20} />
+            </button>
+            <button 
+              onClick={() => scroll('right')}
+              disabled={!canScrollRight}
+              className={`w-10 h-10 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center transition-all ${
+                !canScrollRight 
+                  ? 'opacity-30 cursor-not-allowed text-slate-300' 
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <FiChevronRight size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Timeline Carousel Area */}
         <div className="relative">
-          {/* Navigation Buttons */}
-          <button className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center text-slate-400 hover:text-slate-800 hidden md:flex  lg:hidden">
-            <FiChevronLeft size={20} />
-          </button>
-          <button className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-10 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center text-slate-400 hover:text-slate-800 hidden md:flex lg:hidden">
-            <FiChevronRight size={20} />
-          </button>
 
-          <div className="overflow-x-auto pb-8 hide-scrollbar">
+          <div 
+            ref={scrollRef}
+            onScroll={checkScroll}
+            className="overflow-x-auto pb-8 hide-scrollbar snap-x snap-mandatory"
+          >
             <div className="flex min-w-max xl:grid xl:grid-cols-7 gap-6 px-4 md:px-0">
               {/* Connecting Line (Desktop only) */}
               <div className="hidden xl:block absolute top-[32px] left-[7%] right-[7%] h-[2px] border-t-2 border-dashed border-slate-200 -z-0"></div>
@@ -106,7 +158,7 @@ export function HowWeWorkSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="w-[200px] xl:w-auto flex flex-col relative z-10"
+                  className="w-[200px] xl:w-auto flex flex-col relative z-10 snap-start shrink-0"
                 >
                   {/* Icon Node */}
                   <div className="mb-6 flex justify-start xl:justify-center">

@@ -222,3 +222,9 @@ label {
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
 }
+
+/* Hide WhatsApp and scroll buttons when mobile nav is open */
+body.mobile-nav-open .whatsapp-btn-wrapper {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
