@@ -237,31 +237,18 @@ export default async function InternshipPage() {
               <div className="inline-flex items-center gap-2 mb-6">
                 <div className="w-2 h-2 rounded-full bg-[#e63946]" />
                 <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500">
-                  {settings.internshipHeroTitle || "INTERNSHIP PROGRAM"}
+                  INTERNSHIP PROGRAM
                 </h3>
               </div>
 
-              <h1 className="text-[44px] sm:text-[56px] lg:text-[64px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
-                {settings.internshipHeroSubtitle ? (
-                  settings.internshipHeroSubtitle
-                ) : (
-                  <>
-                    Learn by Building<br />
-                    <span className="text-[#e63946]">Real Products</span>
-                  </>
-                )}
+              <h1 className="text-[28px] sm:text-[34px] lg:text-[40px] font-black text-[#0f172a] leading-[1.1] tracking-tight mb-4">
+                Learn by Building<br />
+                <span className="text-[#e63946]">Real Products</span>
               </h1>
 
-              {settings.internshipHeroDescription ? (
-                <div
-                  className="text-[16px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md html-content"
-                  dangerouslySetInnerHTML={{ __html: settings.internshipHeroDescription }}
-                />
-              ) : (
-                <p className="text-[16px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
-                  Our internship program is designed to give you real-world experience, mentorship and the skills to thrive in your career.
-                </p>
-              )}
+              <p className="text-[14px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
+                Our internship program is designed to give you real-world experience, mentorship and the skills to thrive in your career.
+              </p>
 
               <div className="flex flex-wrap items-center gap-4">
                 <Link

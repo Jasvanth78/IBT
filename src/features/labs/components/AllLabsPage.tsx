@@ -320,7 +320,7 @@ export function AllLabsPage() {
             <div className="relative z-10 max-w-xl">
 
 
-              <h1 className="text-[44px] sm:text-[56px] lg:text-[64px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
+              <h1 className="text-[24px] sm:text-[28px] lg:text-[40px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
                 Precision-led<br />
                 <span className="text-[#e63946]">Future Engineering</span>
               </h1>
@@ -708,12 +708,7 @@ export function AllLabsPage() {
                 >
                   Submit your idea <FiArrowRight className="inline-block ml-2" />
                 </Link>
-                <Link
-                  href="/internship/apply"
-                  className="inline-flex h-12 bg-transparent border-2 border-white/20 text-white rounded-lg px-8 items-center justify-center font-bold text-[14px] hover:bg-white/10 transition-colors whitespace-nowrap"
-                >
-                  Apply to Lab
-                </Link>
+
               </div>
 
             </div>

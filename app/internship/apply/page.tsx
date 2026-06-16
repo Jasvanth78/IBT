@@ -49,7 +49,11 @@ export default function InternshipApplyPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    let finalValue = value;
+    if (name === 'phone') {
+      finalValue = value.replace(/[^\d+]/g, '');
+    }
+    setFormData(prev => ({ ...prev, [name]: finalValue }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -331,7 +335,7 @@ export default function InternshipApplyPage() {
 
                       {/* Full Name */}
                       <div>
-                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Full Name</label>
+                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Full Name <span className="text-red-500 ml-1">*</span></label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                             <FiUser size={16} />
@@ -350,7 +354,7 @@ export default function InternshipApplyPage() {
 
                       {/* Email Address */}
                       <div>
-                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Email Address</label>
+                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Email Address <span className="text-red-500 ml-1">*</span></label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                             <FiMail size={16} />
@@ -369,7 +373,7 @@ export default function InternshipApplyPage() {
 
                       {/* Phone Number */}
                       <div>
-                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Phone Number</label>
+                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Phone Number <span className="text-red-500 ml-1">*</span></label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                             <FiPhone size={16} />
@@ -380,6 +384,7 @@ export default function InternshipApplyPage() {
                             value={formData.phone}
                             onChange={handleInputChange}
                             required
+                            maxLength={12}
                             placeholder="+91 98765 43210"
                             className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-white text-[14px] text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#e63946] transition-all shadow-sm"
                           />
@@ -388,7 +393,7 @@ export default function InternshipApplyPage() {
 
                       {/* Applying For */}
                       <div>
-                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Applying For</label>
+                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Applying For <span className="text-red-500 ml-1">*</span></label>
                         <div className="relative">
                           <select
                             name="applicationType"
@@ -408,7 +413,7 @@ export default function InternshipApplyPage() {
 
                       {/* Role / Interest */}
                       <div>
-                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Role / Interest</label>
+                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Role / Interest <span className="text-red-500 ml-1">*</span></label>
                         <div className="relative">
                           <select
                             name="jobType"
@@ -434,7 +439,7 @@ export default function InternshipApplyPage() {
 
                       {/* Key Technical Skills */}
                       <div>
-                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Key Technical Skills</label>
+                        <label className="block text-[13px] font-bold text-slate-700 mb-2">Key Technical Skills <span className="text-red-500 ml-1">*</span></label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                             <FiCode size={16} />
@@ -460,12 +465,16 @@ export default function InternshipApplyPage() {
                     <div className="h-1 w-8 bg-[#e63946] rounded-full mb-8"></div>
 
                     <div>
-                      <label className="block text-[13px] font-bold text-slate-700 mb-2">Cover Letter / About You</label>
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="block text-[13px] font-bold text-slate-700">Cover Letter / About You <span className="text-red-500 ml-1">*</span></label>
+                        <span className="text-[11px] font-medium text-slate-400">{formData.about.length}/500</span>
+                      </div>
                       <textarea
                         name="about"
                         value={formData.about}
                         onChange={handleInputChange}
                         required
+                        maxLength={500}
                         rows={4}
                         placeholder="Briefly tell us why you'd be a great fit for this role..."
                         className="w-full p-4 rounded-xl border border-slate-200 bg-white text-[14px] text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#e63946] transition-all shadow-sm resize-none"

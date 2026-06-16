@@ -213,12 +213,6 @@ export function IdeaSubmissionForm() {
           )}
         </div>
 
-        <div className="relative flex justify-center py-4">
-          <div className="w-10 h-10 bg-white border border-slate-100 rounded-full flex items-center justify-center text-slate-400 shadow-sm z-10">
-            <FiArrowDown />
-          </div>
-          <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-100" />
-        </div>
 
         <div className="space-y-2">
           <label className="block text-sm font-bold text-slate-800">Idea title <span className="text-red-500">*</span></label>

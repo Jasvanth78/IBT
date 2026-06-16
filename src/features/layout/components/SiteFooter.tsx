@@ -22,6 +22,7 @@ import {
 import { useEffect, useState } from 'react';
 import { apiClient, type PublicContact } from '@/src/api/client';
 import { resolveImageUrl } from '@/src/utils/image';
+import { formatAddress } from '@/src/utils/address';
 
 const footerLinks = [
   {
@@ -29,7 +30,9 @@ const footerLinks = [
     items: [
       { label: 'About Us', href: '/about' },
 
-      { label: 'Contact Us', href: '/contact' }
+      { label: 'Contact Us', href: '/contact' },
+      { label: 'Service', href: '/services' },
+      { label: 'Internship', href: '/internship' }
 
     ],
   },
@@ -216,13 +219,13 @@ export function SiteFooter() {
                 if (!Icon) return null;
 
                 const displayValue = contact.type === 'ADDRESS'
-                  ? contact.value.replace(/,([^ ])/g, ', $1')
+                  ? formatAddress(contact.value)
                   : contact.value;
 
                 const content = (
                   <div className="flex items-start gap-3">
                     <Icon className="h-4 w-4 text-red-400 mt-1 shrink-0" />
-                    <span className="text-sm !text-white leading-relaxed break-words">
+                    <span className="text-sm !text-white leading-relaxed break-words whitespace-pre-line">
                       {displayValue}
                     </span>
                   </div>

@@ -4,6 +4,7 @@ import { apiClient } from '@/src/api/client'
 import type { PublicBranch } from '@/src/api/client'
 import type { SiteSettingsRealtimePayload } from '@/src/types/socket'
 import { fetchSiteSettings } from '@/src/api/settings'
+import { formatAddress } from '@/src/utils/address'
 
 type Props = {}
 
@@ -52,12 +53,12 @@ export default async function ContactPage(_: Props) {
               <span className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#e63946]">
                 GET IN TOUCH
               </span>
-              <h1 className="mt-3 text-[36px] sm:text-[44px] lg:text-[48px] font-black tracking-tight text-[#0f172a] leading-[1.1]">
+              <h1 className="mt-3 text-[24px] sm:text-[28px] lg:text-[40px] font-black tracking-tight text-[#0f172a] leading-[1.1]">
                 Let's build
-                something impactful
-                together.
+                something <span className='text-red-600'>impactful
+                  together.</span>
               </h1>
-              <p className="mt-4 text-sm text-[#475569] leading-relaxed font-medium">
+              <p className="pt-4 text-sm text-[#475569] leading-relaxed font-medium">
                 Share your requirements with us, and our team will get back to you within 24 hours.
               </p>
             </div>
@@ -145,7 +146,7 @@ export default async function ContactPage(_: Props) {
                       </span>
 
                       <p className="text-xs text-slate-500 leading-relaxed max-w-xs">
-                        {branch.address ? branch.address.split(/[\n,]/).map((line: string, i: number, arr: any[]) => (
+                        {branch.address ? formatAddress(branch.address).split('\n').map((line: string, i: number, arr: any[]) => (
                           <span key={i}>
                             {line.trim()}
                             {i < arr.length - 1 && <br />}

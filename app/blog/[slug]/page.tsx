@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { 
-  FiArrowLeft, FiShare2, FiLinkedin, FiTwitter, FiFacebook, FiLink, 
-  FiSearch, FiMail, FiArrowRight, FiEye, FiActivity, FiShield, FiCheckCircle
+  FiArrowLeft, FiShare2, FiSearch, FiMail, FiArrowRight, FiEye, FiActivity, FiShield, FiCheckCircle
 } from 'react-icons/fi'
 import { apiClient } from '@/src/api/client'
+import { ShareArticleButton } from './ShareArticleButton'
 
 export const dynamicParams = false;
 
@@ -51,11 +51,33 @@ const formatPublishedAt = (value?: string | null) => {
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params
-  const blog = await apiClient.getPublicBlogBySlug(slug).catch(() => null)
+  const allBlogsData = await apiClient.getPublicBlogs(1, 100).catch(() => ({ items: [] }));
+  const allBlogs = allBlogsData.items;
+  
+  const currentIndex = allBlogs.findIndex((b) => b.slug === slug);
+  const blog = currentIndex !== -1 ? allBlogs[currentIndex] : await apiClient.getPublicBlogBySlug(slug).catch(() => null);
 
   if (!blog) {
     notFound()
   }
+
+  // Previous and Next Articles (assuming sorted by descending date)
+  const nextArticle = currentIndex > 0 ? allBlogs[currentIndex - 1] : null;
+  const previousArticle = currentIndex !== -1 && currentIndex < allBlogs.length - 1 ? allBlogs[currentIndex + 1] : null;
+
+  // Recent Posts
+  const recentPosts = allBlogs.filter((p) => p.slug !== slug).slice(0, 4);
+
+  // Categories
+  const categoryCounts: Record<string, number> = {};
+  allBlogs.forEach((b) => {
+    if (b.category) {
+      categoryCounts[b.category] = (categoryCounts[b.category] || 0) + 1;
+    }
+  });
+  const categories = Object.entries(categoryCounts)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
 
   const imageSrc = resolveImageUrl(blog.imageUrl) || 'https://images.unsplash.com/photo-1614064641936-a5926622ab93?auto=format&fit=crop&q=80&w=1600'
 
@@ -113,21 +135,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-3">
-                  <span className="text-[13px] font-bold text-slate-400 mr-1">Share:</span>
-                  <a href="#" className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-[#0a66c2] hover:bg-[#0a66c2] hover:text-white hover:border-[#0a66c2] transition-colors">
-                    <FiLinkedin size={14} />
-                  </a>
-                  <a href="#" className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-[#1d9bf0] hover:bg-[#1d9bf0] hover:text-white hover:border-[#1d9bf0] transition-colors">
-                    <FiTwitter size={14} />
-                  </a>
-                  <a href="#" className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-[#1877f2] hover:bg-[#1877f2] hover:text-white hover:border-[#1877f2] transition-colors">
-                    <FiFacebook size={14} />
-                  </a>
-                  <a href="#" className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-800 hover:text-white hover:border-slate-800 transition-colors">
-                    <FiLink size={14} />
-                  </a>
-                </div>
+                <ShareArticleButton 
+                  title={blog.title || 'Designing for Accessibility: A Complete Guide'} 
+                  description={blog.description || 'Learn how to build digital products that are inclusive, usable and accessible for everyone.'} 
+                />
               </div>
             </div>
 
@@ -270,23 +281,27 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
             {/* Navigation Footer */}
             <div className="mt-16 pt-8 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <Link href="#" className="group flex flex-col items-start p-6 rounded-2xl border border-slate-200 bg-white hover:border-[#e63946] hover:shadow-lg transition-all">
-                <div className="flex items-center gap-2 text-[12px] font-bold text-[#e63946] uppercase tracking-widest mb-3">
-                  <FiArrowLeft className="transition-transform group-hover:-translate-x-1" /> Previous Article
-                </div>
-                <h4 className="text-[17px] font-bold text-[#0f172a] leading-tight group-hover:text-[#e63946] transition-colors">
-                  Why Cyber Security is Non-Negotiable
-                </h4>
-              </Link>
+              {previousArticle ? (
+                <Link href={`/blog/${previousArticle.slug}`} className="group flex flex-col items-start p-6 rounded-2xl border border-slate-200 bg-white hover:border-[#e63946] hover:shadow-lg transition-all">
+                  <div className="flex items-center gap-2 text-[12px] font-bold text-[#e63946] uppercase tracking-widest mb-3">
+                    <FiArrowLeft className="transition-transform group-hover:-translate-x-1" /> Previous Article
+                  </div>
+                  <h4 className="text-[17px] font-bold text-[#0f172a] leading-tight group-hover:text-[#e63946] transition-colors line-clamp-2">
+                    {previousArticle.title}
+                  </h4>
+                </Link>
+              ) : <div />}
               
-              <Link href="#" className="group flex flex-col items-end text-right p-6 rounded-2xl border border-slate-200 bg-white hover:border-[#e63946] hover:shadow-lg transition-all">
-                <div className="flex items-center gap-2 text-[12px] font-bold text-[#e63946] uppercase tracking-widest mb-3">
-                  Next Article <FiArrowRight className="transition-transform group-hover:translate-x-1" />
-                </div>
-                <h4 className="text-[17px] font-bold text-[#0f172a] leading-tight group-hover:text-[#e63946] transition-colors">
-                  Introduction to Web3 and Decentralization
-                </h4>
-              </Link>
+              {nextArticle ? (
+                <Link href={`/blog/${nextArticle.slug}`} className="group flex flex-col items-end text-right p-6 rounded-2xl border border-slate-200 bg-white hover:border-[#e63946] hover:shadow-lg transition-all">
+                  <div className="flex items-center gap-2 text-[12px] font-bold text-[#e63946] uppercase tracking-widest mb-3">
+                    Next Article <FiArrowRight className="transition-transform group-hover:translate-x-1" />
+                  </div>
+                  <h4 className="text-[17px] font-bold text-[#0f172a] leading-tight group-hover:text-[#e63946] transition-colors line-clamp-2">
+                    {nextArticle.title}
+                  </h4>
+                </Link>
+              ) : <div />}
             </div>
 
           </article>
@@ -332,63 +347,57 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </div>
 
             {/* Recent Posts */}
-            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-              <h3 className="text-[18px] font-black text-[#0f172a] mb-6">Recent Posts</h3>
-              <div className="space-y-6">
-                {[
-                  { title: 'Ethics in Modern AI', date: 'May 14, 2025', img: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=200&q=80' },
-                  { title: 'Introduction to Web3 and Decentralization', date: 'May 12, 2025', img: 'https://images.unsplash.com/photo-1639762681485-074b7f4fced0?auto=format&fit=crop&w=200&q=80' },
-                  { title: 'Mastering React Hooks', date: 'May 8, 2025', img: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=200&q=80' },
-                  { title: 'Cloud Migration Best Practices', date: 'May 4, 2025', img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=200&q=80' },
-                ].map((post, idx) => (
-                  <Link href="#" key={idx} className="group flex gap-4 items-center">
-                    <div className="w-20 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-100">
-                      <img src={post.img} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    </div>
-                    <div>
-                      <h4 className="text-[14px] font-bold text-[#0f172a] leading-snug group-hover:text-[#e63946] transition-colors line-clamp-2 mb-1">
-                        {post.title}
-                      </h4>
-                      <p className="text-[11px] font-medium text-slate-500">{post.date}</p>
-                    </div>
-                  </Link>
-                ))}
+            {recentPosts.length > 0 && (
+              <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <h3 className="text-[18px] font-black text-[#0f172a] mb-6">Recent Posts</h3>
+                <div className="space-y-6">
+                  {recentPosts.map((post) => (
+                    <Link href={`/blog/${post.slug}`} key={post.id} className="group flex gap-4 items-center">
+                      <div className="w-20 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-100">
+                        <img 
+                          src={resolveImageUrl(post.imageUrl) || 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=200&q=80'} 
+                          alt={post.title} 
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                        />
+                      </div>
+                      <div>
+                        <h4 className="text-[14px] font-bold text-[#0f172a] leading-snug group-hover:text-[#e63946] transition-colors line-clamp-2 mb-1">
+                          {post.title}
+                        </h4>
+                        <p className="text-[11px] font-medium text-slate-500">{formatPublishedAt(post.publishedAt)}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Categories */}
-            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-              <h3 className="text-[18px] font-black text-[#0f172a] mb-6">Categories</h3>
-              <ul className="space-y-4 mb-6">
-                {[
-                  { name: 'AI & ML', count: 18 },
-                  { name: 'Web Development', count: 24 },
-                  { name: 'Blockchain', count: 12 },
-                  { name: 'Cyber Security', count: 15 },
-                  { name: 'Design', count: 9 },
-                  { name: 'Cloud Computing', count: 10 },
-                  { name: 'Internship', count: 6 },
-                  { name: 'Business', count: 8 },
-                ].map((cat, idx) => (
-                  <li key={idx}>
-                    <Link href="#" className="group flex items-center justify-between text-slate-600 hover:text-[#e63946] transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="text-[#e63946] opacity-70 group-hover:opacity-100 transition-opacity">
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            {categories.length > 0 && (
+              <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <h3 className="text-[18px] font-black text-[#0f172a] mb-6">Categories</h3>
+                <ul className="space-y-4 mb-6">
+                  {categories.map((cat, idx) => (
+                    <li key={idx}>
+                      <Link href={`/blog?category=${encodeURIComponent(cat.name)}`} className="group flex items-center justify-between text-slate-600 hover:text-[#e63946] transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="text-[#e63946] opacity-70 group-hover:opacity-100 transition-opacity">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                          </div>
+                          <span className="text-[14px] font-semibold">{cat.name}</span>
                         </div>
-                        <span className="text-[14px] font-semibold">{cat.name}</span>
-                      </div>
-                      <span className="text-[12px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">
-                        ({cat.count})
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <Link href="#" className="inline-flex items-center gap-2 text-[13px] font-bold text-[#e63946] hover:text-red-700 transition-colors">
-                View All Categories <FiArrowRight size={14} />
-              </Link>
-            </div>
+                        <span className="text-[12px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">
+                          ({cat.count})
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/blog" className="inline-flex items-center gap-2 text-[13px] font-bold text-[#e63946] hover:text-red-700 transition-colors">
+                  View All Categories <FiArrowRight size={14} />
+                </Link>
+              </div>
+            )}
 
           </aside>
         </div>

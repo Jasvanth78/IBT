@@ -1,7 +1,8 @@
 'use client';
 
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiArrowLeft } from 'react-icons/fi';
 import Link from 'next/link';
 
 import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
@@ -43,6 +44,7 @@ const fallbackProjects = [
 
 export function RecentWorkSection() {
   const { settings, loading } = useSocketSettings();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const title = settings?.homeRecentWorkTitle || 'Some Of Our Recent Work';
   const badge = settings?.homeRecentWorkBadge || 'FEATURED PROJECTS';
@@ -65,6 +67,15 @@ export function RecentWorkSection() {
     return null; // Avoid flashing fallback if real data is loading
   }
 
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { current } = scrollRef;
+      // Calculate scroll amount based on visible cards
+      const scrollAmount = current.clientWidth / (window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 4);
+      current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="bg-white py-12 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -81,44 +92,72 @@ export function RecentWorkSection() {
           </div>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 bg-white hover:shadow-lg transition-all duration-300"
-            >
-              {/* Image Area */}
-              <div className="h-[200px] w-full relative overflow-hidden bg-slate-50 border-b border-slate-100 p-4 pb-0 flex justify-center items-end">
-                <div className="w-full h-[90%] rounded-t-xl overflow-hidden shadow-md transform group-hover:-translate-y-2 transition-transform duration-500">
-                  {project.imageUrl ? (
-                    <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400 text-xs font-medium">No Image</div>
-                  )}
-                </div>
-              </div>
+        {/* Projects Slider Container */}
+        <div className="relative group/slider -mx-4 md:-mx-6 px-12 md:px-16">
+          {/* Slider Controls */}
+          <button 
+            onClick={() => scroll('left')}
+            className="absolute left-0 md:left-2 top-[calc(50%-24px)] -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#0f172a] hover:text-white hover:border-[#0f172a] transition-all shadow-xl z-20 opacity-90 hover:opacity-100"
+            aria-label="Previous slide"
+          >
+            <FiArrowLeft size={20} />
+          </button>
+          
+          <button 
+            onClick={() => scroll('right')}
+            className="absolute right-0 md:right-2 top-[calc(50%-24px)] -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-[#e63946] hover:text-white hover:border-[#e63946] transition-all shadow-xl z-20 opacity-90 hover:opacity-100"
+            aria-label="Next slide"
+          >
+            <FiArrowRight size={20} />
+          </button>
 
-              {/* Card Content */}
-              <div className="p-6 pb-8 bg-white flex flex-col flex-1">
-                <h4 className="text-base font-extrabold text-[#0f172a] mb-1">
-                  {project.title}
-                </h4>
-                <p className="text-xs text-slate-500 mb-6 flex-1">
-                  {project.description}
-                </p>
-                <div>
-                  <span className={`inline-flex px-3 py-1 text-[10px] font-bold rounded-full ${project.badgeClass} uppercase tracking-wider`}>
-                    {project.category}
-                  </span>
+          <div 
+            ref={scrollRef}
+            className="flex overflow-x-auto gap-6 snap-x snap-mandatory pb-4 hide-scrollbar"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            <style dangerouslySetInnerHTML={{__html: `
+              .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+              }
+            `}} />
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 bg-white hover:shadow-lg transition-all duration-300 w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] snap-start shrink-0"
+              >
+                {/* Image Area */}
+                <div className="h-[200px] w-full relative overflow-hidden bg-slate-50 border-b border-slate-100 p-4 pb-0 flex justify-center items-end">
+                  <div className="w-full h-[90%] rounded-t-xl overflow-hidden shadow-md transform group-hover:-translate-y-2 transition-transform duration-500">
+                    {project.imageUrl ? (
+                      <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400 text-xs font-medium">No Image</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                {/* Card Content */}
+                <div className="p-6 pb-8 bg-white flex flex-col flex-1">
+                  <h4 className="text-base font-extrabold text-[#0f172a] mb-1">
+                    {project.title}
+                  </h4>
+                  <p className="text-xs text-slate-500 mb-6 flex-1">
+                    {project.description}
+                  </p>
+                  <div>
+                    <span className={`inline-flex px-3 py-1 text-[10px] font-bold rounded-full ${project.badgeClass} uppercase tracking-wider`}>
+                      {project.category}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
       </div>

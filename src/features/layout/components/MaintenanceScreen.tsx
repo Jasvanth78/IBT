@@ -27,19 +27,11 @@ export function MaintenanceScreen() {
       <div className="relative z-10 mx-auto max-w-md px-6 text-center">
         <div className="mb-6 flex justify-center">
           <div className="rounded-full border border-(--ui-border) bg-white p-6 shadow-[0_18px_50px_rgba(140,28,28,0.08)]">
-            <svg
-              className="h-12 w-12 animate-pulse text-(--ui-primary)"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4v2m0 0v2m0-6V9m0 0V7m0 6h2m0 0h2m0-6h-2m0 0h-2"
-              />
-            </svg>
+            <img
+              src="/logo.png"
+              alt="Company Logo"
+              className="h-12 w-auto object-contain animate-pulse"
+            />
           </div>
         </div>
 
@@ -53,6 +45,8 @@ export function MaintenanceScreen() {
             <p className="text-(--ui-primary-strong)">{maintenanceMessage}</p>
           </div>
         )}
+
+
 
         {maintenanceTimeRemaining !== null && (
           <div className="mb-8 space-y-3 rounded-2xl border border-(--ui-border) bg-white/90 p-4 shadow-[0_12px_35px_rgba(140,28,28,0.06)] backdrop-blur">

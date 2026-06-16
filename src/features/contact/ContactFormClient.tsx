@@ -35,7 +35,12 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
   })
 
   const handleChange = (field: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({ ...prev, [field]: event.target.value }))
+    let value = event.target.value
+    if (field === 'phone') {
+      // Allow only numbers and the plus sign
+      value = value.replace(/[^\d+]/g, '')
+    }
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -85,7 +90,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div className="space-y-1.5">
-              <label className="text-[11px] font-bold text-[#0f172a]">First Name</label>
+              <label className="text-[11px] font-bold text-[#0f172a]">First Name <span className="text-red-500 ml-1">*</span></label>
               <input
                 required
                 value={formData.firstName}
@@ -96,7 +101,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-[11px] font-bold text-[#0f172a]">Last Name</label>
+              <label className="text-[11px] font-bold text-[#0f172a]">Last Name <span className="text-red-500 ml-1">*</span></label>
               <input
                 required
                 value={formData.lastName}
@@ -109,7 +114,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-[#0f172a]">Work Email</label>
+            <label className="text-[11px] font-bold text-[#0f172a]">Work Email <span className="text-red-500 ml-1">*</span></label>
             <input
               required
               value={formData.email}
@@ -127,6 +132,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
                 value={formData.phone}
                 onChange={handleChange('phone')}
                 type="tel"
+                maxLength={12}
                 placeholder="+91 98765 43210"
                 className="w-full h-11 bg-white border border-slate-200 rounded-lg px-4 text-sm focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400 font-medium"
               />
@@ -163,9 +169,13 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
           </div>
 
           <div className="space-y-1.5 pt-2">
-            <label className="text-[11px] font-bold text-[#0f172a]">Message</label>
+            <div className="flex justify-between items-center">
+              <label className="text-[11px] font-bold text-[#0f172a]">Message <span className="text-red-500 ml-1">*</span></label>
+              <span className="text-[10px] font-medium text-slate-400">{formData.message.length}/500</span>
+            </div>
             <textarea
               required
+              maxLength={500}
               value={formData.message}
               onChange={handleChange('message')}
               rows={4}

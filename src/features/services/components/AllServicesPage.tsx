@@ -234,8 +234,9 @@ export function AllServicesPage() {
               <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-4">
                 OUR SERVICES
               </h3>
-              <h1 className="text-[44px] sm:text-[56px] lg:text-[64px] font-extrabold text-[#0f172a] leading-[1.05] tracking-tight mb-6">
-                Services Built<br />for <span className="text-[#e63946]">Impact</span>
+              <h1 className="text-[24px] sm:text-[28px] lg:text-[40px] font-extrabold text-[#0f172a] leading-[1.05] tracking-tight mb-6">
+                Services Built
+                <span className="text-[#e63946] pl-2">for Impact</span>
               </h1>
               <p className="text-lg text-slate-500 font-medium leading-relaxed mb-10 max-w-lg">
                 We deliver innovative, scalable and reliable digital solutions that help businesses grow, operate efficiently, and stay ahead in a competitive world.
@@ -471,8 +472,8 @@ export function AllServicesPage() {
                     className="px-3 text-left"
                     style={{ flex: `0 0 ${100 / displayServices.length}%` }}
                   >
-                    <Link 
-                      href={service.projectUrl || `/services/${service.slug}`} 
+                    <Link
+                      href={service.projectUrl || `/services/${service.slug}`}
                       target={service.projectUrl ? "_blank" : undefined}
                       rel={service.projectUrl ? "noopener noreferrer" : undefined}
                       className="group block cursor-pointer"

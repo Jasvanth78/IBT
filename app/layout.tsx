@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SocketSettingsProvider } from "@/src/providers/SocketSettingsProvider";
-import { MaintenanceOverlay, SiteFooter, SiteNavbar, WhatsappButton, ScrollToTop } from "@/src/features/layout/components";
+import { MaintenanceOverlay, SiteFooter, SiteNavbar, WhatsappButton } from "@/src/features/layout/components";
 import type { SiteSettingsRealtimePayload } from "@/src/types/socket";
 
 const geistSans = Geist({
@@ -73,18 +73,18 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden">
+      <body className="min-h-full flex flex-col overflow-x-clip">
         <SocketSettingsProvider initialSettings={initialSettings}>
           <MaintenanceOverlay>
+            <div id="scroll-anchor" className="absolute top-0 left-0 w-full h-10 pointer-events-none opacity-0 z-[-1]" />
             <div className="flex min-h-screen flex-col bg-(--ui-surface) text-(--ui-text)">
               <SiteNavbar />
-              <main className="flex-1">{children}</main>
+              <main className="flex-1 pt-20">{children}</main>
               <SiteFooter />
             </div>
             <WhatsappButton />
-            <ScrollToTop />
           </MaintenanceOverlay>
         </SocketSettingsProvider>
       </body>

@@ -59,7 +59,7 @@ export function SiteNavbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="group flex shrink-0 items-center">
             <Image

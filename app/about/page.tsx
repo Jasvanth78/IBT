@@ -174,15 +174,15 @@ export default function AboutPage() {
             {/* LEFT */}
             <div className="text-left lg:col-span-6">
               <span className="text-[18px] font-bold uppercase tracking-[0.25em] text-[#e63946]">
-                ABOUT IBACUS TECH
+                ABOUT I BACUS TECH
               </span>
 
-              <h1 className="mt-4 text-[36px] sm:text-[44px] lg:text-[54px] font-extrabold tracking-tight text-[#0f172a] leading-[1.15]">
-                We Build Digital <br />
-                <span className="text-[#e63946]">Excellence.</span>
+              <h1 className="mt-4 text-[24px] sm:text-[28px] lg:text-[40px] font-extrabold tracking-tight text-[#0f172a] leading-[1.15] ">
+                We Build Digital
+                <span className="text-[#e63946] pl-2">Excellence.</span>
               </h1>
 
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-[#475569]">
+              <p className="pt-6 max-w-xl text-base leading-relaxed text-[#475569] ">
                 I BACUS TECH SOLUTION specializes in custom software development, AI solutions, web and mobile application development, data analytics, and enterprise technology solutions that drive business success.
               </p>
 
@@ -480,7 +480,7 @@ export default function AboutPage() {
       {/* =====================================================
           5. TEAM MEMBERS LEADERSHIP ROW
       ===================================================== */}
-      <section className="py-12 lg:py-16 bg-slate-50/40">
+      <section className="pt-12 lg:pt-16 pb-6 lg:pb-8 bg-slate-50/40">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           {/* HEADER HEADER */}
@@ -497,68 +497,58 @@ export default function AboutPage() {
               ))}
             </div>
           ) : (
-            <div className="space-y-16">
+            <div>
               {members.length > 0 ? (
                 <>
-                    <div className="relative group/slider flex items-center">
-                      <button
-                        onClick={scrollLeft}
-                        className="absolute -left-4 sm:-left-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-slate-600 hover:text-[#e63946] transition-colors focus:outline-none"
-                      >
-                        <FiChevronLeft size={20} />
-                      </button>
+                  <div className="relative group/slider flex items-center">
+                    <button
+                      onClick={scrollLeft}
+                      className="absolute -left-4 sm:-left-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-slate-600 hover:text-[#e63946] transition-colors focus:outline-none"
+                    >
+                      <FiChevronLeft size={20} />
+                    </button>
 
-                      <div 
-                        ref={sliderRef}
-                        className="flex overflow-x-auto gap-6 pb-8 pt-4 px-2 snap-x snap-mandatory hide-scrollbar w-full"
-                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                      >
-                        {members.map((member) => (
-                          <div 
-                            key={member.id} 
-                            className="snap-start shrink-0 w-[260px] sm:w-[280px] bg-white rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 flex flex-col items-center p-6"
-                          >
-                            <div className="w-24 h-24 rounded-full overflow-hidden mb-5 border-4 border-slate-50 shadow-sm shrink-0">
-                              {member.avatarUrl ? (
-                                <img 
-                                  src={member.avatarUrl} 
-                                  alt={member.name}
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
-                                  <FiUsers size={32} />
-                                </div>
-                              )}
-                            </div>
-
-                            <h4 className="text-[17px] font-bold text-[#0f172a] text-center tracking-tight leading-snug">{member.name}</h4>
-                            <p className="text-[13px] font-semibold text-[#e63946] text-center mt-1.5 mb-6">{member.role}</p>
-
-                            <div className="flex gap-4 mt-auto items-center justify-center text-slate-500">
-                              {member.linkedinUrl ? (
-                                <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="hover:text-[#0a66c2] transition">
-                                  <FiLinkedin size={16} />
-                                </a>
-                              ) : (
-                                <span className="hover:text-[#0a66c2] transition cursor-pointer"><FiLinkedin size={16} /></span>
-                              )}
-                              
-                              <span className="hover:text-[#1da1f2] transition cursor-pointer"><FiTwitter size={16} /></span>
-                              <span className="hover:text-[#1877f2] transition cursor-pointer"><FiFacebook size={16} /></span>
-                            </div>
+                    <div
+                      ref={sliderRef}
+                      className="flex overflow-x-auto gap-6 pb-4 pt-4 px-2 snap-x snap-mandatory hide-scrollbar w-full"
+                      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                      {members.map((member) => (
+                        <div
+                          key={member.id}
+                          className="snap-start shrink-0 w-[260px] sm:w-[280px] bg-white rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 flex flex-col items-center p-6"
+                        >
+                          <div className="w-24 h-24 rounded-full overflow-hidden mb-5 border-4 border-slate-50 shadow-sm shrink-0">
+                            {member.avatarUrl ? (
+                              <img
+                                src={member.avatarUrl}
+                                alt={member.name}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                <FiUsers size={32} />
+                              </div>
+                            )}
                           </div>
-                        ))}
-                      </div>
 
-                      <button
-                        onClick={scrollRight}
-                        className="absolute -right-4 sm:-right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-slate-600 hover:text-[#e63946] transition-colors focus:outline-none"
-                      >
-                        <FiChevronRight size={20} />
-                      </button>
+                          <h4 className="text-[17px] font-bold text-[#0f172a] text-center tracking-tight leading-snug">{member.name}</h4>
+                          <p className="text-[13px] font-semibold text-[#e63946] text-center mt-1.5">{member.role}</p>
+
+
+                        </div>
+                      ))}
                     </div>
-                    <style dangerouslySetInnerHTML={{__html: `
+
+                    <button
+                      onClick={scrollRight}
+                      className="absolute -right-4 sm:-right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-slate-600 hover:text-[#e63946] transition-colors focus:outline-none"
+                    >
+                      <FiChevronRight size={20} />
+                    </button>
+                  </div>
+                  <style dangerouslySetInnerHTML={{
+                    __html: `
                       .hide-scrollbar::-webkit-scrollbar {
                         display: none;
                       }
