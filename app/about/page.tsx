@@ -108,7 +108,7 @@ export default function AboutPage() {
 
   // How It Works dynamic data
   const processBadge = s.aboutProcessBadge || 'OUR PURPOSE'
-  const processTitle = s.aboutProcessTitle || 'We bring your ideas to life through our proven process.'
+  const processTitle = s.aboutProcessTitle || 'We bring your ideas to life through our proven process'
   const processFeatures = (s.aboutProcessFeatures && s.aboutProcessFeatures.length > 0) ? s.aboutProcessFeatures : [
     { title: 'Collect Ideas', desc: 'We listen to your ideas and turn them into smart solutions.' },
     { title: 'Plan & Analyse', desc: 'We analyze, plan and create a roadmap for success.' },
@@ -195,7 +195,7 @@ export default function AboutPage() {
 
               <h1 className="mt-4 text-[24px] sm:text-[28px] lg:text-[40px] font-extrabold tracking-tight text-[#0f172a] leading-[1.15] ">
                 We Build Digital
-                <span className="text-[#e63946] pl-2">Excellence.</span>
+                <span className="text-[#e63946] pl-2">Excellence</span>
               </h1>
 
               <p className="pt-6 max-w-xl text-base leading-relaxed text-[#475569] ">
@@ -521,11 +521,10 @@ export default function AboutPage() {
                       <button
                         onClick={scrollLeft}
                         disabled={!canScrollLeft}
-                        className={`absolute -left-4 sm:-left-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${
-                          !canScrollLeft
-                            ? 'opacity-30 cursor-not-allowed text-slate-300'
-                            : 'text-slate-600 hover:text-[#e63946]'
-                        }`}
+                        className={`absolute -left-4 sm:-left-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollLeft
+                          ? 'opacity-30 cursor-not-allowed text-slate-300'
+                          : 'text-slate-600 hover:text-[#e63946]'
+                          }`}
                       >
                         <FiChevronLeft size={20} />
                       </button>
@@ -564,11 +563,10 @@ export default function AboutPage() {
                       <button
                         onClick={scrollRight}
                         disabled={!canScrollRight}
-                        className={`absolute -right-4 sm:-right-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${
-                          !canScrollRight
-                            ? 'opacity-30 cursor-not-allowed text-slate-300'
-                            : 'text-slate-600 hover:text-[#e63946]'
-                        }`}
+                        className={`absolute -right-4 sm:-right-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollRight
+                          ? 'opacity-30 cursor-not-allowed text-slate-300'
+                          : 'text-slate-600 hover:text-[#e63946]'
+                          }`}
                       >
                         <FiChevronRight size={20} />
                       </button>

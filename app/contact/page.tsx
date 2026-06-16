@@ -56,7 +56,7 @@ export default async function ContactPage(_: Props) {
               <h1 className="mt-3 text-[24px] sm:text-[28px] lg:text-[40px] font-black tracking-tight text-[#0f172a] leading-[1.1]">
                 Let's build
                 something <span className='text-red-600'>impactful
-                  together.</span>
+                  together</span>
               </h1>
               <p className="pt-4 text-sm text-[#475569] leading-relaxed font-medium">
                 Share your requirements with us, and our team will get back to you within 24 hours.
