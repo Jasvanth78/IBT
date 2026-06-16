@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IBT Website",
-  description: "IBT Company Website with Modern Component Library and Public API",
+  title: "I-BACUS TECH",
+  description: "I-BACUS TECH Company Website with Modern Component Library and Public API",
 };
 
 export const viewport = {

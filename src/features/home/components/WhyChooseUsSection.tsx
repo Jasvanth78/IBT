@@ -56,7 +56,7 @@ export function WhyChooseUsSection() {
             </p>
             <SiteButton
               href="/about"
-              className="bg-[#e63946] text-white rounded-md px-5 py-2.5 font-bold text-[12px] hover:bg-[#c1121f] transition-colors shadow-sm"
+              className="w-full sm:w-auto bg-[#e63946] text-white rounded-md px-5 py-2.5 font-bold text-[12px] hover:bg-[#c1121f] transition-colors shadow-sm"
             >
               Know More About Us <FiArrowRight className="inline-block ml-1" />
             </SiteButton>

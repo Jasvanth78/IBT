@@ -230,7 +230,7 @@ export function AllServicesPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
-            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative z-10">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative z-10 min-w-0">
               <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-4">
                 OUR SERVICES
               </h3>
@@ -242,7 +242,7 @@ export function AllServicesPage() {
                 We deliver innovative, scalable and reliable digital solutions that help businesses grow, operate efficiently, and stay ahead in a competitive world.
               </p>
 
-              <div className="grid grid-cols-2 gap-8 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-10">
                 <div className="flex flex-col gap-3">
                   <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-[#e63946]">
                     <FiUsers size={24} />
@@ -265,14 +265,14 @@ export function AllServicesPage() {
 
               <Link
                 href="/contact"
-                className="inline-flex h-14 px-8 bg-[#e63946] text-white rounded-md items-center justify-center text-[14px] font-bold hover:bg-[#c1121f] transition-all shadow-xl shadow-red-500/20"
+                className="w-full sm:w-auto inline-flex h-14 px-8 bg-[#e63946] text-white rounded-md items-center justify-center text-[14px] font-bold hover:bg-[#c1121f] transition-all shadow-xl shadow-red-500/20"
               >
                 Explore Our Services <FiArrowRight className="ml-2" />
               </Link>
             </motion.div>
 
             {/* Right Image & Floating Badge */}
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="relative z-10">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="relative z-10 min-w-0">
               <div className="rounded-[1.5rem] overflow-hidden shadow-2xl">
                 <img
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200"
@@ -282,12 +282,12 @@ export function AllServicesPage() {
               </div>
 
               {/* Floating Badge */}
-              <div className="absolute -bottom-8 left-8 bg-white py-6 px-8 rounded-xl shadow-2xl border border-slate-100 flex items-center gap-4">
+              <div className="absolute -bottom-6 left-4 sm:-bottom-8 sm:left-8 bg-white py-4 px-6 sm:py-6 sm:px-8 rounded-xl shadow-2xl border border-slate-100 flex items-center gap-3 sm:gap-4">
                 <div>
-                  <div className="text-[36px] font-black text-[#0f172a] leading-none mb-1">200+</div>
-                  <div className="text-[13px] font-bold text-slate-500">Projects Completed</div>
+                  <div className="text-[28px] sm:text-[36px] font-black text-[#0f172a] leading-none mb-1">200+</div>
+                  <div className="text-[11px] sm:text-[13px] font-bold text-slate-500">Projects Completed</div>
                 </div>
-                <FiTrendingUp className="text-[#e63946] text-3xl" />
+                <FiTrendingUp className="text-[#e63946] text-2xl sm:text-3xl" />
               </div>
             </motion.div>
           </div>
@@ -303,7 +303,7 @@ export function AllServicesPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
             {/* Left Content & Grid */}
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="min-w-0">
               <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-4">
                 WHAT WE DO
               </h3>
@@ -312,7 +312,7 @@ export function AllServicesPage() {
               </h2>
               {settings?.servicesWhatDescription ? (
                 <div
-                  className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg html-content"
+                  className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg html-content w-full overflow-hidden break-words"
                   dangerouslySetInnerHTML={{ __html: settings.servicesWhatDescription }}
                 />
               ) : (
@@ -338,30 +338,30 @@ export function AllServicesPage() {
             </motion.div>
 
             {/* Right Masonry Images */}
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="min-w-0">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div className="space-y-3 sm:space-y-4">
                   <img
                     src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600"
                     alt="Team Working"
-                    className="w-full h-64 object-cover rounded-2xl"
+                    className="w-full h-40 sm:h-64 object-cover rounded-2xl"
                   />
                   <img
                     src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=600"
                     alt="Team Collaboration"
-                    className="w-full h-48 object-cover rounded-2xl"
+                    className="w-full h-32 sm:h-48 object-cover rounded-2xl"
                   />
                 </div>
-                <div className="space-y-4 pt-8">
+                <div className="space-y-3 sm:space-y-4 pt-8">
                   <img
                     src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=600"
                     alt="Office Desk"
-                    className="w-full h-48 object-cover rounded-2xl"
+                    className="w-full h-32 sm:h-48 object-cover rounded-2xl"
                   />
                   <img
                     src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=600"
                     alt="Whiteboard Session"
-                    className="w-full h-64 object-cover rounded-2xl"
+                    className="w-full h-40 sm:h-64 object-cover rounded-2xl"
                   />
                 </div>
               </div>
@@ -386,7 +386,7 @@ export function AllServicesPage() {
           <div className="w-full flex justify-center mb-20">
             {settings?.servicesProcessDescription ? (
               <div
-                className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0 html-content"
+                className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0 html-content w-full overflow-hidden break-words"
                 dangerouslySetInnerHTML={{ __html: settings.servicesProcessDescription }}
               />
             ) : (
@@ -432,20 +432,20 @@ export function AllServicesPage() {
           <h2 className="mb-6 font-extrabold tracking-tight text-[#0f172a]">
             Solution Portfolio
           </h2>
-          <div className="w-full flex justify-center mb-16">
+          <div className="w-full flex justify-center mb-10 sm:mb-16">
             <p className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0">
               Explore some of the impactful solutions we have built for our clients across diverse industries.
             </p>
           </div>
 
-          <div className="relative px-6 lg:px-12">
+          <div className="relative px-8 sm:px-12 lg:px-16">
             {/* Arrows */}
             {displayServices.length > visibleCount && (
               <>
                 <button
                   onClick={showPrev}
                   disabled={carouselIndex <= 0}
-                  className={`absolute top-[40%] -translate-y-1/2 left-0 lg:-left-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${
+                  className={`absolute top-[40%] -translate-y-1/2 -left-2 sm:left-0 lg:left-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${
                     carouselIndex <= 0 ? 'opacity-30 cursor-not-allowed text-slate-300' : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -454,7 +454,7 @@ export function AllServicesPage() {
                 <button
                   onClick={showNext}
                   disabled={carouselIndex >= displayServices.length - visibleCount}
-                  className={`absolute top-[40%] -translate-y-1/2 right-0 lg:-right-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${
+                  className={`absolute top-[40%] -translate-y-1/2 -right-2 sm:right-0 lg:right-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${
                     carouselIndex >= displayServices.length - visibleCount ? 'opacity-30 cursor-not-allowed text-slate-300' : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -518,25 +518,25 @@ export function AllServicesPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
             {/* Left Image Grid with Badge */}
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
-              <div className="grid grid-cols-2 gap-6 items-center">
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative min-w-0">
+              <div className="grid grid-cols-2 gap-3 sm:gap-6 items-center">
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-white">
-                  <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=600" alt="Professional Woman" className="w-full h-[320px] object-cover" />
+                  <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=600" alt="Professional Woman" className="w-full h-[200px] sm:h-[320px] object-cover" />
                 </div>
-                <div className="rounded-2xl overflow-hidden shadow-lg border border-white mt-20">
-                  <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=600" alt="Office Collaboration" className="w-full h-[280px] object-cover" />
+                <div className="rounded-2xl overflow-hidden shadow-lg border border-white mt-10 sm:mt-20">
+                  <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=600" alt="Office Collaboration" className="w-full h-[160px] sm:h-[280px] object-cover" />
                 </div>
               </div>
 
               {/* Center Floating Badge */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-8 py-6 rounded-2xl shadow-2xl border border-slate-100 text-center min-w-[220px]">
-                <div className="text-[36px] font-black text-[#0f172a] leading-none mb-2">200+</div>
-                <div className="text-[13px] font-bold text-slate-500 uppercase tracking-widest">Happy Clients<br />Worldwide</div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 py-4 sm:px-8 sm:py-6 rounded-xl sm:rounded-2xl shadow-2xl border border-slate-100 text-center min-w-[150px] sm:min-w-[220px]">
+                <div className="text-[24px] sm:text-[36px] font-black text-[#0f172a] leading-none mb-1 sm:mb-2">200+</div>
+                <div className="text-[10px] sm:text-[13px] font-bold text-slate-500 uppercase tracking-widest">Happy Clients<br />Worldwide</div>
               </div>
             </motion.div>
 
             {/* Right Content */}
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="min-w-0">
               <h2 className="mb-6 font-extrabold tracking-tight text-[#0f172a] leading-[1.1]">
                 Let's Build Something Remarkable Together
               </h2>
@@ -545,7 +545,7 @@ export function AllServicesPage() {
               </p>
               <Link
                 href="/contact"
-                className="inline-flex h-14 px-8 bg-[#0055ff] text-white rounded-md items-center justify-center text-[14px] font-bold hover:bg-[#0044cc] transition-all shadow-xl shadow-blue-500/20"
+                className="w-full sm:w-auto inline-flex h-14 px-8 bg-[#0055ff] text-white rounded-md items-center justify-center text-[14px] font-bold hover:bg-[#0044cc] transition-all shadow-xl shadow-blue-500/20"
               >
                 Schedule a Consultation <FiArrowRight className="ml-2" />
               </Link>

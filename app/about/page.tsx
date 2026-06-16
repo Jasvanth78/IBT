@@ -206,14 +206,14 @@ export default function AboutPage() {
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
                   href="/contact"
-                  className="flex h-12 items-center justify-center rounded-lg bg-[#e63946] px-6 text-sm font-semibold text-white transition hover:bg-[#d62839] shadow-md shadow-red-500/10"
+                  className="flex w-full sm:w-auto h-12 items-center justify-center rounded-lg bg-[#e63946] px-6 text-sm font-semibold text-white transition hover:bg-[#d62839] shadow-md shadow-red-500/10"
                 >
                   Work With Us <FiArrowRight className="ml-2" />
                 </Link>
 
                 <Link
                   href="/services"
-                  className="flex h-12 items-center justify-center rounded-full bg-white border border-slate-200 px-5 text-[18px] font-semibold text-[#0f172a] transition hover:bg-slate-50 gap-3 shadow-sm"
+                  className="flex w-full sm:w-auto h-12 items-center justify-center rounded-full bg-white border border-slate-200 px-5 text-[18px] font-semibold text-[#0f172a] transition hover:bg-slate-50 gap-3 shadow-sm"
                 >
                   Our Services
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#0f172a] text-white">
@@ -532,13 +532,13 @@ export default function AboutPage() {
                       <div
                         ref={sliderRef}
                         onScroll={checkScroll}
-                        className="flex overflow-x-auto gap-6 pb-4 pt-4 px-2 snap-x snap-mandatory hide-scrollbar w-full"
+                        className="flex overflow-x-auto gap-5 sm:gap-6 pb-6 pt-4 px-[calc(50%-130px)] lg:px-8 snap-x snap-mandatory hide-scrollbar w-full"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                       >
                         {members.map((member) => (
                           <div
                             key={member.id}
-                            className="snap-start shrink-0 w-[220px] sm:w-[240px] bg-white rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 flex flex-col items-center p-6"
+                            className="snap-center shrink-0 w-[260px] bg-white rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 flex flex-col items-center p-6"
                           >
                             <div className="w-24 h-24 rounded-full overflow-hidden mb-5 border-4 border-slate-50 shadow-sm shrink-0">
                               {member.avatarUrl ? (

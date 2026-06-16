@@ -3,10 +3,7 @@ import { BlogList } from '@/src/features/blog/components/BlogList'
 import { FiArrowRight, FiFileText, FiGrid, FiUsers } from 'react-icons/fi'
 import Link from 'next/link'
 
-export const metadata = {
-  title: 'Blog | IBT Solutions',
-  description: 'Explore our latest insights, technical deep-dives, and updates from the I-BACUS-TECH team.',
-}
+
 
 const resolveApiOrigin = (value: string | undefined) => {
   const fallback = 'http://localhost:5000'

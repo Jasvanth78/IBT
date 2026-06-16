@@ -228,3 +228,5 @@ body.mobile-nav-open .whatsapp-btn-wrapper {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+html { scroll-behavior: smooth; }
+

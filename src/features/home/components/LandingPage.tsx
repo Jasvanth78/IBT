@@ -42,7 +42,7 @@ export function LandingPage() {
               <div className="flex flex-wrap gap-4 items-center">
                 <SiteButton
                   href="/contact"
-                  className="bg-[#e63946] hover:bg-[#c1121f] text-white rounded-md px-7 py-3.5 font-bold text-sm transition-all shadow-md shadow-red-500/20"
+                  className="w-full sm:w-auto bg-[#e63946] hover:bg-[#c1121f] text-white rounded-md px-7 py-3.5 font-bold text-sm transition-all shadow-md shadow-red-500/20"
                   rightIcon={<FiArrowRight size={16} />}
                 >
                   Get Free Consultation
@@ -50,7 +50,7 @@ export function LandingPage() {
                 <SiteButton
                   href="/services"
                   variant="secondary"
-                  className="border border-slate-200 text-[#1d3557] bg-white hover:bg-slate-50 rounded-md px-7 py-3.5 font-bold text-sm transition-all shadow-sm"
+                  className="w-full sm:w-auto border border-slate-200 text-[#1d3557] bg-white hover:bg-slate-50 rounded-md px-7 py-3.5 font-bold text-sm transition-all shadow-sm"
                   rightIcon={<FiPlayCircle size={18} />}
                 >
                   View Our Work

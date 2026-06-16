@@ -23,10 +23,7 @@ import { InternshipTestimonials } from './InternshipTestimonials';
 
 export const dynamic = 'force-dynamic'
 
-export const metadata = {
-  title: 'Internship | I-BACUS-TECH',
-  description: 'Learn by Building Real Products. Join our internship program for real-world experience.',
-}
+
 
 type PublicTestimonial = {
   id: string
@@ -253,13 +250,13 @@ export default async function InternshipPage() {
               <div className="flex flex-wrap items-center gap-4">
                 <Link
                   href="/internship/apply"
-                  className="inline-flex h-12 sm:h-14 px-8 bg-[#e63946] text-white rounded-lg items-center justify-center text-[14px] font-bold shadow-lg shadow-red-500/20 hover:bg-[#c1121f] transition-colors"
+                  className="w-full sm:w-auto inline-flex h-12 sm:h-14 px-8 bg-[#e63946] text-white rounded-lg items-center justify-center text-[14px] font-bold shadow-lg shadow-red-500/20 hover:bg-[#c1121f] transition-colors"
                 >
                   Apply for Internship <FiArrowRight className="ml-2" />
                 </Link>
                 <Link
                   href="#programs"
-                  className="inline-flex h-12 sm:h-14 px-8 bg-white text-[#0f172a] border border-slate-200 rounded-lg items-center justify-center text-[14px] font-bold hover:bg-slate-50 transition-colors shadow-sm"
+                  className="w-full sm:w-auto inline-flex h-12 sm:h-14 px-8 bg-white text-[#0f172a] border border-slate-200 rounded-lg items-center justify-center text-[14px] font-bold hover:bg-slate-50 transition-colors shadow-sm"
                 >
                   Explore Programs <FiChevronDown className="ml-2" />
                 </Link>
@@ -601,7 +598,7 @@ export default async function InternshipPage() {
               <div className="text-center md:text-right z-10">
                 <Link
                   href="/internship/apply"
-                  className="inline-flex h-11 bg-white text-[#0f172a] rounded-lg px-6 items-center justify-center font-bold text-[13px] hover:bg-slate-50 transition-colors shadow-lg whitespace-nowrap"
+                  className="w-full sm:w-auto inline-flex h-11 bg-white text-[#0f172a] rounded-lg px-6 items-center justify-center font-bold text-[13px] hover:bg-slate-50 transition-colors shadow-lg whitespace-nowrap"
                 >
                   Apply Now <FiArrowRight className="inline-block ml-2 text-[#e63946]" />
                 </Link>
