@@ -33,6 +33,16 @@ import {
 } from 'react-icons/fi';
 
 /* =========================================================
+   UTILITIES
+========================================================= */
+
+function cleanHtml(html: string | undefined | null): string {
+  if (!html) return '';
+  if (typeof html !== 'string') return '';
+  return html.replace(/&nbsp;/g, ' ');
+}
+
+/* =========================================================
    ANIMATION VARIANTS
 ========================================================= */
 
@@ -226,7 +236,7 @@ export function AllServicesPage() {
       {/* =====================================================
           1. HERO SECTION
       ===================================================== */}
-      <section className="relative pt-12 pb-24 lg:pt-20 lg:pb-32 overflow-hidden bg-white">
+      <section className="relative pt-24 pb-24 lg:pt-36 lg:pb-32 overflow-hidden bg-white mt-8 lg:mt-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
@@ -277,7 +287,7 @@ export function AllServicesPage() {
                 <img
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200"
                   alt="Service Impact"
-                  className="w-full h-auto object-cover"
+                  className="w-full h-[300px] sm:h-[350px] lg:h-[400px] object-cover"
                 />
               </div>
 
@@ -312,8 +322,8 @@ export function AllServicesPage() {
               </h2>
               {settings?.servicesWhatDescription ? (
                 <div
-                  className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg html-content w-full overflow-hidden break-words"
-                  dangerouslySetInnerHTML={{ __html: settings.servicesWhatDescription }}
+                  className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg html-content w-full overflow-hidden"
+                  dangerouslySetInnerHTML={{ __html: cleanHtml(settings.servicesWhatDescription) }}
                 />
               ) : (
                 <p className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg">
@@ -386,8 +396,8 @@ export function AllServicesPage() {
           <div className="w-full flex justify-center mb-20">
             {settings?.servicesProcessDescription ? (
               <div
-                className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0 html-content w-full overflow-hidden break-words"
-                dangerouslySetInnerHTML={{ __html: settings.servicesProcessDescription }}
+                className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0 html-content w-full overflow-hidden"
+                dangerouslySetInnerHTML={{ __html: cleanHtml(settings.servicesProcessDescription) }}
               />
             ) : (
               <p className="max-w-2xl text-center text-lg text-slate-500 font-medium leading-relaxed m-0">
@@ -445,18 +455,16 @@ export function AllServicesPage() {
                 <button
                   onClick={showPrev}
                   disabled={carouselIndex <= 0}
-                  className={`absolute top-[40%] -translate-y-1/2 -left-2 sm:left-0 lg:left-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${
-                    carouselIndex <= 0 ? 'opacity-30 cursor-not-allowed text-slate-300' : 'text-slate-600 hover:bg-slate-50'
-                  }`}
+                  className={`absolute top-[40%] -translate-y-1/2 -left-2 sm:left-0 lg:left-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${carouselIndex <= 0 ? 'opacity-30 cursor-not-allowed text-slate-300' : 'text-slate-600 hover:bg-slate-50'
+                    }`}
                 >
                   <FiChevronLeft />
                 </button>
                 <button
                   onClick={showNext}
                   disabled={carouselIndex >= displayServices.length - visibleCount}
-                  className={`absolute top-[40%] -translate-y-1/2 -right-2 sm:right-0 lg:right-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${
-                    carouselIndex >= displayServices.length - visibleCount ? 'opacity-30 cursor-not-allowed text-slate-300' : 'text-slate-600 hover:bg-slate-50'
-                  }`}
+                  className={`absolute top-[40%] -translate-y-1/2 -right-2 sm:right-0 lg:right-2 z-20 w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-md transition-colors ${carouselIndex >= displayServices.length - visibleCount ? 'opacity-30 cursor-not-allowed text-slate-300' : 'text-slate-600 hover:bg-slate-50'
+                    }`}
                 >
                   <FiChevronRight />
                 </button>

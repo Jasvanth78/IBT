@@ -88,7 +88,7 @@ export default async function ContactPage(_: Props) {
                 </div>
                 <div>
                   <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wide">Call Us</h3>
-                  <p className="text-sm font-bold text-[#0f172a] mt-0.5">+91 +91 9003562715</p>
+                  <p className="text-sm font-bold text-[#0f172a] mt-0.5">+91 9003562715</p>
                   <p className="text-xs text-slate-400 font-medium mt-1">Mon – Fri | 10:00 AM – 6:00 PM</p>
                 </div>
               </div>
@@ -104,7 +104,7 @@ export default async function ContactPage(_: Props) {
                 <div>
                   <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wide">Visit Us</h3>
                   <p className="text-sm font-bold text-[#0f172a] mt-0.5 leading-snug">
-                    I-BACUS-TECH, 3rd Floor,<br /> 6C, Chitra Nagar, Saravanampatti, <br />Coimbatore - 641035
+                    I-BACUS-TECH, 3rd Floor,<br /> 6C, Chitra Nagar, Saravanampatti, <br />Coimbatore - 641035.
                   </p>
                   <p className="text-xs text-slate-400 font-medium mt-1">We'd love to meet you!</p>
                 </div>
@@ -209,7 +209,7 @@ export default async function ContactPage(_: Props) {
               {/* Custom floating tooltip card mimicking structural Google embed maps viewport layout */}
               <div className="absolute top-4 left-4 bg-white p-3 rounded-xl shadow-lg border border-slate-100 max-w-xs z-10 hidden sm:block">
                 <h5 className="text-xs font-bold text-slate-900">IBACUS TECH SOLUTION</h5>
-                <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">I-BACUS-TECH, 3rd Floor, 6C, Chitra Nagar, Saravanampatti, Coimbatore, Tamil Nadu-641035</p>
+                <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">I-BACUS-TECH, 3rd Floor, 6C, Chitra Nagar, Saravanampatti, Coimbatore, Tamil Nadu-641035.</p>
                 <button className="text-[10px] font-bold text-blue-600 mt-2 block hover:underline"></button>
               </div>
 
@@ -240,9 +240,10 @@ export default async function ContactPage(_: Props) {
           </div>
           <a
             href="/contact"
-            className="relative z-10 bg-white text-[#0a1128] rounded-xl px-6 py-3 text-xs font-bold shadow-sm hover:bg-slate-50 transition shrink-0 tracking-wide"
+            className="relative z-10 bg-white text-[#0a1128] rounded-xl px-6 py-3 text-xs font-bold shadow-sm hover:bg-slate-50 transition shrink-0 tracking-wide flex items-center justify-center gap-1.5 text-center"
           >
-            Schedule a Free Consultation <span className="ml-1">→</span>
+            <span>Schedule a Free Consultation</span>
+            <span className="shrink-0 font-normal">→</span>
           </a>
         </div>
 

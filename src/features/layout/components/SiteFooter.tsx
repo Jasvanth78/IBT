@@ -260,11 +260,10 @@ export function SiteFooter() {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 pt-5 pb-24 md:pb-5 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs !text-white text-center sm:text-left">
+        <div className="mx-auto max-w-7xl px-6 pt-5 pb-24 md:pb-5 lg:px-8 flex items-center justify-center gap-3">
+          <p className="text-xs !text-white text-center">
             © {new Date().getFullYear()} I BACUS TECH SOLUTIONS. All Rights Reserved.
           </p>
-
         </div>
       </div>
     </footer>

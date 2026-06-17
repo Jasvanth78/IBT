@@ -39,6 +39,12 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
     if (field === 'phone') {
       // Allow only numbers and the plus sign
       value = value.replace(/[^\d+]/g, '')
+    } else if (field === 'firstName' || field === 'lastName') {
+      // Allow only letters and spaces
+      value = value.replace(/[^a-zA-Z\s]/g, '')
+    } else if (field === 'email') {
+      // Allow only valid email characters
+      value = value.replace(/[^a-zA-Z0-9@.]/g, '')
     }
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
@@ -49,6 +55,22 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
 
     if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.message.trim()) {
       setErrorMessage('Please fill in all required fields before submitting.')
+      return
+    }
+
+    const nameRegex = /^[a-zA-Z\s]+$/
+    if (!nameRegex.test(formData.firstName.trim())) {
+      setErrorMessage('First Name must contain only letters and spaces.')
+      return
+    }
+    if (!nameRegex.test(formData.lastName.trim())) {
+      setErrorMessage('Last Name must contain only letters and spaces.')
+      return
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!emailRegex.test(formData.email.trim())) {
+      setErrorMessage('Please enter a valid email address containing "@".')
       return
     }
 
@@ -96,7 +118,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
                 value={formData.firstName}
                 onChange={handleChange('firstName')}
                 type="text"
-                placeholder="John"
+                placeholder="Eg. John"
                 className="w-full h-11 bg-white border border-slate-200 rounded-lg px-4 text-sm focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400 font-medium"
               />
             </div>
@@ -107,7 +129,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
                 value={formData.lastName}
                 onChange={handleChange('lastName')}
                 type="text"
-                placeholder="Doe"
+                placeholder="Eg. Doe"
                 className="w-full h-11 bg-white border border-slate-200 rounded-lg px-4 text-sm focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400 font-medium"
               />
             </div>
@@ -120,7 +142,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
               value={formData.email}
               onChange={handleChange('email')}
               type="email"
-              placeholder="john@company.com"
+              placeholder="Eg. john@company.com"
               className="w-full h-11 bg-white border border-slate-200 rounded-lg px-4 text-sm focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400 font-medium"
             />
           </div>
@@ -133,7 +155,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
                 onChange={handleChange('phone')}
                 type="tel"
                 maxLength={12}
-                placeholder="+91 98765 43210"
+                placeholder="Eg. +91 98765 43210"
                 className="w-full h-11 bg-white border border-slate-200 rounded-lg px-4 text-sm focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400 font-medium"
               />
             </div>
@@ -143,7 +165,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
                 value={formData.company}
                 onChange={handleChange('company')}
                 type="text"
-                placeholder="Your company name"
+                placeholder="Eg. Your company name"
                 className="w-full h-11 bg-white border border-slate-200 rounded-lg px-4 text-sm focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all placeholder:text-slate-400 font-medium"
               />
             </div>
@@ -179,7 +201,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
               value={formData.message}
               onChange={handleChange('message')}
               rows={4}
-              placeholder="How can we help you?"
+              placeholder="Eg. How can we help you?"
               className="w-full bg-white border border-slate-200 rounded-lg p-4 text-sm focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 transition-all resize-none placeholder:text-slate-400 font-medium"
             />
           </div>

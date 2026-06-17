@@ -71,6 +71,40 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       homeRecentWorkBadge: data?.homeRecentWorkBadge ?? null,
       homeRecentWorkItems: data?.homeRecentWorkItems ?? null,
 
+      // Labs – Hero
+      labs_hero_title: data?.labs_hero_title ?? null,
+      labs_hero_subtitle: data?.labs_hero_subtitle ?? null,
+      labs_hero_description: data?.labs_hero_description ?? null,
+      labs_hero_image_url: data?.labs_hero_image_url ?? null,
+      labs_hero_btn1_text: data?.labs_hero_btn1_text ?? null,
+      labs_hero_btn2_text: data?.labs_hero_btn2_text ?? null,
+
+      // Labs – Page Intro
+      labs_page_title: data?.labs_page_title ?? null,
+      labs_page_subtitle: data?.labs_page_subtitle ?? null,
+      labs_intro_description: data?.labs_intro_description ?? null,
+      labs_intro_image_url: data?.labs_intro_image_url ?? null,
+      labs_intro_btn_text: data?.labs_intro_btn_text ?? null,
+      labs_intro_feature1_title: data?.labs_intro_feature1_title ?? null,
+      labs_intro_feature1_desc: data?.labs_intro_feature1_desc ?? null,
+      labs_intro_feature2_title: data?.labs_intro_feature2_title ?? null,
+      labs_intro_feature2_desc: data?.labs_intro_feature2_desc ?? null,
+      labs_intro_feature3_title: data?.labs_intro_feature3_title ?? null,
+      labs_intro_feature3_desc: data?.labs_intro_feature3_desc ?? null,
+      labs_intro_feature4_title: data?.labs_intro_feature4_title ?? null,
+      labs_intro_feature4_desc: data?.labs_intro_feature4_desc ?? null,
+
+      // Labs – Spotlights & Careers
+      labs_spotlights: data?.labs_spotlights ?? null,
+      labs_careers_title: data?.labs_careers_title ?? null,
+      labs_careers_description: data?.labs_careers_description ?? null,
+      labs_careers_btn_text: data?.labs_careers_btn_text ?? null,
+
+      // Labs – CTA
+      labs_cta_title: data?.labs_cta_title ?? null,
+      labs_cta_description: data?.labs_cta_description ?? null,
+      labs_cta_btn_text: data?.labs_cta_btn_text ?? null,
+
       // Labs – Initiatives, Rigor, Mentorship
       labs_initiatives: data?.labs_initiatives ?? null,
       labs_rigor_title: data?.labs_rigor_title ?? null,
@@ -216,6 +250,40 @@ export const fetchSiteSettings = async (): Promise<SiteSettingsRealtimePayload> 
       homeRecentWorkTitle: null,
       homeRecentWorkBadge: null,
       homeRecentWorkItems: null,
+
+      // Labs – Hero
+      labs_hero_title: null,
+      labs_hero_subtitle: null,
+      labs_hero_description: null,
+      labs_hero_image_url: null,
+      labs_hero_btn1_text: null,
+      labs_hero_btn2_text: null,
+
+      // Labs – Page Intro
+      labs_page_title: null,
+      labs_page_subtitle: null,
+      labs_intro_description: null,
+      labs_intro_image_url: null,
+      labs_intro_btn_text: null,
+      labs_intro_feature1_title: null,
+      labs_intro_feature1_desc: null,
+      labs_intro_feature2_title: null,
+      labs_intro_feature2_desc: null,
+      labs_intro_feature3_title: null,
+      labs_intro_feature3_desc: null,
+      labs_intro_feature4_title: null,
+      labs_intro_feature4_desc: null,
+
+      // Labs – Spotlights & Careers
+      labs_spotlights: null,
+      labs_careers_title: null,
+      labs_careers_description: null,
+      labs_careers_btn_text: null,
+
+      // Labs – CTA
+      labs_cta_title: null,
+      labs_cta_description: null,
+      labs_cta_btn_text: null,
 
       // Labs – Initiatives, Rigor, Mentorship
       labs_initiatives: null,

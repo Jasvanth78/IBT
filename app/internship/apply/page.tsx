@@ -52,6 +52,10 @@ export default function InternshipApplyPage() {
     let finalValue = value;
     if (name === 'phone') {
       finalValue = value.replace(/[^\d+]/g, '');
+    } else if (name === 'name') {
+      finalValue = value.replace(/[^a-zA-Z\s]/g, '');
+    } else if (name === 'email') {
+      finalValue = value.replace(/[^a-zA-Z0-9@.]/g, '');
     }
     setFormData(prev => ({ ...prev, [name]: finalValue }));
   };
@@ -86,6 +90,18 @@ export default function InternshipApplyPage() {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.phone || !formData.jobType || !resume) {
       showToast('Please fill in all details and upload your resume', 'error');
+      return;
+    }
+
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    if (!nameRegex.test(formData.name.trim())) {
+      showToast('Full Name must contain only letters and spaces', 'error');
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      showToast('Please enter a valid email address containing "@"', 'error');
       return;
     }
 
@@ -249,8 +265,7 @@ export default function InternshipApplyPage() {
               </div>
 
               <h2 className="text-[32px] sm:text-[36px] font-black !text-white leading-[1.1] mb-6 tracking-tight">
-                Start Your<br />
-                <span className="text-[#e63946]">Career Journey</span>
+                Start Your <span className="text-[#e63946]">Career Journey</span>
               </h2>
 
               <p className="text-[15px] text-slate-300 font-medium leading-relaxed mb-12 max-w-sm">
@@ -346,7 +361,7 @@ export default function InternshipApplyPage() {
                             value={formData.name}
                             onChange={handleInputChange}
                             required
-                            placeholder="e.g. John Doe"
+                            placeholder="Eg. John Doe"
                             className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-white text-[14px] text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#e63946] transition-all shadow-sm"
                           />
                         </div>
@@ -365,7 +380,7 @@ export default function InternshipApplyPage() {
                             value={formData.email}
                             onChange={handleInputChange}
                             required
-                            placeholder="john@example.com"
+                            placeholder="Eg. john@example.com"
                             className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-white text-[14px] text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#e63946] transition-all shadow-sm"
                           />
                         </div>
@@ -385,7 +400,7 @@ export default function InternshipApplyPage() {
                             onChange={handleInputChange}
                             required
                             maxLength={12}
-                            placeholder="+91 98765 43210"
+                            placeholder="Eg. +91 98765 43210"
                             className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-white text-[14px] text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#e63946] transition-all shadow-sm"
                           />
                         </div>
@@ -450,7 +465,7 @@ export default function InternshipApplyPage() {
                             value={formData.skills}
                             onChange={handleInputChange}
                             required
-                            placeholder="e.g. React, Node.js, UI Design"
+                            placeholder="Eg. React, Node.js, UI Design"
                             className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-white text-[14px] text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#e63946] transition-all shadow-sm"
                           />
                         </div>
@@ -476,7 +491,7 @@ export default function InternshipApplyPage() {
                         required
                         maxLength={500}
                         rows={4}
-                        placeholder="Briefly tell us why you'd be a great fit for this role..."
+                        placeholder="Eg. Briefly tell us why you'd be a great fit for this role..."
                         className="w-full p-4 rounded-xl border border-slate-200 bg-white text-[14px] text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#e63946] transition-all shadow-sm resize-none"
                       />
                     </div>
@@ -527,13 +542,14 @@ export default function InternshipApplyPage() {
                     <button
                       type="submit"
                       disabled={otpLoading}
-                      className="w-full h-14 rounded-xl bg-[#e63946] text-white text-[14px] font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-red-700 transition-colors shadow-lg shadow-red-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="w-full min-h-[56px] py-3 px-4 rounded-xl bg-[#e63946] text-white text-[13px] sm:text-[14px] font-bold uppercase tracking-wider sm:tracking-widest flex items-center justify-center gap-2 sm:gap-3 hover:bg-red-700 transition-colors shadow-lg shadow-red-500/20 disabled:opacity-70 disabled:cursor-not-allowed leading-tight"
                     >
                       {otpLoading ? (
                         <FiLoader className="animate-spin" size={18} />
                       ) : (
                         <>
-                          <FiSend size={16} /> VERIFY & SUBMIT APPLICATION
+                          <FiSend size={16} className="shrink-0" /> 
+                          <span className="text-center">VERIFY & SUBMIT APPLICATION</span>
                         </>
                       )}
                     </button>

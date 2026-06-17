@@ -419,8 +419,8 @@ export default function AboutPage() {
               <span className="text-[16px] font-bold uppercase tracking-[0.15em] text-[#e63946]">
                 OUR JOURNEY IN NUMBERS
               </span>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight !text-white sm:text-[34px] mb-4 leading-[1.2]">
-                Milestones That <br className="hidden sm:block" />
+              <h2 className="mt-3 text-[22px] sm:text-[34px] font-extrabold tracking-tight !text-white mb-4 leading-[1.2] whitespace-nowrap lg:whitespace-normal">
+                Milestones That <br className="hidden lg:block" />
                 Define Our Journey
               </h2>
               <p className="text-[13px] text-slate-300/80 leading-relaxed">
@@ -532,7 +532,7 @@ export default function AboutPage() {
                       <div
                         ref={sliderRef}
                         onScroll={checkScroll}
-                        className="flex overflow-x-auto gap-5 sm:gap-6 pb-6 pt-4 px-[calc(50%-130px)] lg:px-8 snap-x snap-mandatory hide-scrollbar w-full"
+                        className="flex overflow-x-auto gap-5 sm:gap-6 pb-6 pt-4 px-[calc(50%-130px)] md:px-4 lg:px-8 snap-x snap-mandatory hide-scrollbar w-full"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                       >
                         {members.map((member) => (

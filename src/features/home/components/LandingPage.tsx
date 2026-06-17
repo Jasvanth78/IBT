@@ -30,8 +30,8 @@ export function LandingPage() {
               className="lg:col-span-6 max-w-2xl xl:max-w-none xl:pr-8"
             >
               <h1 className="text-[24px] sm:text-[28px] lg:text-[40px] font-extrabold leading-[1.1] text-[#1d3557] tracking-tight mb-6">
-                Building Intelligent <br />
-                <span className="text-[#e63946] whitespace-nowrap">
+                Building Intelligent <br className="hidden sm:block" />
+                <span className="text-[#e63946] inline-block mt-1 sm:mt-0">
                   Software for a Digital Future
                 </span>
               </h1>

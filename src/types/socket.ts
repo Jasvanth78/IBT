@@ -80,6 +80,40 @@ export interface SiteSettingsRealtimePayload {
   homeServicesTitle?: string | null;
   homeServicesBadge?: string | null;
 
+  // Labs – Hero
+  labs_hero_title?: string | null;
+  labs_hero_subtitle?: string | null;
+  labs_hero_description?: string | null;
+  labs_hero_image_url?: string | null;
+  labs_hero_btn1_text?: string | null;
+  labs_hero_btn2_text?: string | null;
+
+  // Labs – Page Intro
+  labs_page_title?: string | null;
+  labs_page_subtitle?: string | null;
+  labs_intro_description?: string | null;
+  labs_intro_image_url?: string | null;
+  labs_intro_btn_text?: string | null;
+  labs_intro_feature1_title?: string | null;
+  labs_intro_feature1_desc?: string | null;
+  labs_intro_feature2_title?: string | null;
+  labs_intro_feature2_desc?: string | null;
+  labs_intro_feature3_title?: string | null;
+  labs_intro_feature3_desc?: string | null;
+  labs_intro_feature4_title?: string | null;
+  labs_intro_feature4_desc?: string | null;
+
+  // Labs – Spotlights & Careers
+  labs_spotlights?: any[] | null;
+  labs_careers_title?: string | null;
+  labs_careers_description?: string | null;
+  labs_careers_btn_text?: string | null;
+
+  // Labs – CTA
+  labs_cta_title?: string | null;
+  labs_cta_description?: string | null;
+  labs_cta_btn_text?: string | null;
+
   // Labs – Initiatives, Rigor, Mentorship
   labs_initiatives?: any[] | null;
   labs_rigor_title?: string | null;

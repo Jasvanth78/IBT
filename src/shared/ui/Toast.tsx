@@ -59,7 +59,7 @@ export function Toast({
       aria-live="polite"
       aria-atomic="true"
     >
-      <div className={cx('pointer-events-auto rounded-2xl border shadow-[var(--ui-shadow-md)]', styles.panel)}>
+      <div className={cx(open ? 'pointer-events-auto' : 'pointer-events-none', 'rounded-2xl border shadow-[var(--ui-shadow-md)]', styles.panel)}>
         <div className="flex items-start gap-3 p-4">
           <div className={cx('mt-0.5 rounded-lg p-2', styles.iconWrap)}>{styles.icon}</div>
 

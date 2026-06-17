@@ -58,21 +58,14 @@ export function InternshipTestimonials({
   )
 
   const goNext = useCallback(() => {
-    const next = currentPage >= totalPages - 1 ? 0 : currentPage + 1
-    goTo(next, 'next')
+    if (currentPage >= totalPages - 1) return
+    goTo(currentPage + 1, 'next')
   }, [currentPage, totalPages, goTo])
 
   const goPrev = useCallback(() => {
-    const prev = currentPage <= 0 ? totalPages - 1 : currentPage - 1
-    goTo(prev, 'prev')
+    if (currentPage <= 0) return
+    goTo(currentPage - 1, 'prev')
   }, [currentPage, totalPages, goTo])
-
-  // Auto-play: rotate every 5 seconds
-  useEffect(() => {
-    if (totalPages <= 1) return
-    const interval = setInterval(goNext, 5000)
-    return () => clearInterval(interval)
-  }, [goNext, totalPages])
 
   // Current page slice
   const start = currentPage * perPage
@@ -102,15 +95,25 @@ export function InternshipTestimonials({
             <div className="flex items-center gap-2 mt-6 md:mt-0">
               <button
                 onClick={goPrev}
+                disabled={currentPage <= 0}
                 aria-label="Previous testimonials"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 hover:text-[#0f172a] hover:border-slate-300 shadow-sm transition-all hover:shadow-md"
+                className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition-all shadow-sm ${
+                  currentPage <= 0
+                    ? 'bg-slate-50 text-slate-300 cursor-not-allowed opacity-60'
+                    : 'bg-white text-slate-500 hover:text-[#0f172a] hover:border-slate-300 hover:shadow-md'
+                }`}
               >
                 <FiChevronLeft size={18} />
               </button>
               <button
                 onClick={goNext}
+                disabled={currentPage >= totalPages - 1}
                 aria-label="Next testimonials"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-[#e63946] text-white hover:bg-[#c1121f] shadow-sm transition-all hover:shadow-md"
+                className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition-all shadow-sm ${
+                  currentPage >= totalPages - 1
+                    ? 'bg-slate-50 text-slate-300 cursor-not-allowed opacity-60'
+                    : 'bg-white text-slate-500 hover:text-[#0f172a] hover:border-slate-300 hover:shadow-md'
+                }`}
               >
                 <FiChevronRight size={18} />
               </button>

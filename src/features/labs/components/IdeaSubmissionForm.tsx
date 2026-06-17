@@ -32,9 +32,15 @@ export function IdeaSubmissionForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
+    let finalValue = value;
+    if (name === 'firstName' || name === 'lastName') {
+      finalValue = value.replace(/[^a-zA-Z\s]/g, '');
+    } else if (name === 'email') {
+      finalValue = value.replace(/[^a-zA-Z0-9@.]/g, '');
+    }
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : finalValue
     }));
   };
 
@@ -65,6 +71,22 @@ export function IdeaSubmissionForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    if (!nameRegex.test(formData.firstName.trim())) {
+      setError('First name must contain only letters and spaces.');
+      return;
+    }
+    if (formData.lastName.trim() && !nameRegex.test(formData.lastName.trim())) {
+      setError('Last name must contain only letters and spaces.');
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setError('Please enter a valid email address containing "@".');
+      return;
+    }
 
     if (formData.category === '' || formData.category === 'Select a category') {
       setError('Please select a valid category.');
@@ -157,7 +179,7 @@ export function IdeaSubmissionForm() {
               required
               value={formData.firstName}
               onChange={handleChange}
-              placeholder="Jane"
+              placeholder="Eg. Jane"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
             />
           </div>
@@ -168,7 +190,7 @@ export function IdeaSubmissionForm() {
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              placeholder="Doe"
+              placeholder="Eg. Doe"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
             />
           </div>
@@ -182,7 +204,7 @@ export function IdeaSubmissionForm() {
             required
             value={formData.email}
             onChange={handleChange}
-            placeholder="jane@example.com"
+            placeholder="Eg. jane@example.com"
             className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
           />
         </div>
@@ -207,7 +229,7 @@ export function IdeaSubmissionForm() {
               required
               value={formData.otherCategory}
               onChange={handleChange}
-              placeholder="Please specify..."
+              placeholder="Eg. Please specify..."
               className="w-full mt-3 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all animate-in fade-in slide-in-from-top-2"
             />
           )}
@@ -222,7 +244,7 @@ export function IdeaSubmissionForm() {
             required
             value={formData.ideaTitle}
             onChange={handleChange}
-            placeholder="Give your idea a short, clear title"
+            placeholder="Eg. Your idea title..."
             className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
           />
         </div>
@@ -236,7 +258,7 @@ export function IdeaSubmissionForm() {
               rows={5}
               value={formData.description}
               onChange={handleChange}
-              placeholder="What's the idea? What problem does it solve? How might it work?"
+              placeholder="Eg. What's the idea? What problem does it solve? How might it work?"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all resize-none"
               maxLength={1000}
             />

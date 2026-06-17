@@ -19,7 +19,9 @@ import {
 } from 'react-icons/fi';
 import * as FiIcons from 'react-icons/fi';
 import Link from 'next/link';
+
 import { InternshipTestimonials } from './InternshipTestimonials';
+import { InternshipJourneyTimeline } from './InternshipJourneyTimeline';
 
 export const dynamic = 'force-dynamic'
 
@@ -254,12 +256,12 @@ export default async function InternshipPage() {
                 >
                   Apply for Internship <FiArrowRight className="ml-2" />
                 </Link>
-                <Link
+                <a
                   href="#programs"
-                  className="w-full sm:w-auto inline-flex h-12 sm:h-14 px-8 bg-white text-[#0f172a] border border-slate-200 rounded-lg items-center justify-center text-[14px] font-bold hover:bg-slate-50 transition-colors shadow-sm"
+                  className="w-full sm:w-auto inline-flex h-12 sm:h-14 px-8 bg-white text-[#0f172a] border border-slate-200 rounded-lg items-center justify-center text-[14px] font-bold hover:bg-slate-50 transition-colors shadow-sm cursor-pointer"
                 >
                   Explore Programs <FiChevronDown className="ml-2" />
-                </Link>
+                </a>
               </div>
             </div>
 
@@ -274,20 +276,20 @@ export default async function InternshipPage() {
               </div>
 
               {/* Floating Badge */}
-              <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 flex items-center gap-5 min-w-[280px]">
-                <div className="w-14 h-14 rounded-xl bg-red-50 text-[#e63946] flex items-center justify-center shadow-inner">
-                  <FiUsers size={24} />
+              <div className="absolute -bottom-8 left-4 right-4 sm:right-auto sm:left-4 lg:-left-8 bg-white p-4 sm:p-6 rounded-2xl shadow-2xl border border-slate-100 flex items-center gap-4 sm:gap-5 sm:min-w-[280px] z-20">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-xl bg-red-50 text-[#e63946] flex items-center justify-center shadow-inner">
+                  <FiUsers size={24} className="scale-75 sm:scale-100" />
                 </div>
                 <div>
-                  <div className="text-[24px] font-black text-[#0f172a] leading-none mb-1">5000+</div>
-                  <div className="text-[12px] font-bold text-slate-500 mb-2">Interns Trained</div>
+                  <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-none mb-1">5000+</div>
+                  <div className="text-[11px] sm:text-[12px] font-bold text-slate-500 mb-2">Interns Trained</div>
                   {/* Tiny Avatar Group */}
                   <div className="flex -space-x-2">
-                    <img className="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Avatar 1" />
-                    <img className="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Avatar 2" />
-                    <img className="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Avatar 3" />
-                    <img className="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Avatar 4" />
-                    <div className="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-500">+</div>
+                    <img className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Avatar 1" />
+                    <img className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Avatar 2" />
+                    <img className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Avatar 3" />
+                    <img className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Avatar 4" />
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-500">+</div>
                   </div>
                 </div>
               </div>
@@ -304,43 +306,43 @@ export default async function InternshipPage() {
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-lg border border-slate-100 py-8 px-6 lg:px-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
 
-            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-start">
-              <div className="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
+            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center">
+              <div className="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0">
                 <FiBriefcase size={20} />
               </div>
-              <div>
+              <div className="w-[100px] sm:w-[130px] lg:w-auto text-left">
                 <div className="text-[24px] font-black text-[#0f172a] leading-tight">20+</div>
-                <div className="text-[12px] font-medium text-slate-500">Programs</div>
+                <div className="text-[12px] font-medium text-slate-500 whitespace-nowrap">Programs</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-center">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center">
+            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
                 <FiUsers size={20} />
               </div>
-              <div>
+              <div className="w-[100px] sm:w-[130px] lg:w-auto text-left">
                 <div className="text-[24px] font-black text-[#0f172a] leading-tight">5000+</div>
-                <div className="text-[12px] font-medium text-slate-500">Interns Trained</div>
+                <div className="text-[12px] font-medium text-slate-500 whitespace-nowrap">Interns Trained</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-center">
-              <div className="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center">
+            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center">
+              <div className="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center shrink-0">
                 <FiAward size={20} />
               </div>
-              <div>
+              <div className="w-[100px] sm:w-[130px] lg:w-auto text-left">
                 <div className="text-[24px] font-black text-[#0f172a] leading-tight">99%+</div>
-                <div className="text-[12px] font-medium text-slate-500">Success Rate</div>
+                <div className="text-[12px] font-medium text-slate-500 whitespace-nowrap">Success Rate</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center md:justify-end">
-              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center">
+            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center">
+              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center shrink-0">
                 <FiCheckCircle size={20} />
               </div>
-              <div>
+              <div className="w-[100px] sm:w-[130px] lg:w-auto text-left">
                 <div className="text-[24px] font-black text-[#0f172a] leading-tight">100%</div>
-                <div className="text-[12px] font-medium text-slate-500">Hands-on Experience</div>
+                <div className="text-[12px] font-medium text-slate-500 whitespace-nowrap">Hands-on Experience</div>
               </div>
             </div>
 
@@ -363,15 +365,11 @@ export default async function InternshipPage() {
             </h2>
           </div>
 
-          <div className="relative">
-            {/* Horizontal Line for Desktop */}
-            <div className="hidden lg:block absolute top-[64px] left-[10%] right-[10%] h-[2px] bg-slate-100 z-0 border-t-2 border-dashed border-slate-200" />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+          <InternshipJourneyTimeline>
 
               {/* Step 01 */}
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">01</div>
+              <div className="relative z-10 flex flex-col items-center text-center shrink-0 w-[260px] sm:w-[300px] lg:w-auto snap-center">
+                <div className="text-[36px] font-black text-red-500 mb-2 leading-none">01</div>
                 <div className="w-14 h-14 rounded-full bg-red-50 text-red-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
                   <FiMonitor size={20} />
                 </div>
@@ -382,8 +380,8 @@ export default async function InternshipPage() {
               </div>
 
               {/* Step 02 */}
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">02</div>
+              <div className="relative z-10 flex flex-col items-center text-center shrink-0 w-[260px] sm:w-[300px] lg:w-auto snap-center">
+                <div className="text-[36px] font-black text-blue-500 mb-2 leading-none">02</div>
                 <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
                   <FiUserPlus size={20} />
                 </div>
@@ -394,8 +392,8 @@ export default async function InternshipPage() {
               </div>
 
               {/* Step 03 */}
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">03</div>
+              <div className="relative z-10 flex flex-col items-center text-center shrink-0 w-[260px] sm:w-[300px] lg:w-auto snap-center">
+                <div className="text-[36px] font-black text-yellow-500 mb-2 leading-none">03</div>
                 <div className="w-14 h-14 rounded-full bg-yellow-50 text-yellow-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
                   <FiBookOpen size={20} />
                 </div>
@@ -406,8 +404,8 @@ export default async function InternshipPage() {
               </div>
 
               {/* Step 04 */}
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">04</div>
+              <div className="relative z-10 flex flex-col items-center text-center shrink-0 w-[260px] sm:w-[300px] lg:w-auto snap-center">
+                <div className="text-[36px] font-black text-purple-500 mb-2 leading-none">04</div>
                 <div className="w-14 h-14 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
                   <FiCode size={20} />
                 </div>
@@ -418,8 +416,8 @@ export default async function InternshipPage() {
               </div>
 
               {/* Step 05 */}
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="text-[36px] font-black text-slate-100 mb-2 leading-none">05</div>
+              <div className="relative z-10 flex flex-col items-center text-center shrink-0 w-[260px] sm:w-[300px] lg:w-auto snap-center">
+                <div className="text-[36px] font-black text-green-500 mb-2 leading-none">05</div>
                 <div className="w-14 h-14 rounded-full bg-green-50 text-green-500 flex items-center justify-center shadow-sm mb-5 border-[4px] border-white ring-1 ring-slate-100">
                   <FiAward size={20} />
                 </div>
@@ -429,15 +427,14 @@ export default async function InternshipPage() {
                 </p>
               </div>
 
-            </div>
-          </div>
+          </InternshipJourneyTimeline>
         </div>
       </section>
 
       {/* =====================================================
           4. EXPLORE INTERNSHIP ROLES
       ===================================================== */}
-      <section id="programs" className="py-10 lg:py-16 bg-[#f8faff]">
+      <section id="programs" className="py-10 lg:py-16 bg-[#f8faff] scroll-mt-24">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">

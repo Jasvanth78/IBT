@@ -203,7 +203,6 @@ small,
 .rich-text-content h6 {
   font-family: inherit;
 }
-
 /* Ensure buttons/labels inherit base font for consistency */
 button,
 input,
@@ -218,8 +217,8 @@ label {
 .rich-text-content,
 .html-content p,
 .rich-text-content p {
-  white-space: pre-wrap !important;
-  word-wrap: break-word !important;
+  white-space: normal !important;
+  word-break: normal !important;
   overflow-wrap: break-word !important;
 }
 
@@ -228,5 +227,5 @@ body.mobile-nav-open .whatsapp-btn-wrapper {
   opacity: 0 !important;
   pointer-events: none !important;
 }
-html { scroll-behavior: smooth; }
 
+html { scroll-behavior: smooth; }

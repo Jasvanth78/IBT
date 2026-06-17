@@ -6,6 +6,7 @@ import { apiClient, type PaginationMeta, type PublicLabProject, type PublicPartn
 import { Loader } from '@/src/shared/ui';
 import { motion } from 'framer-motion';
 import { resolveImageUrl } from '@/src/utils/image';
+import { useSocketSettings } from '@/src/providers/SocketSettingsProvider';
 import {
   FiArrowRight,
   FiLayers,
@@ -35,6 +36,14 @@ import {
   FaCheckCircle,
   FaChartLine
 } from 'react-icons/fa';
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+const cleanHtml = (html: string) => {
+  if (!html) return '';
+  return html.replace(/&nbsp;/g, ' ').replace(/\u00a0/g, ' ');
+};
 
 /* =========================================================
    SUPPORTING COMPONENTS
@@ -134,13 +143,27 @@ export function AllLabsPage() {
   const [meta, setMeta] = useState<PaginationMeta>({ page: 1, limit: 6, totalPages: 1, totalItems: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [settings, setSettings] = useState<Record<string, any>>({});
+  const { settings } = useSocketSettings();
 
   const loadingRef = useRef(false);
 
   // Carousel State
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(4);
+
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  const scrollTimelineLeft = () => {
+    if (timelineRef.current) {
+      timelineRef.current.scrollBy({ left: -280, behavior: 'smooth' });
+    }
+  };
+
+  const scrollTimelineRight = () => {
+    if (timelineRef.current) {
+      timelineRef.current.scrollBy({ left: 280, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const updateVisible = () => {
@@ -161,14 +184,12 @@ export function AllLabsPage() {
     setLoading(true);
 
     try {
-      const [projectsResult, settingsResult, partnersResult] = await Promise.all([
+      const [projectsResult, partnersResult] = await Promise.all([
         apiClient.getProjects(1, 10),
-        apiClient.getSettings(),
         apiClient.getPartners(1, 100)
       ]);
 
       setProjects(projectsResult.items || []);
-      setSettings((settingsResult as Record<string, any>) ?? {});
       setPartners(partnersResult.items || []);
     } catch (err) {
       console.warn("Failed to load lab data", err);
@@ -259,8 +280,8 @@ export function AllLabsPage() {
   const stackedCards = useMemo(() => initiatives.filter((c: any) => c.layout !== 'dark-large'), [initiatives]);
 
   // Technical Rigor Section
-  const rigorTitle = settings['labs_rigor_title'] || 'Technical Rigor';
-  const rigorDesc = settings['labs_rigor_description'] || 'Our laboratory environment is built on the principles of mechanical and digital precision. We believe that true innovation happens at the intersection of rigorous testing and creative problem-solving.';
+  const rigorTitle = cleanHtml(settings['labs_rigor_title'] || 'Technical Rigor');
+  const rigorDesc = cleanHtml(settings['labs_rigor_description'] || 'Our laboratory environment is built on the principles of mechanical and digital precision. We believe that true innovation happens at the intersection of rigorous testing and creative problem-solving.');
   const rigorPoints = useMemo(() => {
     const raw = settings['labs_rigor_points'];
     if (Array.isArray(raw) && raw.length > 0) return raw;
@@ -278,14 +299,34 @@ export function AllLabsPage() {
   }, [settings]);
   const rigorImage = settings['labs_rigor_image'] || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800';
 
-  // Mentorship-First Section
-  const mentorshipTitle = settings['labs_mentorship_title'] || 'Mentorship-First';
-  const mentorshipDesc = settings['labs_mentorship_description'] || 'Every project is guided by industry veterans. This isn\'t just about learning tools; it\'s about adopting the mindset of a senior architect. We foster an environment of constant feedback and high-stakes accountability.';
-  const mentorshipImage = settings['labs_mentorship_image'] || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800';
-  const mentorshipQuote = settings['labs_mentorship_quote'] || 'The laboratory isn\'t just a place of work; it\'s a sanctuary for those who pursue technical excellence with religious devotion.';
-  const mentorshipQuoteAuthor = settings['labs_mentorship_quote_author'] || 'Lead Researcher';
-  const mentorshipQuoteRole = settings['labs_mentorship_quote_role'] || 'IBT LABS CORE TEAM';
+  // Mentorship
+  const mentorshipTitle = cleanHtml(settings['labs_mentorship_title'] || 'Mentorship-First Approach');
+  const mentorshipDesc = cleanHtml(settings['labs_mentorship_description'] || 'We pair emerging talent with seasoned industry veterans. This ensures that every project is guided by experience while being fueled by fresh perspectives.');
+  const mentorshipImage = settings['labs_mentorship_image'] || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80';
+  const mentorshipQuote = cleanHtml(settings['labs_mentorship_quote'] || 'Innovation isn\'t just about technology. It\'s about the people who build it and the minds we nurture along the way.');
+  const mentorshipQuoteAuthor = cleanHtml(settings['labs_mentorship_quote_author'] || 'Dr. Sarah Jenkins');
+  const mentorshipQuoteRole = cleanHtml(settings['labs_mentorship_quote_role'] || 'IBT LABS CORE TEAM');
   const mentorshipQuoteAvatar = settings['labs_mentorship_quote_avatar'] || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80';
+
+  // Hero Section
+  const rawHeroTitle = settings['labs_hero_title'];
+  const heroTitle = (!rawHeroTitle || rawHeroTitle.trim() === 'IBT LABS')
+    ? 'Precision-led<br /><span class="text-[#e63946]">Future Engineering</span>'
+    : cleanHtml(rawHeroTitle);
+  const heroDescription = cleanHtml(settings['labs_hero_description'] || 'Empowering the next generation of researchers and engineers through precision-led skill development and forward-thinking technological innovation.');
+  const heroImageUrl = settings['labs_hero_image_url'] || 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200';
+  const rawHeroBtnText = settings['labs_hero_btn1_text'];
+  const heroBtnText = (!rawHeroBtnText || rawHeroBtnText.trim() === '' || rawHeroBtnText.trim() === 'Collaborate')
+    ? 'Apply Now'
+    : cleanHtml(rawHeroBtnText);
+
+  // CTA Section
+  const ctaTitle = cleanHtml(settings['labs_cta_title'] || 'Ready to Innovate and Create Impact?');
+  const ctaDescription = cleanHtml(settings['labs_cta_description'] || 'Join IBT Labs and be a part of a thriving community of innovators.');
+  const rawCtaBtnText = settings['labs_cta_btn_text'];
+  const ctaBtnText = (!rawCtaBtnText || rawCtaBtnText.trim() === '' || rawCtaBtnText.trim() === 'Collaborate')
+    ? 'Submit your idea'
+    : cleanHtml(rawCtaBtnText);
 
   const showPrev = () => {
     setCarouselIndex((prev) => (prev <= 0 ? Math.max(0, portfolioItems.length - visibleCount) : prev - 1));
@@ -312,7 +353,7 @@ export function AllLabsPage() {
       {/* =====================================================
           1. HERO SECTION
       ===================================================== */}
-      <section className="relative pt-12 pb-16 lg:pt-20 lg:pb-24 bg-[#f8faff]">
+      <section className="relative pt-12 pb-28 sm:pb-36 lg:pt-20 lg:pb-24 bg-[#f8faff]">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
@@ -320,14 +361,15 @@ export function AllLabsPage() {
             <div className="relative z-10 max-w-xl">
 
 
-              <h1 className="text-[24px] sm:text-[28px] lg:text-[40px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
-                Precision-led<br />
-                <span className="text-[#e63946]">Future Engineering</span>
-              </h1>
+              <h1 
+                className="text-[24px] sm:text-[28px] lg:text-[40px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6"
+                dangerouslySetInnerHTML={{ __html: heroTitle }}
+              />
 
-              <p className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
-                Empowering the next generation of researchers and engineers through precision-led skill development and forward-thinking technological innovation.
-              </p>
+              <div 
+                className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md [&>p]:mb-4 last:[&>p]:mb-0"
+                dangerouslySetInnerHTML={{ __html: heroDescription }}
+              />
 
               <div className="flex flex-col gap-6 mb-10">
                 <div className="flex items-center gap-4">
@@ -336,7 +378,7 @@ export function AllLabsPage() {
                   </div>
                   <div>
                     <h4 className="text-[14px] font-bold text-[#0f172a] mb-1">Project-Based</h4>
-                    <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest">REAL-WORLD TECHNICAL DELIVERABLES.</p>
+                    <p className="text-[13px] text-slate-500 font-medium">Real-world technical deliverables.</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -345,7 +387,7 @@ export function AllLabsPage() {
                   </div>
                   <div>
                     <h4 className="text-[14px] font-bold text-[#0f172a] mb-1">Pure Skill</h4>
-                    <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest">MENTORSHIP-LED ACQUISITION.</p>
+                    <p className="text-[13px] text-slate-500 font-medium">Mentorship-led acquisition.</p>
                   </div>
                 </div>
               </div>
@@ -354,27 +396,27 @@ export function AllLabsPage() {
                 href="/internship/apply"
                 className="inline-flex h-12 sm:h-14 px-8 bg-[#e63946] text-white rounded-lg items-center justify-center text-[14px] font-bold shadow-lg shadow-red-500/20 hover:bg-[#c1121f] transition-colors"
               >
-                Apply Now <FiArrowRight className="ml-2" />
+                {heroBtnText} <FiArrowRight className="ml-2" />
               </Link>
             </div>
 
             {/* Right Image & Badge */}
-            <div className="relative z-10 lg:pl-10">
+            <div className="relative z-10 lg:pl-10 mt-12 lg:mt-0">
               <div className="rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-slate-100">
                 <img
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200"
+                  src={resolveImageUrl(heroImageUrl)}
                   alt="Laboratory Engineering"
-                  className="w-full h-[550px] object-cover"
+                  className="w-full h-[300px] sm:h-[380px] lg:h-[450px] object-cover"
                 />
               </div>
 
               {/* Floating Badge (Left offset) */}
-              <div className="absolute top-[60%] -left-12 bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 max-w-[260px]">
-                <div className="w-12 h-12 rounded-xl bg-red-50 text-[#e63946] flex items-center justify-center mb-4">
-                  <FiAward size={24} />
+              <div className="absolute top-[55%] sm:top-[60%] left-4 sm:left-6 lg:-left-12 lg:top-[60%] bg-white p-4 sm:p-5 lg:p-6 rounded-2xl shadow-2xl border border-slate-100 max-w-[220px] sm:max-w-[260px] z-20">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-red-50 text-[#e63946] flex items-center justify-center mb-3 sm:mb-4">
+                  <FiAward size={20} className="sm:w-[24px] sm:h-[24px]" />
                 </div>
-                <h4 className="text-[16px] font-bold text-[#0f172a] mb-2">Certification</h4>
-                <p className="text-[13px] text-slate-500 font-medium">
+                <h4 className="text-[14px] sm:text-[16px] font-bold text-[#0f172a] mb-1 sm:mb-2">Certification</h4>
+                <p className="text-[11px] sm:text-[13px] text-slate-500 font-medium leading-relaxed">
                   Accredited recognition of laboratory proficiency.
                 </p>
               </div>
@@ -389,37 +431,37 @@ export function AllLabsPage() {
       ===================================================== */}
       <section className="relative z-20 pb-16">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#0f172a] rounded-[2rem] shadow-2xl py-10 px-6 lg:px-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-700/50">
+          <div className="bg-[#0f172a] rounded-[2rem] shadow-2xl py-6 px-4 sm:py-8 sm:px-6 lg:py-10 lg:px-12 grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-0 lg:divide-x lg:divide-slate-700/50">
 
-            <div className="flex flex-col md:flex-row items-center gap-4 justify-center">
-              <FaRocket className="text-white text-3xl opacity-80" />
-              <div className="text-center md:text-left">
-                <div className="text-[28px] font-black text-white leading-tight">50+</div>
-                <div className="text-[12px] font-medium text-slate-300">Research Projects</div>
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 justify-center text-center sm:text-left">
+              <FaRocket className="text-white text-xl sm:text-2xl opacity-80" />
+              <div>
+                <div className="text-[20px] sm:text-[24px] lg:text-[28px] font-black text-white leading-tight">50+</div>
+                <div className="text-[10px] sm:text-[11px] lg:text-[12px] font-medium text-slate-300">Research Projects</div>
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-4 justify-center pt-8 md:pt-0">
-              <FaUserGraduate className="text-white text-3xl opacity-80" />
-              <div className="text-center md:text-left">
-                <div className="text-[28px] font-black text-white leading-tight">5000+</div>
-                <div className="text-[12px] font-medium text-slate-300">Students Trained</div>
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 justify-center text-center sm:text-left lg:pl-6">
+              <FaUserGraduate className="text-white text-xl sm:text-2xl opacity-80" />
+              <div>
+                <div className="text-[20px] sm:text-[24px] lg:text-[28px] font-black text-white leading-tight">5000+</div>
+                <div className="text-[10px] sm:text-[11px] lg:text-[12px] font-medium text-slate-300">Students Trained</div>
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-4 justify-center pt-8 md:pt-0">
-              <FaLightbulb className="text-white text-3xl opacity-80" />
-              <div className="text-center md:text-left">
-                <div className="text-[28px] font-black text-white leading-tight">15+</div>
-                <div className="text-[12px] font-medium text-slate-300">Live Innovations</div>
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 justify-center text-center sm:text-left lg:pl-6">
+              <FaLightbulb className="text-white text-xl sm:text-2xl opacity-80" />
+              <div>
+                <div className="text-[20px] sm:text-[24px] lg:text-[28px] font-black text-white leading-tight">15+</div>
+                <div className="text-[10px] sm:text-[11px] lg:text-[12px] font-medium text-slate-300">Live Innovations</div>
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-4 justify-center pt-8 md:pt-0">
-              <FaHandshake className="text-white text-3xl opacity-80" />
-              <div className="text-center md:text-left">
-                <div className="text-[28px] font-black text-white leading-tight">20+</div>
-                <div className="text-[12px] font-medium text-slate-300">Industry Collaborations</div>
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 justify-center text-center sm:text-left lg:pl-6">
+              <FaHandshake className="text-white text-xl sm:text-2xl opacity-80" />
+              <div>
+                <div className="text-[20px] sm:text-[24px] lg:text-[28px] font-black text-white leading-tight">20+</div>
+                <div className="text-[10px] sm:text-[11px] lg:text-[12px] font-medium text-slate-300">Industry Collaborations</div>
               </div>
             </div>
 
@@ -449,7 +491,7 @@ export function AllLabsPage() {
             {/* Left large cards */}
             <div className="lg:col-span-7 flex flex-col gap-6">
               {largeCards.map((card: any) => (
-                <div key={card.id} className="bg-[#0f172a] rounded-[2rem] overflow-hidden relative shadow-lg group min-h-[450px] flex-1 flex flex-col justify-end">
+                <div key={card.id} className="bg-[#0f172a] rounded-[2rem] overflow-hidden relative shadow-lg group min-h-[300px] sm:min-h-[380px] lg:min-h-[450px] flex-1 flex flex-col justify-end">
                   {card.imageUrl && (
                     <img
                       src={resolveImageUrl(card.imageUrl)}
@@ -459,16 +501,16 @@ export function AllLabsPage() {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/60 to-transparent pointer-events-none" />
 
-                  <div className="relative p-8 sm:p-10 z-10">
+                  <div className="relative p-6 sm:p-8 lg:p-10 z-10">
                     {card.badge && (
-                      <div className="inline-block bg-[#e63946] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+                      <div className="inline-block bg-[#e63946] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3 sm:mb-4">
                         {card.badge}
                       </div>
                     )}
-                    <h3 className="text-[28px] sm:text-[36px] font-black !text-white leading-tight mb-3">
+                    <h3 className="text-[22px] sm:text-[30px] lg:text-[36px] font-black !text-white leading-tight mb-2 sm:mb-3">
                       {card.title}
                     </h3>
-                    <div className="text-[14px] text-slate-300 font-medium max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
+                    <div className="text-[13px] sm:text-[14px] text-slate-300 font-medium max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
                     {card.btnText && (
                       <Link href={card.link || '#'} className="mt-4 inline-flex items-center gap-1 text-[13px] font-bold text-[#e63946] hover:gap-2 transition-all target='_blank' ">
                         {card.btnText} <FiArrowRight />
@@ -493,7 +535,7 @@ export function AllLabsPage() {
 
                       <div className="mt-14 relative z-10 mt-5">
                         <h4 className="text-[24px] font-black mb-2 text-black">{card.title}</h4>
-                        <div className="text-[13px] text-red-100 font-medium mb-8 max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
+                        <div className="text-[13px] text-red-100 font-medium mb-8 max-w-sm md:max-w-none lg:max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
                         <div className="flex gap-4">
 
                         </div>
@@ -534,27 +576,40 @@ export function AllLabsPage() {
       <section className="py-12 lg:py-16 bg-white border-y border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
-          <div className="mb-16">
-            <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
-              OUR RESEARCH PROCESS
-            </h3>
+          <div className="mb-16 flex flex-row items-end justify-between gap-4">
+            <div>
+              <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
+                OUR RESEARCH PROCESS
+              </h3>
+            </div>
+
+            {/* Navigation Arrows (Moved to header) */}
+            <div className="flex items-center gap-2 lg:hidden shrink-0 pb-1">
+              <button 
+                onClick={scrollTimelineLeft}
+                className="w-10 h-10 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all"
+              >
+                <FiChevronLeft size={20} />
+              </button>
+              <button 
+                onClick={scrollTimelineRight}
+                className="w-10 h-10 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all"
+              >
+                <FiChevronRight size={20} />
+              </button>
+            </div>
           </div>
 
           <div className="relative flex items-center">
-
-            {/* Arrows */}
-            <button className="absolute left-0 z-20 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-900 shadow-sm">
-              <FiChevronLeft />
-            </button>
-            <button className="absolute right-0 z-20 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-900 shadow-sm">
-              <FiChevronRight />
-            </button>
 
             {/* Timeline Line */}
             <div className="absolute top-[30px] left-10 right-10 h-[2px] bg-slate-100 z-0" />
 
             {/* Timeline Steps */}
-            <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 px-10">
+            <div 
+              ref={timelineRef}
+              className="w-full flex lg:grid lg:grid-cols-6 gap-6 px-10 overflow-x-auto snap-x snap-mandatory lg:overflow-visible pb-4 custom-scrollbar"
+            >
 
               {[
                 { num: '01', title: 'Idea Discovery', desc: 'Identify real-world problems worth solving.', icon: <FaLightbulb />, color: 'text-blue-500 bg-blue-50 border-blue-100' },
@@ -564,7 +619,7 @@ export function AllLabsPage() {
                 { num: '05', title: 'Implementation', desc: 'Deploy and implement in real environments.', icon: <FaRocket />, color: 'text-orange-500 bg-orange-50 border-orange-100' },
                 { num: '06', title: 'Impact & Scale', desc: 'Creating scalable impact and innovation.', icon: <FiAward />, color: 'text-teal-500 bg-teal-50 border-teal-100' },
               ].map((step, i) => (
-                <div key={i} className="relative z-10 flex flex-col items-center text-center">
+                <div key={i} className="relative z-10 flex flex-col items-center text-center shrink-0 w-[200px] lg:w-auto snap-center">
                   <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-sm border-4 border-white ring-1 ring-slate-100 mb-6 ${step.color}`}>
                     <span className="text-xl">{step.icon}</span>
                   </div>
@@ -692,12 +747,14 @@ export function AllLabsPage() {
 
               {/* Text Content */}
               <div className="text-center md:text-left z-10">
-                <h2 className="text-[24px] sm:text-[32px] font-black !text-white leading-tight mb-2">
-                  Ready to Innovate<br className="hidden sm:block" /> and Create Impact?
-                </h2>
-                <p className="text-slate-300 text-[14px] font-medium max-w-sm mx-auto md:mx-0">
-                  Join IBT Labs and be a part of a thriving community of innovators.
-                </p>
+                <h2 
+                  className="text-[24px] sm:text-[32px] font-black !text-white leading-tight mb-2"
+                  dangerouslySetInnerHTML={{ __html: ctaTitle }}
+                />
+                <div 
+                  className="text-slate-300 text-[14px] font-medium max-w-sm mx-auto md:mx-0 [&>p]:mb-4 last:[&>p]:mb-0"
+                  dangerouslySetInnerHTML={{ __html: ctaDescription }}
+                />
               </div>
 
               {/* Button */}
@@ -706,7 +763,7 @@ export function AllLabsPage() {
                   href="/ibt-labs/submit-idea"
                   className="inline-flex h-12 bg-white text-[#e63946] rounded-lg px-8 items-center justify-center font-bold text-[14px] hover:bg-slate-50 transition-colors shadow-xl whitespace-nowrap"
                 >
-                  Submit your idea <FiArrowRight className="inline-block ml-2" />
+                  {ctaBtnText} <FiArrowRight className="inline-block ml-2" />
                 </Link>
 
               </div>
