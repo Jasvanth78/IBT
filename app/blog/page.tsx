@@ -2,6 +2,7 @@ import { apiClient } from '@/src/api/client'
 import { BlogList } from '@/src/features/blog/components/BlogList'
 import { FiArrowRight, FiFileText, FiGrid, FiUsers } from 'react-icons/fi'
 import Link from 'next/link'
+import { formatCategoryName } from '@/src/utils/category'
 
 export const dynamic = 'force-dynamic'
 
@@ -65,37 +66,37 @@ export default async function BlogPage() {
   const { items } = result
   const totalPosts = items.length
   const totalCategories = getCategoryCount(items)
-  
+
   // Find the latest featured post (do not fallback to latest if not featured)
   const featuredPost = items.find((blog) => blog.featured)
 
   return (
     <div className="min-h-screen bg-[#f8faff] text-slate-900 font-sans">
-      
+
       {/* =====================================================
           HERO SECTION
       ===================================================== */}
       <section className="relative pt-12 pb-8 lg:pt-20 lg:pb-12 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
           <div className={featuredPost ? "grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center" : "max-w-3xl mx-auto"}>
-            
+
             {/* Left Content */}
             <div className="relative z-10">
-              <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#e63946] mb-4">
+              <h3 className="text-[28px]font-bold uppercase tracking-[0.2em] !text-red-600 mb-4">
                 IBT BLOG
               </h3>
-              
+
               <h1 className="text-[40px] sm:text-[48px] lg:text-[56px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
                 Ideas, Insights &<br />
                 <span className="text-[#e63946]">Innovation</span>
               </h1>
-              
+
               <p className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
                 Explore expert perspectives, technical guides, industry trends, and innovation stories from the IBACUS TECH team.
               </p>
 
               {/* Stats Block */}
-              <div className="grid grid-cols-3 gap-4 border-t border-slate-100 pt-8">
+              <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-8">
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3">
                   <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e63946] border border-red-100 flex items-center justify-center shrink-0">
                     <FiFileText size={18} />
@@ -115,16 +116,6 @@ export default async function BlogPage() {
                     <div className="text-[10px] font-medium text-slate-500 uppercase tracking-widest">Categories</div>
                   </div>
                 </div>
-
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-red-50 text-[#e63946] border border-red-100 flex items-center justify-center shrink-0">
-                    <FiUsers size={18} />
-                  </div>
-                  <div className="text-center sm:text-left">
-                    <div className="text-[18px] font-black text-[#0f172a] leading-none mb-1">25K+</div>
-                    <div className="text-[10px] font-medium text-slate-500 uppercase tracking-widest">Readers Monthly</div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -135,9 +126,9 @@ export default async function BlogPage() {
                   <div className="bg-white rounded-3xl overflow-hidden relative shadow-md border border-slate-100 hover:shadow-lg transition-shadow flex flex-col h-[400px]">
                     {featuredPost.imageUrl ? (
                       <div className="h-[180px] w-full relative overflow-hidden bg-slate-100 shrink-0">
-                        <img 
-                          src={resolveImageUrl(featuredPost.imageUrl, apiOrigin) || ''} 
-                          alt={featuredPost.title} 
+                        <img
+                          src={resolveImageUrl(featuredPost.imageUrl, apiOrigin) || ''}
+                          alt={featuredPost.title}
                           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                         <span className="absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full bg-[#e63946] text-white text-[10px] font-black uppercase tracking-widest shadow-sm">
@@ -154,7 +145,7 @@ export default async function BlogPage() {
                     <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
                       <div>
                         <p className="text-[11px] font-bold text-red-500 uppercase tracking-widest mb-2">
-                          {featuredPost.category || 'IBT JOURNAL'}
+                          {formatCategoryName(featuredPost.category) || 'IBT JOURNAL'}
                         </p>
                         <h2 className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight mb-2 group-hover:text-[#e63946] transition-colors line-clamp-2">
                           {featuredPost.title}
@@ -166,7 +157,7 @@ export default async function BlogPage() {
 
                       <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-auto">
                         <div className="text-[12px] font-medium text-slate-400">
-                          {formatPublishedAt(featuredPost.publishedAt)} • {(featuredPost as any).readTime || '5'} min read
+                          {formatPublishedAt(featuredPost.publishedAt)}
                         </div>
                         <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-[#0f172a] group-hover:bg-[#e63946] group-hover:text-white transition-colors shrink-0">
                           <FiArrowRight size={14} />

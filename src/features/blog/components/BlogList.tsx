@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiCalendar, FiMail } from 'react-icons/fi';
 import { type PublicBlog } from '@/src/api/client';
 import { Pagination } from '@/src/shared/ui/Pagination';
+import { formatCategoryName } from '@/src/utils/category';
 
 type BlogListProps = {
   initialBlogs: PublicBlog[];
@@ -100,7 +101,7 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
                   : 'bg-transparent text-slate-600 hover:text-[#0f172a] hover:bg-slate-100'
               }`}
             >
-              {cat}
+              {formatCategoryName(cat as string)}
             </button>
           ))}
         </div>
@@ -155,7 +156,7 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
                       {/* Content */}
                       <div className="p-6 flex flex-col flex-1">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-3">
-                          {post.category || 'IBT JOURNAL'}
+                          {formatCategoryName(post.category) || 'IBT JOURNAL'}
                         </p>
                         <h3 className="text-[18px] sm:text-[20px] font-black text-[#0f172a] leading-snug mb-3 group-hover:text-[#e63946] transition-colors">
                           {post.title}
@@ -166,8 +167,6 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
 
                         <div className="mt-auto flex items-center gap-4 text-[12px] font-medium text-slate-400 pt-5 border-t border-slate-50">
                           <span className="flex items-center gap-1.5"><FiCalendar /> {formatPublishedAt(post.publishedAt)}</span>
-                          <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                          <span>{(post as any).readTime || '5'} min read</span>
                         </div>
                       </div>
                     </Link>
@@ -245,7 +244,7 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
                       <div className="w-1.5 h-1.5 rounded-full bg-[#e63946] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </div>
                     <span className="text-[14px] font-medium text-slate-600 group-hover:text-[#0f172a] transition-colors">
-                      {cat}
+                      {formatCategoryName(cat)}
                     </span>
                   </div>
                   <span className="text-[12px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded">

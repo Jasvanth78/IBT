@@ -304,45 +304,45 @@ export default async function InternshipPage() {
       ===================================================== */}
       <section className="relative z-20 pb-16 lg:pb-20">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-100 py-8 px-6 lg:px-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-100 py-8 px-4 sm:px-6 lg:px-12 grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4 lg:gap-4 divide-y-0 lg:divide-x divide-slate-100">
 
-            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center">
-              <div className="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3 sm:gap-4 justify-start sm:justify-center px-1 sm:px-2">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0">
                 <FiBriefcase size={20} />
               </div>
-              <div className="w-[100px] sm:w-[130px] lg:w-auto text-left">
-                <div className="text-[24px] font-black text-[#0f172a] leading-tight">20+</div>
-                <div className="text-[12px] font-medium text-slate-500 whitespace-nowrap">Programs</div>
+              <div className="flex-1 min-w-0 text-left">
+                <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight">20+</div>
+                <div className="text-[11px] sm:text-[12px] font-medium text-slate-500 leading-snug break-words">Programs</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3 sm:gap-4 justify-start sm:justify-center px-1 sm:px-2">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
                 <FiUsers size={20} />
               </div>
-              <div className="w-[100px] sm:w-[130px] lg:w-auto text-left">
-                <div className="text-[24px] font-black text-[#0f172a] leading-tight">5000+</div>
-                <div className="text-[12px] font-medium text-slate-500 whitespace-nowrap">Interns Trained</div>
+              <div className="flex-1 min-w-0 text-left">
+                <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight">5000+</div>
+                <div className="text-[11px] sm:text-[12px] font-medium text-slate-500 leading-snug break-words">Interns Trained</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center">
-              <div className="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3 sm:gap-4 justify-start sm:justify-center px-1 sm:px-2">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center shrink-0">
                 <FiAward size={20} />
               </div>
-              <div className="w-[100px] sm:w-[130px] lg:w-auto text-left">
-                <div className="text-[24px] font-black text-[#0f172a] leading-tight">99%+</div>
-                <div className="text-[12px] font-medium text-slate-500 whitespace-nowrap">Success Rate</div>
+              <div className="flex-1 min-w-0 text-left">
+                <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight">99%+</div>
+                <div className="text-[11px] sm:text-[12px] font-medium text-slate-500 leading-snug break-words">Success Rate</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 pt-4 md:pt-0 justify-center">
-              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3 sm:gap-4 justify-start sm:justify-center px-1 sm:px-2">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center shrink-0">
                 <FiCheckCircle size={20} />
               </div>
-              <div className="w-[100px] sm:w-[130px] lg:w-auto text-left">
-                <div className="text-[24px] font-black text-[#0f172a] leading-tight">100%</div>
-                <div className="text-[12px] font-medium text-slate-500 whitespace-nowrap">Hands-on Experience</div>
+              <div className="flex-1 min-w-0 text-left">
+                <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight">100%</div>
+                <div className="text-[11px] sm:text-[12px] font-medium text-slate-500 leading-snug break-words">Hands-on Experience</div>
               </div>
             </div>
 

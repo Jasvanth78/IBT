@@ -236,7 +236,7 @@ export function AllServicesPage() {
       {/* =====================================================
           1. HERO SECTION
       ===================================================== */}
-      <section className="relative pt-24 pb-24 lg:pt-36 lg:pb-32 overflow-hidden bg-white mt-8 lg:mt-12">
+      <section className="relative pt-8 pb-16 lg:pt-16 lg:pb-24 overflow-hidden bg-white mt-0">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
