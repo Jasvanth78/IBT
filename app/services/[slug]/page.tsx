@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { FiArrowLeft } from 'react-icons/fi'
 import { apiClient } from '@/src/api/client'
 
-export const dynamicParams = false;
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   try {

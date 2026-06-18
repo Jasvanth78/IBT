@@ -419,7 +419,7 @@ export default function AboutPage() {
               <span className="text-[16px] font-bold uppercase tracking-[0.15em] text-[#e63946]">
                 OUR JOURNEY IN NUMBERS
               </span>
-              <h2 className="mt-3 text-[22px] sm:text-[34px] font-extrabold tracking-tight !text-white mb-4 leading-[1.2] whitespace-nowrap lg:whitespace-normal">
+              <h2 className="mt-3 text-[22px] sm:text-[34px] font-extrabold tracking-tight !text-white mb-4 leading-[1.2] whitespace-normal">
                 Milestones That <br className="hidden lg:block" />
                 Define Our Journey
               </h2>
@@ -437,7 +437,7 @@ export default function AboutPage() {
                   <IoTrophyOutline size={26} />
                 ]
                 return (
-                  <div key={idx} className="border border-white/10 rounded-2xl p-6 text-center flex flex-col items-center justify-center hover:bg-white/[0.02] transition-colors relative group">
+                  <div key={idx} className="border border-white/10 rounded-2xl p-4 sm:p-6 text-center flex flex-col items-center justify-center hover:bg-white/[0.02] transition-colors relative group">
                     <div className="mb-5 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.2rem] bg-white/[0.03] text-white shadow-inner group-hover:bg-white/[0.06] transition-colors">
                       {icons[idx % icons.length]}
                     </div>
@@ -521,7 +521,7 @@ export default function AboutPage() {
                       <button
                         onClick={scrollLeft}
                         disabled={!canScrollLeft}
-                        className={`absolute -left-4 sm:-left-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollLeft
+                        className={`absolute -left-4 sm:-left-12 z-10 hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollLeft
                           ? 'opacity-30 cursor-not-allowed text-slate-300'
                           : 'text-slate-600 hover:text-[#e63946]'
                           }`}
@@ -563,7 +563,7 @@ export default function AboutPage() {
                       <button
                         onClick={scrollRight}
                         disabled={!canScrollRight}
-                        className={`absolute -right-4 sm:-right-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollRight
+                        className={`absolute -right-4 sm:-right-12 z-10 hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollRight
                           ? 'opacity-30 cursor-not-allowed text-slate-300'
                           : 'text-slate-600 hover:text-[#e63946]'
                           }`}
@@ -652,7 +652,7 @@ export default function AboutPage() {
           </div>
           <Link
             href="/contact"
-            className="relative z-10 bg-white text-[#0f172a] rounded-lg px-6 py-3.5 text-xs font-bold shadow-sm hover:bg-slate-50 transition shrink-0 flex items-center gap-2"
+            className="relative z-10 bg-white text-[#0f172a] rounded-lg px-6 py-3.5 text-xs font-bold shadow-sm hover:bg-slate-50 transition shrink-0 flex items-center gap-2 w-full sm:w-auto justify-center"
           >
             Schedule a Free Consultation <FiArrowRight />
           </Link>

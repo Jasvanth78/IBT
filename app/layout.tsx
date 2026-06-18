@@ -74,6 +74,7 @@ export default async function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      data-scroll-behavior="smooth"
     >
       <body className="min-h-full flex flex-col overflow-x-clip">
         <SocketSettingsProvider initialSettings={initialSettings}>

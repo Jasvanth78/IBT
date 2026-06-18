@@ -5,8 +5,10 @@ import {
 } from 'react-icons/fi'
 import { apiClient } from '@/src/api/client'
 import { ShareArticleButton } from './ShareArticleButton'
+import { BlogProgressBar } from './BlogProgressBar'
 
-export const dynamicParams = false;
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   try {
@@ -38,6 +40,16 @@ const resolveImageUrl = (imageUrl?: string | null) => {
   return `${resolveApiOrigin(process.env.NEXT_PUBLIC_API_URL)}${imageUrl}`
 }
 
+const getExcerpt = (text?: string | null) => {
+  if (!text) return ''
+  const clean = text
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  return clean.slice(0, 160) + (clean.length > 160 ? '...' : '')
+}
+
 const formatPublishedAt = (value?: string | null) => {
   if (!value) return 'May 14, 2025' // Fallback to match design
   const date = new Date(value)
@@ -55,7 +67,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const allBlogs = allBlogsData.items;
   
   const currentIndex = allBlogs.findIndex((b) => b.slug === slug);
-  const blog = currentIndex !== -1 ? allBlogs[currentIndex] : await apiClient.getPublicBlogBySlug(slug).catch(() => null);
+  const blog = await apiClient.getPublicBlogBySlug(slug).catch(() => null);
 
   if (!blog) {
     notFound()
@@ -81,12 +93,13 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
   const imageSrc = resolveImageUrl(blog.imageUrl) || 'https://images.unsplash.com/photo-1614064641936-a5926622ab93?auto=format&fit=crop&q=80&w=1600'
 
-  // We are creating a 100% match of the design requested. 
-  // If the backend blog content is just plain text or missing, we fall back to the beautifully styled static content from the design.
-  const hasRichContent = blog.content && blog.content.length > 100;
+  // We fall back to the beautifully styled static content from the design only if there is no text content in the database.
+  const cleanContent = blog.content?.replace(/<[^>]*>/g, '').trim() || '';
+  const hasRichContent = cleanContent.length > 0;
 
   return (
     <div className="min-h-screen bg-[#f8faff] font-sans pt-10 pb-20">
+      <BlogProgressBar />
       <div className="mx-auto w-full max-w-[1300px] px-4 sm:px-6 lg:px-8">
         
         {/* Top Breadcrumb */}
@@ -118,7 +131,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               </h1>
               
               <p className="text-[17px] sm:text-[19px] text-slate-500 font-medium leading-relaxed max-w-3xl mb-8">
-                {blog.description || 'Learn how to build digital products that are inclusive, usable and accessible for everyone. Practical principles, real-world examples, and actionable tips for designers and developers.'}
+                {blog.description || getExcerpt(blog.content)}
               </p>
               
               {/* Author and Share Row */}
@@ -130,20 +143,20 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   <div>
                     <p className="font-bold text-slate-900 text-[15px] leading-tight mb-1">IBT Editorial Team</p>
                     <p className="text-[13px] font-medium text-slate-500">
-                      {formatPublishedAt(blog.publishedAt)} • 8 min read • <span className="text-slate-400">1.2K views</span>
+                      {formatPublishedAt(blog.publishedAt)}
                     </p>
                   </div>
                 </div>
                 
                 <ShareArticleButton 
                   title={blog.title || 'Designing for Accessibility: A Complete Guide'} 
-                  description={blog.description || 'Learn how to build digital products that are inclusive, usable and accessible for everyone.'} 
+                  description={blog.description || getExcerpt(blog.content)} 
                 />
               </div>
             </div>
 
             {/* Featured Image */}
-            <div className="relative w-full aspect-[16/8] sm:aspect-[21/9] rounded-[2rem] overflow-hidden mb-12 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-slate-100 bg-slate-900">
+            <div className="relative w-full h-[200px] sm:h-[300px] rounded-2xl overflow-hidden mb-10 shadow-sm border border-slate-100 bg-slate-50">
               <img 
                 src={imageSrc} 
                 alt={blog.title} 
@@ -151,19 +164,22 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               />
             </div>
 
-            {/* Article Content */}
             {hasRichContent ? (
                <div
-                 className="prose prose-lg prose-slate max-w-none 
-                            prose-headings:font-black prose-headings:text-[#0f172a] prose-headings:tracking-tight
-                            prose-h2:text-[28px] prose-h2:mt-12 prose-h2:mb-6
-                            prose-h3:text-[22px] prose-h3:mt-8 prose-h3:mb-4
-                            prose-p:text-slate-600 prose-p:leading-[1.8] prose-p:text-[17px] prose-p:mb-6
-                            prose-a:text-[#e63946] prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-                            prose-li:text-slate-600 prose-li:text-[17px] prose-li:leading-[1.8]
-                            prose-img:rounded-2xl prose-img:shadow-lg
-                            prose-strong:text-slate-900 prose-strong:font-bold"
-                 dangerouslySetInnerHTML={{ __html: blog.content }}
+                 className="max-w-none text-slate-600 text-[17px] leading-[1.8]
+                            [&_p]:text-slate-600 [&_p]:leading-[1.8] [&_p]:text-[17px] [&_p]:mb-6
+                            [&_h2]:text-[28px] [&_h2]:font-black [&_h2]:text-[#0f172a] [&_h2]:tracking-tight [&_h2]:mt-10 [&_h2]:mb-4
+                            [&_h3]:text-[22px] [&_h3]:font-bold [&_h3]:text-[#0f172a] [&_h3]:tracking-tight [&_h3]:mt-8 [&_h3]:mb-3
+                            [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:mb-6
+                            [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2 [&_ol]:mb-6
+                            [&_li]:text-slate-600 [&_li]:text-[17px] [&_li]:leading-[1.8]
+                            [&_a]:text-[#e63946] [&_a]:font-semibold [&_a]:underline hover:[&_a]:text-red-700
+                            [&_img]:rounded-2xl [&_img]:my-8 [&_img]:shadow-md [&_img]:max-h-[400px] [&_img]:object-cover
+                            [&_strong]:text-slate-900 [&_strong]:font-bold
+                            [&_blockquote]:border-l-4 [&_blockquote]:border-red-500 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:my-6 [&_blockquote]:text-slate-500"
+                 dangerouslySetInnerHTML={{ 
+                   __html: blog.content.replace(/&nbsp;/gi, ' ').replace(/\u00a0/g, ' ') 
+                 }}
                />
             ) : (
               // Hardcoded 100% matched design content if backend content is empty or short
@@ -321,30 +337,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             </div>
 
-            {/* Newsletter Subscription */}
-            <div className="bg-[#fff5f6] border border-red-100 rounded-3xl p-8 text-center">
-              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-red-100 flex items-center justify-center text-[#e63946] mx-auto mb-5">
-                <FiMail size={24} />
-              </div>
-              <h3 className="text-[20px] font-black text-[#0f172a] mb-2 leading-tight">Subscribe to our newsletter</h3>
-              <p className="text-[13px] text-slate-500 font-medium mb-6 px-2">
-                Get the latest articles and insights straight to your inbox.
-              </p>
-              <form className="space-y-3">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="w-full h-12 px-4 rounded-xl border border-white bg-white text-sm text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#e63946] transition-all shadow-sm"
-                  required
-                />
-                <button 
-                  type="submit" 
-                  className="w-full h-12 rounded-xl bg-[#e63946] text-white text-[14px] font-bold hover:bg-red-700 transition-colors shadow-md shadow-red-500/20"
-                >
-                  Subscribe
-                </button>
-              </form>
-            </div>
+
 
             {/* Recent Posts */}
             {recentPosts.length > 0 && (

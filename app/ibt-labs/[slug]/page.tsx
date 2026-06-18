@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { apiClient } from '@/src/api/client'
 import { FiArrowLeft, FiExternalLink, FiGithub, FiLayers, FiCalendar } from 'react-icons/fi'
 
-export const dynamicParams = false;
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   try {

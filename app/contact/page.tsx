@@ -1,10 +1,12 @@
-import { Suspense } from 'react'
+import { Key, Suspense } from 'react'
 import { ContactFormClient } from '@/src/features/contact/ContactFormClient'
 import { apiClient } from '@/src/api/client'
 import type { PublicBranch } from '@/src/api/client'
 import type { SiteSettingsRealtimePayload } from '@/src/types/socket'
 import { fetchSiteSettings } from '@/src/api/settings'
 import { formatAddress } from '@/src/utils/address'
+
+export const dynamic = 'force-dynamic'
 
 type Props = {}
 
@@ -127,10 +129,8 @@ export default async function ContactPage(_: Props) {
         <div className="mt-24 border-t border-slate-100 pt-16">
           <div className="mb-10 text-left">
             <span className="text-[16px] font-bold uppercase tracking-wider !text-red-500">OUR OFFICES</span>
-            <h2 className="text-3xl font-extrabold text-[#0f172a] mt-1 tracking-tight">Visit Our Offices</h2>
-            <p className="text-sm text-slate-500 mt-2">
-              We have physical hubs around the globe where our innovators collaborate. Feel free to stop by and say hello.
-            </p>
+            <h2 className="text-3xl font-extrabold text-[#0f172a] mt-3 tracking-tight">Visit Our Offices</h2>
+
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -145,15 +145,27 @@ export default async function ContactPage(_: Props) {
                         <h4 className="text-sm font-extrabold text-slate-900">{branch.name}</h4>
                       </span>
 
-                      <p className="text-xs text-slate-500 leading-relaxed max-w-xs">
+                      {/* <p className="text-xs text-slate-500 leading-relaxed max-w-xs">
                         {branch.address ? formatAddress(branch.address).split('\n').map((line: string, i: number, arr: any[]) => (
                           <span key={i}>
                             {line.trim()}
                             {i < arr.length - 1 && <br />}
                           </span>
                         )) : 'Address infrastructure pending configuration.'}
+                      </p> */}
+                      <p className="text-xs text-slate-500 leading-relaxed max-w-xs">
+                        {branch.address ? (
+                          branch.address.split(',').map((line: string, i: number, arr: string[]) => (
+                            <span key={i}>
+                              {line.trim()}
+                              {i < arr.length - 1 && ','}
+                              <br />
+                            </span>
+                          ))
+                        ) : (
+                          'Address infrastructure pending configuration.'
+                        )}
                       </p>
-
                       <a
                         href={branch.mapLink || '#'}
                         target={branch.mapLink ? "_blank" : undefined}

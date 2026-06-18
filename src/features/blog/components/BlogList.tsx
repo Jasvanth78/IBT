@@ -205,27 +205,6 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
 
         {/* RIGHT COLUMN: Sidebar */}
         <div className="w-full flex flex-col gap-8">
-          
-          {/* Newsletter Widget */}
-          <div className="bg-red-50/50 rounded-2xl p-6 lg:p-8 border border-red-100">
-            <div className="w-12 h-12 bg-white rounded-xl text-[#e63946] flex items-center justify-center shadow-sm mb-5 border border-red-100">
-              <FiMail size={20} />
-            </div>
-            <h4 className="text-[18px] font-black text-[#0f172a] mb-2">Subscribe to Our Newsletter</h4>
-            <p className="text-[13px] text-slate-600 font-medium mb-6">
-              Get the latest articles and insights straight to your inbox.
-            </p>
-            <div className="flex flex-col gap-3">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="w-full bg-white border border-slate-200 rounded-lg px-4 py-3 text-[14px] font-medium outline-none focus:border-[#e63946]"
-              />
-              <button className="w-full bg-[#e63946] text-white font-bold text-[14px] py-3 rounded-lg hover:bg-[#c1121f] transition-colors shadow-md shadow-red-500/20">
-                Subscribe
-              </button>
-            </div>
-          </div>
 
           {/* Popular Posts Widget */}
           <div className="bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm">

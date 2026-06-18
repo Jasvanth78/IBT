@@ -3,7 +3,7 @@ import { BlogList } from '@/src/features/blog/components/BlogList'
 import { FiArrowRight, FiFileText, FiGrid, FiUsers } from 'react-icons/fi'
 import Link from 'next/link'
 
-
+export const dynamic = 'force-dynamic'
 
 const resolveApiOrigin = (value: string | undefined) => {
   const fallback = 'http://localhost:5000'
@@ -28,6 +28,16 @@ const formatPublishedAt = (value?: string | null) => {
 
 const getCategoryCount = (items: Array<{ category?: string | null }>) => {
   return new Set(items.map((blog) => blog.category).filter(Boolean)).size
+}
+
+const getExcerpt = (text?: string | null) => {
+  if (!text) return ''
+  const clean = text
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  return clean.slice(0, 120) + (clean.length > 120 ? '...' : '')
 }
 
 const resolveImageUrl = (imageUrl?: string | null, apiOrigin?: string) => {
@@ -56,8 +66,8 @@ export default async function BlogPage() {
   const totalPosts = items.length
   const totalCategories = getCategoryCount(items)
   
-  // Find a featured post, or fallback to the latest
-  const featuredPost = items.find((blog) => blog.featured) ?? items[0]
+  // Find the latest featured post (do not fallback to latest if not featured)
+  const featuredPost = items.find((blog) => blog.featured)
 
   return (
     <div className="min-h-screen bg-[#f8faff] text-slate-900 font-sans">
@@ -67,7 +77,7 @@ export default async function BlogPage() {
       ===================================================== */}
       <section className="relative pt-12 pb-8 lg:pt-20 lg:pb-12 bg-white border-b border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center">
+          <div className={featuredPost ? "grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center" : "max-w-3xl mx-auto"}>
             
             {/* Left Content */}
             <div className="relative z-10">
@@ -119,62 +129,54 @@ export default async function BlogPage() {
             </div>
 
             {/* Right Featured Article */}
-            <div className="relative z-10">
-              <Link href={`/blog/${featuredPost?.slug || ''}`} className="block group">
-                <div className="bg-[#0f172a] rounded-3xl overflow-hidden relative shadow-2xl h-[400px] flex flex-col justify-end p-8 sm:p-10 border border-slate-800 hover:border-slate-700 transition-colors">
-                  
-                  {/* Background Image (Darkened) */}
-                  <div className="absolute inset-0">
-                    <img 
-                      src={resolveImageUrl(featuredPost?.imageUrl, apiOrigin) || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'} 
-                      alt="Featured Article Background" 
-                      className="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700 ease-out mix-blend-overlay"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/80 to-transparent"></div>
-                  </div>
-
-                  {/* Top Badge */}
-                  <div className="absolute top-8 left-8">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#e63946] text-white text-[10px] font-black uppercase tracking-widest">
-                      FEATURED ARTICLE
-                    </span>
-                  </div>
-
-                  <div className="relative z-10 w-full">
-                    <p className="text-[11px] font-bold text-red-400 uppercase tracking-widest mb-3">
-                      {featuredPost?.category || 'SECURITY'}
-                    </p>
-                    <h2 className="text-[28px] sm:text-[32px] font-black text-white leading-tight mb-4 group-hover:text-red-100 transition-colors">
-                      {featuredPost?.title || 'Designing for Accessibility: A Complete Guide'}
-                    </h2>
-                    <p className="text-[13px] text-slate-300 font-medium line-clamp-2 max-w-sm mb-8">
-                      {featuredPost?.description || 'Learn how to build digital products that are inclusive, usable and accessible for everyone.'}
-                    </p>
-
-                    <div className="flex items-center justify-between border-t border-slate-700/50 pt-6">
-                      <div className="flex items-center gap-3">
+            {featuredPost && (
+              <div className="relative z-10 w-full">
+                <Link href={`/blog/${featuredPost.slug}`} className="block group">
+                  <div className="bg-white rounded-3xl overflow-hidden relative shadow-md border border-slate-100 hover:shadow-lg transition-shadow flex flex-col h-[400px]">
+                    {featuredPost.imageUrl ? (
+                      <div className="h-[180px] w-full relative overflow-hidden bg-slate-100 shrink-0">
                         <img 
-                          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" 
-                          alt="Author" 
-                          className="w-10 h-10 rounded-full object-cover border border-slate-600"
+                          src={resolveImageUrl(featuredPost.imageUrl, apiOrigin) || ''} 
+                          alt={featuredPost.title} 
+                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />
-                        <div>
-                          <p className="text-[12px] font-bold text-white leading-tight">IBT Editorial Team</p>
-                          <p className="text-[11px] text-slate-400 font-medium">
-                            {formatPublishedAt(featuredPost?.publishedAt)} • {(featuredPost as any)?.readTime || '6'} min read
-                          </p>
-                        </div>
+                        <span className="absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full bg-[#e63946] text-white text-[10px] font-black uppercase tracking-widest shadow-sm">
+                          FEATURED ARTICLE
+                        </span>
                       </div>
-                      
-                      {/* Round Button */}
-                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white backdrop-blur-sm group-hover:bg-[#e63946] transition-colors shrink-0">
-                        <FiArrowRight size={16} />
+                    ) : (
+                      <div className="px-8 pt-8 sm:px-10 sm:pt-10">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#e63946] text-white text-[10px] font-black uppercase tracking-widest">
+                          FEATURED ARTICLE
+                        </span>
+                      </div>
+                    )}
+                    <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
+                      <div>
+                        <p className="text-[11px] font-bold text-red-500 uppercase tracking-widest mb-2">
+                          {featuredPost.category || 'IBT JOURNAL'}
+                        </p>
+                        <h2 className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight mb-2 group-hover:text-[#e63946] transition-colors line-clamp-2">
+                          {featuredPost.title}
+                        </h2>
+                        <p className="text-[13px] text-slate-500 font-medium line-clamp-2">
+                          {featuredPost.description || getExcerpt(featuredPost.content)}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-auto">
+                        <div className="text-[12px] font-medium text-slate-400">
+                          {formatPublishedAt(featuredPost.publishedAt)} • {(featuredPost as any).readTime || '5'} min read
+                        </div>
+                        <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-[#0f172a] group-hover:bg-[#e63946] group-hover:text-white transition-colors shrink-0">
+                          <FiArrowRight size={14} />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </div>
+                </Link>
+              </div>
+            )}
 
           </div>
         </div>
