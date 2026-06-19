@@ -595,7 +595,7 @@ export function AllLabsPage() {
             </div>
 
             {/* Navigation Arrows (Moved to header) */}
-            <div className="flex items-center gap-2 lg:hidden shrink-0 pb-1">
+            <div className="flex items-center gap-2 lg:hidden shrink-0 pb-1 self-end sm:self-auto">
               <button 
                 onClick={scrollTimelineLeft}
                 disabled={!canScrollTimelineLeft}

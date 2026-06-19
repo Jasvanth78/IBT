@@ -112,7 +112,7 @@ export function HowWeWorkSection() {
           </div>
           
           {/* Navigation Buttons (Moved Above Content) */}
-          <div className="flex items-center gap-2 xl:hidden shrink-0 pb-1">
+          <div className="flex items-center gap-2 xl:hidden shrink-0 pb-1 self-end md:self-auto">
             <button 
               onClick={() => scroll('left')}
               disabled={!canScrollLeft}

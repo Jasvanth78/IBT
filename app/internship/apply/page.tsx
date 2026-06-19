@@ -617,11 +617,11 @@ export default function InternshipApplyPage() {
                     <input
                       name="otp"
                       type="text"
-                      placeholder="• • • • • •"
+                      placeholder="••••••"
                       required
                       maxLength={6}
                       autoFocus
-                      className="w-full text-center text-4xl tracking-[0.5em] font-black h-20 rounded-2xl bg-[#f8faff] border-2 border-slate-200 text-slate-800 shadow-sm outline-none transition-all focus:border-[#e63946] focus:ring-4 focus:ring-red-100"
+                      className="w-full text-center text-4xl tracking-[0.5em] pl-[0.5em] font-black h-20 rounded-2xl bg-[#f8faff] border-2 border-slate-200 text-slate-800 shadow-sm outline-none transition-all focus:border-[#e63946] focus:ring-4 focus:ring-red-100 placeholder:text-2xl placeholder:font-light"
                       value={formData.otp}
                       onChange={(e) => {
                         const val = e.target.value.replace(/\D/g, '');

@@ -107,7 +107,7 @@ export function TestimonialsSection() {
           </div>
 
           {/* Navigation Arrows */}
-          <div className="hidden md:flex items-center gap-3 mt-6 md:mt-0">
+          <div className="flex items-center gap-3 mt-6 md:mt-0 self-end md:self-auto">
             <button
               type="button"
               onClick={() => void loadTestimonialsPage(testimonialsPage - 1)}
@@ -133,24 +133,6 @@ export function TestimonialsSection() {
           </div>
         ) : (
           <div className="relative">
-            {/* Left Nav Button Mobile */}
-            <button
-              type="button"
-              onClick={() => void loadTestimonialsPage(testimonialsPage - 1)}
-              disabled={!canGoPrevTestimonials || testimonialsLoading}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-10 w-10 h-10 bg-white rounded-full shadow flex md:hidden items-center justify-center text-slate-400 hover:text-slate-800 disabled:opacity-40"
-            >
-              <FiChevronLeft size={20} />
-            </button>
-            {/* Right Nav Button Mobile */}
-            <button
-              type="button"
-              onClick={() => void loadTestimonialsPage(testimonialsPage + 1)}
-              disabled={!canGoNextTestimonials || testimonialsLoading}
-              className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-10 w-10 h-10 bg-white rounded-full shadow flex md:hidden items-center justify-center text-slate-400 hover:text-slate-800 disabled:opacity-40"
-            >
-              <FiChevronRight size={20} />
-            </button>
 
             <AnimatePresence mode="wait">
               <motion.div
