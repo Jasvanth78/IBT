@@ -91,7 +91,7 @@ export default async function ContactPage(_: Props) {
                 <div>
                   <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wide">Call Us</h3>
                   <p className="text-sm font-bold text-[#0f172a] mt-0.5">+91 9003562715</p>
-                  <p className="text-xs text-slate-400 font-medium mt-1">Mon – Fri | 10:00 AM – 6:00 PM</p>
+                  <p className="text-xs text-slate-400 font-medium mt-1">Mon – Fri | 10:00 AM – 06:00 PM</p>
                 </div>
               </div>
 
@@ -225,11 +225,7 @@ export default async function ContactPage(_: Props) {
                 <button className="text-[10px] font-bold text-blue-600 mt-2 block hover:underline"></button>
               </div>
 
-              {/* Floating control buttons */}
-              <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-md border border-slate-100 flex flex-col overflow-hidden z-10">
-                <button className="w-8 h-8 flex items-center justify-center text-slate-700 hover:bg-slate-50 border-b border-slate-100 font-bold text-sm">+</button>
-                <button className="w-8 h-8 flex items-center justify-center text-slate-700 hover:bg-slate-50 font-bold text-sm">−</button>
-              </div>
+
 
               {/* Central Pin Anchor */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">

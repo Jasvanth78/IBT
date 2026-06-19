@@ -61,7 +61,7 @@ export function CTASection() {
               </p>
               <SiteButton 
                 href="/contact"
-                className="bg-[#e63946] text-white rounded-[6px] px-6 py-3 font-bold text-[13px] hover:bg-[#c1121f] transition-colors shadow-lg shadow-[#e63946]/30 whitespace-nowrap"
+                className="w-full md:w-auto bg-[#e63946] text-white rounded-[6px] px-6 py-3 font-bold text-[13px] hover:bg-[#c1121f] transition-colors shadow-lg shadow-[#e63946]/30 whitespace-nowrap"
               >
                 Schedule Free Consultation <FiArrowRight className="inline-block ml-1" />
               </SiteButton>

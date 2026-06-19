@@ -87,11 +87,11 @@ export default async function BlogPage() {
               </h3>
 
               <h1 className="text-[40px] sm:text-[48px] lg:text-[56px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6">
-                Ideas, Insights &<br />
-                <span className="text-[#e63946]">Innovation</span>
+                Ideas, Insights &<br className="md:hidden" />
+                <span className="text-[#e63946]"> Innovation</span>
               </h1>
 
-              <p className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
+              <p className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md md:max-w-none lg:max-w-md">
                 Explore expert perspectives, technical guides, industry trends, and innovation stories from the IBACUS TECH team.
               </p>
 

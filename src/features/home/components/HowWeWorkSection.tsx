@@ -78,8 +78,8 @@ export function HowWeWorkSection() {
   const checkScroll = useCallback(() => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+      setCanScrollLeft(scrollLeft > 1);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 2);
     }
   }, []);
 
@@ -101,8 +101,7 @@ export function HowWeWorkSection() {
     <section className="bg-white py-12 lg:py-16 overflow-hidden border-t border-slate-100">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
 
-        {/* Section Header */}
-        <div className="mb-12 md:mb-16 flex flex-row items-end justify-between gap-4">
+        <div className="mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-2 md:mb-3">
               OUR PROCESS

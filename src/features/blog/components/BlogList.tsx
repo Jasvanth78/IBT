@@ -20,6 +20,13 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
   const [selectedCategory, setSelectedCategory] = useState('All Posts');
   const [currentPage, setCurrentPage] = useState(1);
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
@@ -56,8 +63,8 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
 
   const filteredBlogs = useMemo(() => {
     return initialBlogs.filter(blog => {
-      const matchesSearch = blog.title.toLowerCase().includes(search.toLowerCase()) || 
-                            (blog.description || '').toLowerCase().includes(search.toLowerCase());
+      const matchesSearch = blog.title.toLowerCase().includes(search.toLowerCase()) ||
+        (blog.description || '').toLowerCase().includes(search.toLowerCase());
       const matchesCategory = selectedCategory === 'All Posts' || blog.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
@@ -83,23 +90,22 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
 
   return (
     <div className="space-y-12">
-      
+
       {/* =====================================================
           TOP BAR (Filters & Search)
       ===================================================== */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 border-b border-slate-100 pb-8">
-        
+
         {/* Categories List */}
-        <div className="flex flex-wrap gap-2 sm:gap-4 items-center overflow-x-auto pb-2 sm:pb-0 scrollbar-hide w-full lg:w-auto">
+        <div className="flex flex-nowrap gap-2 sm:gap-4 items-center overflow-x-auto pb-2 sm:pb-0 scrollbar-hide w-full lg:w-auto">
           {categories.map(cat => (
             <button
               key={cat as string}
-              onClick={() => setSelectedCategory(cat as string)}
-              className={`whitespace-nowrap px-4 sm:px-5 py-2.5 rounded-lg text-[13px] font-bold transition-all duration-300 ${
-                selectedCategory === cat 
-                  ? 'bg-[#e63946] text-white shadow-md shadow-red-500/20' 
-                  : 'bg-transparent text-slate-600 hover:text-[#0f172a] hover:bg-slate-100'
-              }`}
+              onClick={() => handleCategoryChange(cat as string)}
+              className={`whitespace-nowrap px-4 sm:px-5 py-2.5 rounded-lg text-[13px] font-bold transition-all duration-300 ${selectedCategory === cat
+                ? 'bg-[#e63946] text-white shadow-md shadow-red-500/20'
+                : 'bg-transparent text-slate-600 hover:text-[#0f172a] hover:bg-slate-100'
+                }`}
             >
               {formatCategoryName(cat as string)}
             </button>
@@ -123,7 +129,7 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
           MAIN LAYOUT (Grid + Sidebar)
       ===================================================== */}
       <div className="grid lg:grid-cols-[1fr_350px] gap-12 items-start">
-        
+
         {/* LEFT COLUMN: Blog Grid */}
         <div className="w-full">
           <AnimatePresence mode="wait">
@@ -139,13 +145,13 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
                 <div className="grid sm:grid-cols-2 gap-8">
                   {paginatedBlogs.map((post) => (
                     <Link key={post.id} href={`/blog/${post.slug}`} className="group flex flex-col h-full bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg transition-shadow">
-                      
+
                       {/* Thumbnail */}
                       <div className="aspect-[16/10] overflow-hidden bg-slate-100 relative">
                         {post.imageUrl ? (
-                          <img 
-                            src={resolveImageUrl(post.imageUrl) || ''} 
-                            alt={post.title} 
+                          <img
+                            src={resolveImageUrl(post.imageUrl) || ''}
+                            alt={post.title}
                             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                           />
                         ) : (
@@ -176,12 +182,16 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
                 {/* Pagination */}
                 {totalPages > 1 && (
                   <div className="mt-12 flex justify-center">
-                    <Pagination 
+                    <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}
                       onPageChange={(page) => {
                         setCurrentPage(page);
-                        window.scrollTo({ top: 400, behavior: 'smooth' });
+                        if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        } else if (typeof window !== 'undefined') {
+                          window.scrollTo({ top: 400, behavior: 'smooth' });
+                        }
                       }}
                     />
                   </div>
@@ -189,14 +199,14 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
               </motion.div>
             ) : (
               <div className="rounded-2xl border border-dashed border-slate-200 py-20 text-center bg-white">
-                 <p className="text-[18px] font-bold text-[#0f172a] mb-2">No articles found.</p>
-                 <p className="text-[14px] text-slate-500 mb-6">We couldn't find anything matching your criteria.</p>
-                 <button 
-                  onClick={() => { setSearch(''); setSelectedCategory('All Posts'); }}
+                <p className="text-[18px] font-bold text-[#0f172a] mb-2">No articles found.</p>
+                <p className="text-[14px] text-slate-500 mb-6">We couldn't find anything matching your criteria.</p>
+                <button
+                  onClick={() => { setSearch(''); handleCategoryChange('All Posts'); }}
                   className="px-6 py-3 bg-[#0f172a] text-white text-[13px] font-bold rounded-lg hover:bg-slate-800 transition-colors"
-                 >
-                   Clear all filters
-                 </button>
+                >
+                  Clear all filters
+                </button>
               </div>
             )}
           </AnimatePresence>
@@ -207,14 +217,14 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
 
           {/* Popular Posts Widget */}
           <div className="bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm">
-            <h4 className="text-[16px] font-black text-[#0f172a] mb-6">Popular Posts</h4>
+            <h4 className="text-[16px] font-black text-[#0f172a] mb-3 pb-4">Popular Posts</h4>
             <div className="flex flex-col gap-6">
               {popularPosts.map((post) => (
                 <Link key={post.id} href={`/blog/${post.slug}`} className="group flex gap-4 items-center">
-                  <img 
-                    src={resolveImageUrl(post.imageUrl) || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=200'} 
-                    alt={post.title} 
-                    className="w-20 h-16 rounded-lg object-cover bg-slate-100 shrink-0" 
+                  <img
+                    src={resolveImageUrl(post.imageUrl) || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=200'}
+                    alt={post.title}
+                    className="w-20 h-16 rounded-lg object-cover bg-slate-100 shrink-0"
                   />
                   <div>
                     <h5 className="text-[13px] font-bold text-[#0f172a] leading-snug line-clamp-2 mb-1 group-hover:text-[#e63946] transition-colors">
@@ -231,27 +241,57 @@ export function BlogList({ initialBlogs, apiOrigin }: BlogListProps) {
 
           {/* Categories Widget */}
           <div className="bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm">
-            <h4 className="text-[16px] font-black text-[#0f172a] mb-6">Categories</h4>
+            <h4 className="text-[16px] font-black text-[#0f172a] mb-3 pb-4">Categories</h4>
             <div className="flex flex-col gap-4">
-              {Object.entries(categoryCounts).map(([cat, count]) => (
-                <button 
-                  key={cat} 
-                  onClick={() => setSelectedCategory(cat)}
-                  className="flex items-center justify-between group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full border-2 border-red-100 flex items-center justify-center group-hover:border-[#e63946] transition-colors">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#e63946] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    </div>
-                    <span className="text-[14px] font-medium text-slate-600 group-hover:text-[#0f172a] transition-colors">
-                      {formatCategoryName(cat)}
-                    </span>
+              {/* All Posts */}
+              <button
+                onClick={() => handleCategoryChange('All Posts')}
+                className="flex items-center justify-between group w-full text-left"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${selectedCategory === 'All Posts' ? 'border-[#e63946]' : 'border-red-100 group-hover:border-[#e63946]'
+                    }`}>
+                    <div className={`w-1.5 h-1.5 rounded-full bg-[#e63946] transition-opacity ${selectedCategory === 'All Posts' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                      }`}></div>
                   </div>
-                  <span className="text-[12px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded">
-                    ({count})
+                  <span className={`text-[14px] transition-colors ${selectedCategory === 'All Posts' ? 'text-[#0f172a] font-bold' : 'text-slate-600 group-hover:text-[#0f172a] font-medium'
+                    }`}>
+                    All Posts
                   </span>
-                </button>
-              ))}
+                </div>
+                <span className={`text-[12px] font-bold px-2 py-0.5 rounded transition-colors ${selectedCategory === 'All Posts' ? 'text-[#e63946] bg-red-50' : 'text-slate-400 bg-slate-50'
+                  }`}>
+                  ({initialBlogs.length})
+                </span>
+              </button>
+
+              {/* Dynamic Categories */}
+              {Object.entries(categoryCounts).map(([cat, count]) => {
+                const isSelected = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategoryChange(cat)}
+                    className="flex items-center justify-between group w-full text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? 'border-[#e63946]' : 'border-red-100 group-hover:border-[#e63946]'
+                        }`}>
+                        <div className={`w-1.5 h-1.5 rounded-full bg-[#e63946] transition-opacity ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                          }`}></div>
+                      </div>
+                      <span className={`text-[14px] transition-colors ${isSelected ? 'text-[#0f172a] font-bold' : 'text-slate-600 group-hover:text-[#0f172a] font-medium'
+                        }`}>
+                        {formatCategoryName(cat)}
+                      </span>
+                    </div>
+                    <span className={`text-[12px] font-bold px-2 py-0.5 rounded transition-colors ${isSelected ? 'text-[#e63946] bg-red-50' : 'text-slate-400 bg-slate-50'
+                      }`}>
+                      ({count})
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 

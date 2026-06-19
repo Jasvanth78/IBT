@@ -69,8 +69,8 @@ export default function AboutPage() {
   const checkScroll = useCallback(() => {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+      setCanScrollLeft(scrollLeft > 1);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 2);
     }
   }, []);
 

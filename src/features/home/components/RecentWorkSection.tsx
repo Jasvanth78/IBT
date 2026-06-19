@@ -72,8 +72,8 @@ export function RecentWorkSection() {
   const checkScroll = useCallback(() => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+      setCanScrollLeft(scrollLeft > 1);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 2);
     }
   }, []);
 

@@ -152,6 +152,16 @@ export function AllLabsPage() {
   const [visibleCount, setVisibleCount] = useState(4);
 
   const timelineRef = useRef<HTMLDivElement>(null);
+  const [canScrollTimelineLeft, setCanScrollTimelineLeft] = useState(false);
+  const [canScrollTimelineRight, setCanScrollTimelineRight] = useState(true);
+
+  const checkTimelineScroll = useCallback(() => {
+    if (timelineRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = timelineRef.current;
+      setCanScrollTimelineLeft(scrollLeft > 1);
+      setCanScrollTimelineRight(scrollLeft + clientWidth < scrollWidth - 2);
+    }
+  }, []);
 
   const scrollTimelineLeft = () => {
     if (timelineRef.current) {
@@ -171,12 +181,13 @@ export function AllLabsPage() {
       if (w >= 1024) setVisibleCount(4);
       else if (w >= 640) setVisibleCount(2);
       else setVisibleCount(1);
+      checkTimelineScroll();
     };
 
     updateVisible();
     window.addEventListener('resize', updateVisible);
     return () => window.removeEventListener('resize', updateVisible);
-  }, []);
+  }, [checkTimelineScroll]);
 
   const loadData = useCallback(async () => {
     if (loadingRef.current) return;
@@ -394,7 +405,7 @@ export function AllLabsPage() {
 
               <Link
                 href="/internship/apply"
-                className="inline-flex h-12 sm:h-14 px-8 bg-[#e63946] text-white rounded-lg items-center justify-center text-[14px] font-bold shadow-lg shadow-red-500/20 hover:bg-[#c1121f] transition-colors"
+                className="w-full sm:w-auto inline-flex h-12 sm:h-14 px-8 bg-[#e63946] text-white rounded-lg items-center justify-center text-[14px] font-bold shadow-lg shadow-red-500/20 hover:bg-[#c1121f] transition-colors"
               >
                 {heroBtnText} <FiArrowRight className="ml-2" />
               </Link>
@@ -576,7 +587,7 @@ export function AllLabsPage() {
       <section className="py-12 lg:py-16 bg-white border-y border-slate-100">
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
-          <div className="mb-16 flex flex-row items-end justify-between gap-4">
+          <div className="mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500 mb-3">
                 OUR RESEARCH PROCESS
@@ -587,13 +598,23 @@ export function AllLabsPage() {
             <div className="flex items-center gap-2 lg:hidden shrink-0 pb-1">
               <button 
                 onClick={scrollTimelineLeft}
-                className="w-10 h-10 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all"
+                disabled={!canScrollTimelineLeft}
+                className={`w-10 h-10 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center transition-all ${
+                  !canScrollTimelineLeft 
+                    ? 'opacity-30 cursor-not-allowed text-slate-300' 
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                }`}
               >
                 <FiChevronLeft size={20} />
               </button>
               <button 
                 onClick={scrollTimelineRight}
-                className="w-10 h-10 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all"
+                disabled={!canScrollTimelineRight}
+                className={`w-10 h-10 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center transition-all ${
+                  !canScrollTimelineRight 
+                    ? 'opacity-30 cursor-not-allowed text-slate-300' 
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                }`}
               >
                 <FiChevronRight size={20} />
               </button>
@@ -608,6 +629,7 @@ export function AllLabsPage() {
             {/* Timeline Steps */}
             <div 
               ref={timelineRef}
+              onScroll={checkTimelineScroll}
               className="w-full flex lg:grid lg:grid-cols-6 gap-6 px-10 overflow-x-auto snap-x snap-mandatory lg:overflow-visible pb-4 custom-scrollbar"
             >
 
@@ -761,7 +783,7 @@ export function AllLabsPage() {
               <div className="text-center md:text-right z-10 flex flex-col sm:flex-row items-center justify-end gap-4">
                 <Link
                   href="/ibt-labs/submit-idea"
-                  className="inline-flex h-12 bg-white text-[#e63946] rounded-lg px-8 items-center justify-center font-bold text-[14px] hover:bg-slate-50 transition-colors shadow-xl whitespace-nowrap"
+                  className="w-full sm:w-auto inline-flex h-12 bg-white text-[#e63946] rounded-lg px-8 items-center justify-center font-bold text-[14px] hover:bg-slate-50 transition-colors shadow-xl whitespace-nowrap"
                 >
                   {ctaBtnText} <FiArrowRight className="inline-block ml-2" />
                 </Link>

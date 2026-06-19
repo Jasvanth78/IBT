@@ -75,6 +75,14 @@ export default function InternshipApplyPage() {
   };
 
   const validateAndSetFile = (file: File) => {
+    const allowedExtensions = ['.pdf', '.doc', '.docx'];
+    const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+    
+    if (!allowedExtensions.includes(fileExtension)) {
+      showToast('Only document files (PDF, DOC, DOCX) are allowed. Images are not permitted.', 'error');
+      return;
+    }
+
     if (file.size > 5 * 1024 * 1024) {
       showToast('File size should be less than 5MB', 'error');
       return;
@@ -555,7 +563,7 @@ export default function InternshipApplyPage() {
                         {resume ? resume.name : 'Click to upload or drag and drop'}
                       </h4>
                       <p className="text-[13px] text-slate-500 font-medium">
-                        {resume ? `${(resume.size / 1024 / 1024).toFixed(2)} MB • Ready` : 'PDF, DOCX up to 5MB'}
+                        {resume ? `${(resume.size / 1024 / 1024).toFixed(2)} MB • Ready` : 'PDF, DOC, DOCX up to 5MB'}
                       </p>
                     </div>
 

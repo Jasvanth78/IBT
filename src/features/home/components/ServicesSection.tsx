@@ -69,17 +69,11 @@ export function ServicesSection() {
   }, [visibleCount, services]);
 
   const showPrev = () => {
-    const n = services.length;
-    setCarouselIndex((prev) =>
-      prev <= 0 ? n - visibleCount : prev - 1
-    );
+    setCarouselIndex((prev) => Math.max(0, prev - 1));
   };
 
   const showNext = () => {
-    const n = services.length;
-    setCarouselIndex((prev) =>
-      prev >= n - visibleCount ? 0 : prev + 1
-    );
+    setCarouselIndex((prev) => Math.min(services.length - visibleCount, prev + 1));
   };
 
   const loadServices = useCallback(async () => {
@@ -196,8 +190,13 @@ export function ServicesSection() {
                   {/* LEFT ARROW */}
                   <button
                     onClick={showPrev}
+                    disabled={carouselIndex <= 0}
                     aria-label="Previous"
-                    className="hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-12 w-12 rounded-full bg-white border border-slate-200 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-[#1d3557]"
+                    className={`hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-12 w-12 rounded-full bg-white border border-slate-200 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-[#1d3557] ${
+                      carouselIndex <= 0 
+                        ? 'opacity-30 cursor-not-allowed text-slate-300' 
+                        : 'hover:bg-slate-50'
+                    }`}
                     style={{ left: -20 }}
                   >
                     <FiChevronLeft size={24} />
@@ -206,8 +205,13 @@ export function ServicesSection() {
                   {/* RIGHT ARROW */}
                   <button
                     onClick={showNext}
+                    disabled={carouselIndex >= services.length - visibleCount}
                     aria-label="Next"
-                    className="hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-12 w-12 rounded-full bg-white border border-slate-200 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-[#1d3557]"
+                    className={`hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-20 h-12 w-12 rounded-full bg-white border border-slate-200 shadow-lg hover:shadow-xl hover:scale-105 transition-all text-[#1d3557] ${
+                      carouselIndex >= services.length - visibleCount 
+                        ? 'opacity-30 cursor-not-allowed text-slate-300' 
+                        : 'hover:bg-slate-50'
+                    }`}
                     style={{ right: -20 }}
                   >
                     <FiChevronRight size={24} />

@@ -241,7 +241,7 @@ export default async function InternshipPage() {
               </div>
 
               <h1 className="text-[28px] sm:text-[34px] lg:text-[40px] font-black text-[#0f172a] leading-[1.1] tracking-tight mb-4">
-                Learn by Building<br />
+                Learn by Building <br className="md:hidden" />
                 <span className="text-[#e63946]">Real Products</span>
               </h1>
 
@@ -306,41 +306,41 @@ export default async function InternshipPage() {
         <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-lg border border-slate-100 py-8 px-4 sm:px-6 lg:px-12 grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4 lg:gap-4 divide-y-0 lg:divide-x divide-slate-100">
 
-            <div className="flex items-center gap-3 sm:gap-4 justify-start sm:justify-center px-1 sm:px-2">
+            <div className="flex items-center gap-3 sm:gap-4 w-full max-w-[200px] sm:max-w-[240px] ml-auto lg:mx-auto">
               <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0">
                 <FiBriefcase size={20} />
               </div>
-              <div className="flex-1 min-w-0 text-left">
+              <div className="text-left">
                 <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight">20+</div>
                 <div className="text-[11px] sm:text-[12px] font-medium text-slate-500 leading-snug break-words">Programs</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 justify-start sm:justify-center px-1 sm:px-2">
+            <div className="flex items-center gap-3 sm:gap-4 w-full max-w-[200px] sm:max-w-[240px] mr-auto lg:mx-auto">
               <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
                 <FiUsers size={20} />
               </div>
-              <div className="flex-1 min-w-0 text-left">
+              <div className="text-left">
                 <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight">5000+</div>
                 <div className="text-[11px] sm:text-[12px] font-medium text-slate-500 leading-snug break-words">Interns Trained</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 justify-start sm:justify-center px-1 sm:px-2">
+            <div className="flex items-center gap-3 sm:gap-4 w-full max-w-[200px] sm:max-w-[240px] ml-auto lg:mx-auto">
               <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-yellow-50 text-yellow-500 flex items-center justify-center shrink-0">
                 <FiAward size={20} />
               </div>
-              <div className="flex-1 min-w-0 text-left">
+              <div className="text-left">
                 <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight">99%+</div>
                 <div className="text-[11px] sm:text-[12px] font-medium text-slate-500 leading-snug break-words">Success Rate</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 justify-start sm:justify-center px-1 sm:px-2">
+            <div className="flex items-center gap-3 sm:gap-4 w-full max-w-[200px] sm:max-w-[240px] mr-auto lg:mx-auto">
               <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center shrink-0">
                 <FiCheckCircle size={20} />
               </div>
-              <div className="flex-1 min-w-0 text-left">
+              <div className="text-left">
                 <div className="text-[20px] sm:text-[24px] font-black text-[#0f172a] leading-tight">100%</div>
                 <div className="text-[11px] sm:text-[12px] font-medium text-slate-500 leading-snug break-words">Hands-on Experience</div>
               </div>

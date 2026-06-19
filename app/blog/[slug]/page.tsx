@@ -141,18 +141,20 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   <div className="w-12 h-12 rounded-full bg-red-50 border border-red-100 text-[#e63946] flex items-center justify-center font-black text-lg shrink-0">
                     IB
                   </div>
-                  <div>
-                    <p className="font-bold text-slate-900 text-[15px] leading-tight mb-1">IBT Editorial Team</p>
-                    <p className="text-[13px] font-medium text-slate-500">
+                  <div className="flex flex-col justify-center">
+                    <span className="font-bold text-slate-900 text-[15px] leading-none">IBT Editorial Team</span>
+                    <span className="text-[12px] font-medium text-slate-500 mt-1">
                       {formatPublishedAt(blog.publishedAt)}
-                    </p>
+                    </span>
                   </div>
                 </div>
                 
-                <ShareArticleButton 
-                  title={blog.title || 'Designing for Accessibility: A Complete Guide'} 
-                  description={blog.description || getExcerpt(blog.content)} 
-                />
+                <div className="self-end sm:self-auto">
+                  <ShareArticleButton 
+                    title={blog.title || 'Designing for Accessibility: A Complete Guide'} 
+                    description={blog.description || getExcerpt(blog.content)} 
+                  />
+                </div>
               </div>
             </div>
 
@@ -343,7 +345,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             {/* Recent Posts */}
             {recentPosts.length > 0 && (
               <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <h3 className="text-[18px] font-black text-[#0f172a] mb-6">Recent Posts</h3>
+                <h3 className="text-[18px] font-black text-[#0f172a] mb-3">Recent Posts</h3>
                 <div className="space-y-6">
                   {recentPosts.map((post) => (
                     <Link href={`/blog/${post.slug}`} key={post.id} className="group flex gap-4 items-center">
@@ -369,7 +371,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             {/* Categories */}
             {categories.length > 0 && (
               <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <h3 className="text-[18px] font-black text-[#0f172a] mb-6">Categories</h3>
+                <h3 className="text-[18px] font-black text-[#0f172a] mb-3">Categories</h3>
                 <ul className="space-y-4 mb-6">
                   {categories.map((cat, idx) => (
                     <li key={idx}>
