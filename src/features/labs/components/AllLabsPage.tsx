@@ -358,7 +358,7 @@ export function AllLabsPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
             {/* Left Content */}
-            <div className="relative z-10 max-w-xl">
+            <div className="relative z-10 max-w-none lg:max-w-xl">
 
 
               <h1 
@@ -367,11 +367,11 @@ export function AllLabsPage() {
               />
 
               <div 
-                className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md [&>p]:mb-4 last:[&>p]:mb-0"
+                className="text-[15px] text-slate-500 font-medium leading-relaxed mb-10 max-w-none lg:max-w-md [&>p]:mb-4 last:[&>p]:mb-0"
                 dangerouslySetInnerHTML={{ __html: heroDescription }}
               />
 
-              <div className="flex flex-col gap-6 mb-10">
+              <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10 mb-10">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-red-50 text-[#e63946] flex items-center justify-center shrink-0 border border-red-100">
                     <FiLayers size={20} />
@@ -510,7 +510,7 @@ export function AllLabsPage() {
                     <h3 className="text-[22px] sm:text-[30px] lg:text-[36px] font-black !text-white leading-tight mb-2 sm:mb-3">
                       {card.title}
                     </h3>
-                    <div className="text-[13px] sm:text-[14px] text-slate-300 font-medium max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
+                    <div className="text-[13px] sm:text-[14px] text-slate-300 font-medium max-w-none lg:max-w-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
                     {card.btnText && (
                       <Link href={card.link || '#'} className="mt-4 inline-flex items-center gap-1 text-[13px] font-bold text-[#e63946] hover:gap-2 transition-all target='_blank' ">
                         {card.btnText} <FiArrowRight />
@@ -647,7 +647,7 @@ export function AllLabsPage() {
                 <h2 className="text-[32px] sm:text-[40px] font-black tracking-tight text-[#0f172a] mb-6">
                   {rigorTitle}
                 </h2>
-                <div className="text-[15px] text-slate-500 font-medium leading-relaxed mb-8 max-w-md" dangerouslySetInnerHTML={{ __html: rigorDesc }} />
+                <div className="text-[15px] text-slate-500 font-medium leading-relaxed mb-8 max-w-none lg:max-w-md" dangerouslySetInnerHTML={{ __html: rigorDesc }} />
                 <div className="flex flex-col gap-5">
                   {rigorPoints.map((point, index) => (
                     <div key={index} className="flex items-center gap-4">
@@ -752,7 +752,7 @@ export function AllLabsPage() {
                   dangerouslySetInnerHTML={{ __html: ctaTitle }}
                 />
                 <div 
-                  className="text-slate-300 text-[14px] font-medium max-w-sm mx-auto md:mx-0 [&>p]:mb-4 last:[&>p]:mb-0"
+                  className="text-slate-300 text-[14px] font-medium max-w-none md:max-w-sm mx-auto md:mx-0 [&>p]:mb-4 last:[&>p]:mb-0"
                   dangerouslySetInnerHTML={{ __html: ctaDescription }}
                 />
               </div>

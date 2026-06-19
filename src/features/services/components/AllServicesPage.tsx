@@ -248,7 +248,7 @@ export function AllServicesPage() {
                 Services Built
                 <span className="text-[#e63946] pl-2">for Impact</span>
               </h1>
-              <p className="text-lg text-slate-500 font-medium leading-relaxed mb-10 max-w-lg">
+              <p className="text-lg text-slate-500 font-medium leading-relaxed mb-10 max-w-none lg:max-w-lg">
                 We deliver innovative, scalable and reliable digital solutions that help businesses grow, operate efficiently, and stay ahead in a competitive world.
               </p>
 
@@ -322,11 +322,11 @@ export function AllServicesPage() {
               </h2>
               {settings?.servicesWhatDescription ? (
                 <div
-                  className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg html-content w-full overflow-hidden"
+                  className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-none lg:max-w-lg html-content w-full overflow-hidden"
                   dangerouslySetInnerHTML={{ __html: cleanHtml(settings.servicesWhatDescription) }}
                 />
               ) : (
-                <p className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-lg">
+                <p className="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-none lg:max-w-lg">
                   We offer a wide range of technology and engineering services to transform ideas into powerful solutions.
                 </p>
               )}
@@ -548,7 +548,7 @@ export function AllServicesPage() {
               <h2 className="mb-6 font-extrabold tracking-tight text-[#0f172a] leading-[1.1]">
                 Let's Build Something Remarkable Together
               </h2>
-              <p className="text-lg text-slate-500 font-medium leading-relaxed mb-10 max-w-lg">
+              <p className="text-lg text-slate-500 font-medium leading-relaxed mb-10 max-w-none lg:max-w-lg">
                 From startups to enterprises, we help businesses leverage technology to achieve more. Partner with IBACUS TECH and create solutions that make an impact.
               </p>
               <Link
@@ -602,7 +602,7 @@ export function AllServicesPage() {
                 <h2 className="font-bold !text-white leading-tight mb-3">
                   Ready to Start Your Project?
                 </h2>
-                <p className="text-slate-300 text-[15px] font-medium max-w-md mx-auto md:mx-0">
+                <p className="text-slate-300 text-[15px] font-medium max-w-none md:max-w-md mx-auto md:mx-0">
                   Share your idea and we'll build a solution that drives real results.
                 </p>
               </div>

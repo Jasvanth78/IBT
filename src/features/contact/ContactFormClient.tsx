@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { apiClient, type PublicBranch } from '@/src/api/client'
+import { Toast } from '@/src/components/Toast'
 
 type InquiryType = 'Partnership' | 'Internship' | 'IBT Labs' | 'General'
 
@@ -23,7 +24,10 @@ type FormState = {
 export function ContactFormClient({ initialSettings, initialBranches }: ContactFormClientProps) {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [toast, setToast] = useState({ open: false, message: '', variant: 'success' as 'success' | 'error' })
+  const showToast = (message: string, variant: 'success' | 'error' = 'success') => {
+    setToast({ open: true, message, variant })
+  }
   const [inquiryType, setInquiryType] = useState<InquiryType>('IBT Labs')
   const [formData, setFormData] = useState<FormState>({
     firstName: '',
@@ -51,26 +55,38 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setErrorMessage('')
 
-    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.message.trim()) {
-      setErrorMessage('Please fill in all required fields before submitting.')
+    if (!formData.firstName.trim()) {
+      showToast('Please fill the First Name field.', 'error')
+      return
+    }
+    const nameRegex = /^[a-zA-Z\s]+$/
+    if (!nameRegex.test(formData.firstName.trim())) {
+      showToast('First Name must contain only letters and spaces.', 'error')
       return
     }
 
-    const nameRegex = /^[a-zA-Z\s]+$/
-    if (!nameRegex.test(formData.firstName.trim())) {
-      setErrorMessage('First Name must contain only letters and spaces.')
+    if (!formData.lastName.trim()) {
+      showToast('Please fill the Last Name field.', 'error')
       return
     }
     if (!nameRegex.test(formData.lastName.trim())) {
-      setErrorMessage('Last Name must contain only letters and spaces.')
+      showToast('Last Name must contain only letters and spaces.', 'error')
       return
     }
 
+    if (!formData.email.trim()) {
+      showToast('Please fill the Work Email field.', 'error')
+      return
+    }
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     if (!emailRegex.test(formData.email.trim())) {
-      setErrorMessage('Please enter a valid email address containing "@".')
+      showToast('Please enter a valid email address containing "@".', 'error')
+      return
+    }
+
+    if (!formData.message.trim()) {
+      showToast('Please fill the Message field.', 'error')
       return
     }
 
@@ -86,11 +102,12 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
         message: formData.message.trim(),
       })
 
+      showToast('Inquiry submitted successfully!', 'success')
       setFormSubmitted(true)
       setFormData({ firstName: '', lastName: '', email: '', phone: '', company: '', message: '' })
     } catch (error) {
       console.error('Contact form submission failed:', error)
-      setErrorMessage('Unable to send your message right now. Please try again in a moment.')
+      showToast('Unable to send your message right now. Please try again in a moment.', 'error')
     } finally {
       setLoading(false)
     }
@@ -103,12 +120,7 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
       </span>
 
       {!formSubmitted ? (
-        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-          {errorMessage ? (
-            <div className="rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-700">
-              {errorMessage}
-            </div>
-          ) : null}
+        <form onSubmit={handleSubmit} noValidate className="space-y-5 sm:space-y-6">
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div className="space-y-1.5">
@@ -251,6 +263,13 @@ export function ContactFormClient({ initialSettings, initialBranches }: ContactF
           </button>
         </motion.div>
       )}
+
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        variant={toast.variant}
+        onClose={() => setToast((prev) => ({ ...prev, open: false }))}
+      />
     </div>
   )
 }

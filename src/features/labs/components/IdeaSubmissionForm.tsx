@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { FiUploadCloud, FiX, FiCheck, FiArrowDown } from 'react-icons/fi';
 import { apiClient } from '@/src/api/client';
+import { Toast } from '@/src/components/Toast';
 
 const CATEGORY_OPTIONS = [
   'Select a category',
@@ -14,7 +15,10 @@ const CATEGORY_OPTIONS = [
 export function IdeaSubmissionForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState({ open: false, message: '', variant: 'success' as 'success' | 'error' });
+  const showToast = (message: string, variant: 'success' | 'error' = 'success') => {
+    setToast({ open: true, message, variant });
+  };
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -70,34 +74,53 @@ export function IdeaSubmissionForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
 
+    if (!formData.firstName.trim()) {
+      showToast('Please fill the First name field.', 'error');
+      return;
+    }
     const nameRegex = /^[a-zA-Z\s]+$/;
     if (!nameRegex.test(formData.firstName.trim())) {
-      setError('First name must contain only letters and spaces.');
-      return;
-    }
-    if (formData.lastName.trim() && !nameRegex.test(formData.lastName.trim())) {
-      setError('Last name must contain only letters and spaces.');
+      showToast('First name must contain only letters and spaces.', 'error');
       return;
     }
 
+    if (formData.lastName.trim() && !nameRegex.test(formData.lastName.trim())) {
+      showToast('Last name must contain only letters and spaces.', 'error');
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      showToast('Please fill the Email address field.', 'error');
+      return;
+    }
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(formData.email.trim())) {
-      setError('Please enter a valid email address containing "@".');
+      showToast('Please enter a valid email address containing "@".', 'error');
       return;
     }
 
-    if (formData.category === '' || formData.category === 'Select a category') {
-      setError('Please select a valid category.');
+    if (!formData.category || formData.category === 'Select a category') {
+      showToast('Please select a Category.', 'error');
       return;
     }
-    if (formData.category === 'Other' && formData.otherCategory.trim() === '') {
-      setError('Please specify your category.');
+    if (formData.category === 'Other' && !formData.otherCategory.trim()) {
+      showToast('Please specify your category.', 'error');
       return;
     }
+
+    if (!formData.ideaTitle.trim()) {
+      showToast('Please fill the Idea title field.', 'error');
+      return;
+    }
+
+    if (!formData.description.trim()) {
+      showToast('Please fill the Describe your idea field.', 'error');
+      return;
+    }
+
     if (!formData.privacyAccepted) {
-      setError('You must accept the privacy policy.');
+      showToast('You must accept the privacy policy.', 'error');
       return;
     }
 
@@ -118,6 +141,7 @@ export function IdeaSubmissionForm() {
       });
 
       await apiClient.submitLabIdea(submitData);
+      showToast('Idea submitted successfully!', 'success');
       setSuccess(true);
       setFormData({
         firstName: '',
@@ -131,7 +155,7 @@ export function IdeaSubmissionForm() {
       });
       setFiles([]);
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'An error occurred while submitting your idea.');
+      showToast(err?.response?.data?.message || 'An error occurred while submitting your idea.', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -163,13 +187,7 @@ export function IdeaSubmissionForm() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {error && (
-          <div className="p-4 bg-red-50 text-red-600 rounded-lg text-sm font-medium border border-red-100">
-            {error}
-          </div>
-        )}
-
+      <form onSubmit={handleSubmit} noValidate className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="block text-sm font-bold text-slate-800">First name <span className="text-red-500">*</span></label>
@@ -333,6 +351,13 @@ export function IdeaSubmissionForm() {
           {isSubmitting ? 'Submitting...' : 'Submit my idea'}
         </button>
       </form>
+
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        variant={toast.variant}
+        onClose={() => setToast((prev) => ({ ...prev, open: false }))}
+      />
     </div>
   );
 }

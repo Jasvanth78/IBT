@@ -88,32 +88,58 @@ export default function InternshipApplyPage() {
 
   const handleRequestOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone || !formData.jobType || !resume) {
-      showToast('Please fill in all details and upload your resume', 'error');
+    if (!formData.name.trim()) {
+      showToast('Please fill the Full Name field', 'error');
       return;
     }
-
     const nameRegex = /^[a-zA-Z\s]+$/;
     if (!nameRegex.test(formData.name.trim())) {
       showToast('Full Name must contain only letters and spaces', 'error');
       return;
     }
 
+    if (!formData.email.trim()) {
+      showToast('Please fill the Email Address field', 'error');
+      return;
+    }
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(formData.email.trim())) {
       showToast('Please enter a valid email address containing "@"', 'error');
       return;
     }
 
+    if (!formData.phone.trim()) {
+      showToast('Please fill the Phone Number field', 'error');
+      return;
+    }
     const phoneDigits = formData.phone.replace(/\D/g, '');
     if (phoneDigits.length < 10 || phoneDigits.length > 12) {
       showToast('Phone number must be between 10 and 12 digits', 'error');
       return;
     }
 
+    if (!formData.jobType) {
+      showToast('Please select a Role / Interest', 'error');
+      return;
+    }
+
+    if (!formData.skills.trim()) {
+      showToast('Please fill the Key Technical Skills field', 'error');
+      return;
+    }
+
+    if (!formData.about.trim()) {
+      showToast('Please fill the Cover Letter / About You field', 'error');
+      return;
+    }
     const wordCount = formData.about.trim().split(/\s+/).length;
     if (wordCount < 20) {
       showToast(`Cover letter must be at least 20 words (currently ${wordCount})`, 'error');
+      return;
+    }
+
+    if (!resume) {
+      showToast('Please upload your Resume', 'error');
       return;
     }
 
@@ -268,7 +294,7 @@ export default function InternshipApplyPage() {
                 Start Your <span className="text-[#e63946]">Career Journey</span>
               </h2>
 
-              <p className="text-[15px] text-slate-300 font-medium leading-relaxed mb-12 max-w-sm">
+              <p className="text-[15px] text-slate-300 font-medium leading-relaxed mb-12 max-w-none lg:max-w-sm">
                 Join our innovative team at IBT. We're looking for passionate individuals ready to make an impact.
               </p>
 
@@ -280,7 +306,7 @@ export default function InternshipApplyPage() {
                   </div>
                   <div>
                     <h4 className="text-[15px] font-bold !text-white mb-1">Real-world Projects</h4>
-                    <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-[200px]">
+                    <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-none lg:max-w-[200px]">
                       Work on things that matter.
                     </p>
                   </div>
@@ -293,7 +319,7 @@ export default function InternshipApplyPage() {
                   </div>
                   <div>
                     <h4 className="text-[15px] font-bold !text-white mb-1">Expert Mentorship</h4>
-                    <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-[200px]">
+                    <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-none lg:max-w-[200px]">
                       Learn from industry experts.
                     </p>
                   </div>
@@ -306,7 +332,7 @@ export default function InternshipApplyPage() {
                   </div>
                   <div>
                     <h4 className="text-[15px] font-bold !text-white mb-1">Career Growth</h4>
-                    <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-[200px]">
+                    <p className="text-[13px] text-slate-400 font-medium leading-relaxed max-w-none lg:max-w-[200px]">
                       Opportunities to learn, grow and lead.
                     </p>
                   </div>
@@ -338,6 +364,7 @@ export default function InternshipApplyPage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onSubmit={handleRequestOTP}
+                  noValidate
                   className="max-w-3xl"
                 >
 

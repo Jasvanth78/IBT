@@ -30,16 +30,16 @@ export function LandingPage() {
               className="lg:col-span-6 max-w-2xl xl:max-w-none xl:pr-8"
             >
               <h1 className="text-[24px] sm:text-[28px] lg:text-[40px] font-extrabold leading-[1.1] text-[#1d3557] tracking-tight mb-6">
-                Building Intelligent <br className="hidden sm:block" />
+                Building Intelligent <br className="hidden lg:block" />
                 <span className="text-[#e63946] inline-block mt-1 sm:mt-0">
                   Software for a Digital Future
                 </span>
               </h1>
-              <p className="text-base sm:text-lg text-slate-500 mb-8 max-w-[480px] leading-relaxed font-medium">
+              <p className="text-base sm:text-lg text-slate-500 mb-8 max-w-none lg:max-w-[480px] leading-relaxed font-medium">
                 We design and develop custom software, AI-powered solutions, data analytics platforms, and enterprise applications that help businesses stay ahead in a rapidly evolving world.
               </p>
 
-              <div className="flex flex-wrap gap-4 items-center">
+              <div className="flex flex-wrap gap-4 items-center mt-6 md:mt-8">
                 <SiteButton
                   href="/contact"
                   className="w-full sm:w-auto bg-[#e63946] hover:bg-[#c1121f] text-white rounded-md px-7 py-3.5 font-bold text-sm transition-all shadow-md shadow-red-500/20"

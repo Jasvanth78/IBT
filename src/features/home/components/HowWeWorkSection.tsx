@@ -158,25 +158,25 @@ export function HowWeWorkSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="w-[200px] xl:w-auto flex flex-col relative z-10 snap-start shrink-0"
+                  className="w-[200px] xl:w-auto flex flex-col items-center relative z-10 snap-start shrink-0"
                 >
                   {/* Icon Node */}
-                  <div className="mb-6 flex justify-start xl:justify-center">
+                  <div className="mb-6 flex justify-center">
                     <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-sm border border-slate-100 ${step.bgColor}`}>
                       {step.icon}
                     </div>
                   </div>
 
-                  {/* Step Content with Vertical Colored Bar */}
-                  <div className="mt-1 flex flex-col text-left xl:px-2">
-                    <div className={`text-[11px] font-black ${step.textColor} mb-1 ml-0.5`}>
+                  {/* Step Content with Top Colored Bar */}
+                  <div className="mt-1 flex flex-col items-center text-center xl:px-2 w-full">
+                    <div className={`text-[11px] font-black ${step.textColor} mb-2`}>
                       {step.id}
                     </div>
-                    <div className={`border-l-2 ${step.borderColor} pl-3 py-0.5 h-[90px]`}>
+                    <div className={`border-t-2 ${step.borderColor} pt-3 w-full h-[90px] flex flex-col items-center`}>
                       <h4 className="text-[14px] font-extrabold text-[#0f172a] mb-1.5 leading-tight">
                         {step.title}
                       </h4>
-                      <p className="text-[11px] font-medium text-slate-500 leading-relaxed max-w-[140px]">
+                      <p className="text-[11px] font-medium text-slate-500 leading-relaxed max-w-[140px] text-center">
                         {step.description}
                       </p>
                     </div>

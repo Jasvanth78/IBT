@@ -232,7 +232,7 @@ export default async function InternshipPage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
             {/* Left Content */}
-            <div className="relative z-10 max-w-xl">
+            <div className="relative z-10 max-w-none lg:max-w-xl">
               <div className="inline-flex items-center gap-2 mb-6">
                 <div className="w-2 h-2 rounded-full bg-[#e63946]" />
                 <h3 className="text-[18px] font-bold uppercase tracking-widest !text-red-500">
@@ -245,7 +245,7 @@ export default async function InternshipPage() {
                 <span className="text-[#e63946]">Real Products</span>
               </h1>
 
-              <p className="text-[14px] text-slate-500 font-medium leading-relaxed mb-10 max-w-md">
+              <p className="text-[14px] text-slate-500 font-medium leading-relaxed mb-10 max-w-none lg:max-w-md">
                 Our internship program is designed to give you real-world experience, mentorship and the skills to thrive in your career.
               </p>
 

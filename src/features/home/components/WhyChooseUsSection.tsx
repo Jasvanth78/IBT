@@ -49,9 +49,9 @@ export function WhyChooseUsSection() {
               WHY CHOOSE I BACUS TECH?
             </h3>
             <h2 className="text-[28px] sm:text-[32px] font-extrabold text-[#0f172a] leading-tight mb-3 pr-4">
-              Exceeding Expectations<br />Every Time
+              Exceeding Expectations <br className="hidden lg:block" /> Every Time
             </h2>
-            <p className="text-[13px] font-medium text-slate-500 mb-6 max-w-[300px] leading-relaxed">
+            <p className="text-[13px] font-medium text-slate-500 mb-6 max-w-none lg:max-w-[300px] leading-relaxed">
               We combine technology, creativity and strategy to build solutions that create real impact.
             </p>
             <SiteButton
@@ -80,7 +80,7 @@ export function WhyChooseUsSection() {
                   </div>
                   <div>
                     <h4 className="text-[13px] font-bold text-[#0f172a] mb-0.5 leading-tight">{benefit.title}</h4>
-                    <p className="text-[11px] font-medium text-slate-500 leading-relaxed max-w-[180px]">{benefit.description}</p>
+                    <p className="text-[11px] font-medium text-slate-500 leading-relaxed max-w-none">{benefit.description}</p>
                   </div>
                 </div>
               ))}

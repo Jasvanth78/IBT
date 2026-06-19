@@ -86,7 +86,7 @@ export function InternshipTestimonials({
               {title}
             </h3>
             <h2 className="text-[32px] md:text-[40px] font-black tracking-tight text-[#0f172a]">
-              Real Experiences. Real Growth.
+              Real Experiences & Real Growth.
             </h2>
           </div>
 
@@ -97,11 +97,10 @@ export function InternshipTestimonials({
                 onClick={goPrev}
                 disabled={currentPage <= 0}
                 aria-label="Previous testimonials"
-                className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition-all shadow-sm ${
-                  currentPage <= 0
+                className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition-all shadow-sm ${currentPage <= 0
                     ? 'bg-slate-50 text-slate-300 cursor-not-allowed opacity-60'
                     : 'bg-white text-slate-500 hover:text-[#0f172a] hover:border-slate-300 hover:shadow-md'
-                }`}
+                  }`}
               >
                 <FiChevronLeft size={18} />
               </button>
@@ -109,11 +108,10 @@ export function InternshipTestimonials({
                 onClick={goNext}
                 disabled={currentPage >= totalPages - 1}
                 aria-label="Next testimonials"
-                className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition-all shadow-sm ${
-                  currentPage >= totalPages - 1
+                className={`flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 transition-all shadow-sm ${currentPage >= totalPages - 1
                     ? 'bg-slate-50 text-slate-300 cursor-not-allowed opacity-60'
                     : 'bg-white text-slate-500 hover:text-[#0f172a] hover:border-slate-300 hover:shadow-md'
-                }`}
+                  }`}
               >
                 <FiChevronRight size={18} />
               </button>
@@ -169,11 +167,10 @@ export function InternshipTestimonials({
                 key={i}
                 onClick={() => goTo(i, i > currentPage ? 'next' : 'prev')}
                 aria-label={`Go to testimonial page ${i + 1}`}
-                className={`rounded-full transition-all duration-300 ${
-                  i === currentPage
+                className={`rounded-full transition-all duration-300 ${i === currentPage
                     ? 'w-6 h-1.5 bg-[#e63946]'
                     : 'w-1.5 h-1.5 bg-slate-300 hover:bg-slate-400'
-                }`}
+                  }`}
               />
             ))}
           </div>

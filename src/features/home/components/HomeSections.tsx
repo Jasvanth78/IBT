@@ -112,10 +112,10 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
           <FloatingIcon size={24} strokeWidth={1.5} />
         </div>
         <div className="flex flex-col text-left">
-          <p className="text-[28px] md:text-[32px] font-black text-slate-900 leading-none mb-1 tracking-tight">
+          <span className="text-[28px] md:text-[32px] font-black text-slate-900 leading-none mb-1 tracking-tight">
             {startAnimation || !isNumber ? displayValue : item.value.replace(numericString, '0')}
-          </p>
-          <p className="text-[13px] md:text-[14px] font-bold text-slate-500 leading-tight tracking-tight uppercase">{item.label}</p>
+          </span>
+          <span className="text-[13px] md:text-[14px] font-bold text-slate-500 leading-tight tracking-tight uppercase">{item.label}</span>
         </div>
       </article>
     );
@@ -131,11 +131,11 @@ function AnimatedStatCard({ item, isFloating }: { item: PublicStat; isFloating?:
        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-(--ui-primary-soft)/10 group-hover:bg-(--ui-primary) group-hover:text-white transition-colors duration-300">
           <Icon className="h-6 w-6 text-(--ui-primary) group-hover:text-white" />
       </div>
-      <div>
-        <p className="text-3xl font-black text-black">
+      <div className="flex flex-col">
+        <span className="text-3xl font-black text-black leading-none mb-1">
           {startAnimation || !isNumber ? displayValue : item.value.replace(numericString, '0')}
-        </p>
-        <p className="mt-1 text-sm font-bold text-slate-500">{item.label}</p>
+        </span>
+        <span className="text-sm font-bold text-slate-500 leading-tight">{item.label}</span>
       </div>
     </article>
   );

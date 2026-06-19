@@ -198,7 +198,7 @@ export default function AboutPage() {
                 <span className="text-[#e63946] pl-2">Excellence</span>
               </h1>
 
-              <p className="pt-6 max-w-xl text-base leading-relaxed text-[#475569] ">
+              <p className="pt-6 max-w-none lg:max-w-xl text-base leading-relaxed text-[#475569] ">
                 I BACUS TECH SOLUTION specializes in custom software development, AI solutions, web and mobile application development, data analytics, and enterprise technology solutions that drive business success.
               </p>
 
@@ -382,7 +382,7 @@ export default function AboutPage() {
                       </div>
                       <div>
                         <h4 className="text-sm font-bold text-[#0f172a]">{feat.title}</h4>
-                        <p className="text-xs text-slate-500 leading-relaxed mt-0.5 max-w-lg">
+                        <p className="text-xs text-slate-500 leading-relaxed mt-0.5 max-w-none lg:max-w-lg">
                           {feat.desc}
                         </p>
                       </div>
@@ -521,7 +521,7 @@ export default function AboutPage() {
                       <button
                         onClick={scrollLeft}
                         disabled={!canScrollLeft}
-                        className={`absolute -left-4 sm:-left-12 z-10 hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollLeft
+                        className={`absolute -left-4 sm:-left-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollLeft
                           ? 'opacity-30 cursor-not-allowed text-slate-300'
                           : 'text-slate-600 hover:text-[#e63946]'
                           }`}
@@ -563,7 +563,7 @@ export default function AboutPage() {
                       <button
                         onClick={scrollRight}
                         disabled={!canScrollRight}
-                        className={`absolute -right-4 sm:-right-12 z-10 hidden md:flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollRight
+                        className={`absolute -right-4 sm:-right-12 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-colors focus:outline-none ${!canScrollRight
                           ? 'opacity-30 cursor-not-allowed text-slate-300'
                           : 'text-slate-600 hover:text-[#e63946]'
                           }`}

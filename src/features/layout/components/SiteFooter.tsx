@@ -31,9 +31,10 @@ const footerLinks = [
       { label: 'Home', href: '/' },
       { label: 'About Us', href: '/about' },
 
-      { label: 'Contact Us', href: '/contact' },
       { label: 'Services', href: '/services' },
-      { label: 'Internship', href: '/internship' }
+      { label: 'Internship', href: '/internship' },
+
+      { label: 'Contact Us', href: '/contact' },
 
     ],
   },
@@ -241,15 +242,17 @@ export function SiteFooter() {
                 <>
                   <li className="flex items-start gap-3">
                     <FiPhone className="h-4 w-4 !text-red-400 mt-0.5 shrink-0" />
-                    <span className="text-sm text-white">+91 9043045780</span>
+                    <span className="text-sm text-white">+91 9003562715</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <FiMail className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
-                    <span className="text-sm text-white">ibacustech@gmail.com</span>
+                    <span className="text-sm text-white">info@ibacustech.com</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <FiMapPin className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
-                    <span className="text-sm text-white">Salem, Tamil Nadu, India</span>
+                    <span className="text-sm text-white">I-BACUS-TECH, 3rd Floor,
+                      6C, Chitra Nagar, Saravanampatti,
+                      Coimbatore - 641035.</span>
                   </li>
                 </>
               )}
@@ -260,10 +263,11 @@ export function SiteFooter() {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 pt-5 pb-24 md:pb-5 lg:px-8 flex items-center justify-center gap-3">
-          <p className="text-xs !text-white text-center">
+        <div className="mx-auto max-w-7xl px-6 pt-5 pb-24 md:pb-5 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs !text-white text-center sm:text-left">
             © {new Date().getFullYear()} I BACUS TECH SOLUTIONS. All Rights Reserved.
           </p>
+
         </div>
       </div>
     </footer>
