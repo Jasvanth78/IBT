@@ -322,7 +322,7 @@ export function AllLabsPage() {
   // Hero Section
   const rawHeroTitle = settings['labs_hero_title'];
   const heroTitle = (!rawHeroTitle || rawHeroTitle.trim() === 'IBT LABS')
-    ? 'Precision-led<br /><span class="text-[#e63946]">Future Engineering</span>'
+    ? 'Precision-led <br class="md:hidden" /><span class="text-[#e63946]">Future Engineering</span>'
     : cleanHtml(rawHeroTitle);
   const heroDescription = cleanHtml(settings['labs_hero_description'] || 'Empowering the next generation of researchers and engineers through precision-led skill development and forward-thinking technological innovation.');
   const heroImageUrl = settings['labs_hero_image_url'] || 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200';
@@ -373,7 +373,7 @@ export function AllLabsPage() {
 
 
               <h1 
-                className="text-[24px] sm:text-[28px] lg:text-[40px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6"
+                className="text-[24px] sm:text-[28px] lg:text-[40px] font-black text-[#0f172a] leading-[1.05] tracking-tight mb-6 md:[&_br]:hidden"
                 dangerouslySetInnerHTML={{ __html: heroTitle }}
               />
 

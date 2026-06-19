@@ -92,7 +92,7 @@ export function InternshipTestimonials({
 
           {/* Nav Arrows */}
           {totalPages > 1 && (
-            <div className="flex items-center gap-2 mt-6 md:mt-0">
+            <div className="flex items-center gap-2 mt-6 md:mt-0 self-end md:self-auto">
               <button
                 onClick={goPrev}
                 disabled={currentPage <= 0}

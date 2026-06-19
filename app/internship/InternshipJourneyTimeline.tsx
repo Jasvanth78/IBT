@@ -37,7 +37,7 @@ export function InternshipJourneyTimeline({ children }: { children: React.ReactN
   return (
     <div className="relative">
       {/* Navigation Arrows for Mobile/Tablet */}
-      <div className="flex justify-center sm:justify-end items-center gap-2 lg:hidden mb-6 px-4">
+      <div className="flex justify-end items-center gap-2 lg:hidden mb-6 px-4">
         <button 
           onClick={scrollLeft}
           disabled={!canScrollLeft}

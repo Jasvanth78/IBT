@@ -244,7 +244,7 @@ export default function AboutPage() {
 
           {/* COUNTER GRID ROW RIGHT UNDER HERO */}
           <div className="mt-16 grid grid-cols-2 gap-6 border-t border-slate-100 pt-12 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 md:justify-center lg:justify-start">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-rose-50 text-[#e63946]">
                 <FiAward size={22} />
               </div>
@@ -254,7 +254,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 md:justify-center lg:justify-start">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-rose-50 text-[#e63946]">
                 <FiUsers size={22} />
               </div>
@@ -264,7 +264,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 md:justify-center lg:justify-start">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-500">
                 <FiCheckCircle size={22} />
               </div>
@@ -274,7 +274,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 md:justify-center lg:justify-start">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-rose-50 text-[#e63946]">
                 <FiSmile size={22} />
               </div>
